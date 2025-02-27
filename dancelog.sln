@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35818.85 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dancelog", "dancelog.csproj", "{11147817-F545-4211-B877-D1391F6A39BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11147817-F545-4211-B877-D1391F6A39BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11147817-F545-4211-B877-D1391F6A39BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11147817-F545-4211-B877-D1391F6A39BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11147817-F545-4211-B877-D1391F6A39BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1FD6F3CA-68AC-4C51-ACA8-91FD91E40CCE}
+	EndGlobalSection
+EndGlobal
