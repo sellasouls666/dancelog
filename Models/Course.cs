@@ -6,5 +6,6 @@
         public string Name { get; set; }
         public string Description { get; set; }
         public List<Group> Groups { get; set; }
+        public List<Lesson> Lessons { get; set; }
     }
 }
