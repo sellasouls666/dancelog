@@ -11,9 +11,6 @@ namespace dancelog.Models
         public required string Name { get; set; }
 
         [Required]
-        public required List<Student> Students { get; set; }
-
-        [Required]
         public required Course Course { get; set; }
     }
 }
