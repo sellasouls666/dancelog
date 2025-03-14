@@ -12,7 +12,7 @@ namespace dancelog.Models
         [Required]
         public required DateTime DateTime { get; set; }
 
-        [Required
+        [Required]
         public required List<Attendance> AttendanceRecords { get; set; }
     }
 }
