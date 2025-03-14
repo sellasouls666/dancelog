@@ -8,11 +8,6 @@ namespace dancelog.Models
         [Required]
         [StringLength(255)]
         public required string Name { get; set; }
-
-        [Required]
-        public required List<Group> Groups { get; set; }
-
-        [Required]
-        public required List<Lesson> Lessons { get; set; }
+    
     }
 }
