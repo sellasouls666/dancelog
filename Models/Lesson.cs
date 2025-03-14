@@ -1,10 +1,18 @@
-﻿namespace dancelog.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace dancelog.Models
 {
     public class Lesson
     {
         public int Id { get; set; }
-        public Course Course { get; set; }
-        public DateTime DateTime { get; set; }
-        public List<Attendance> AttendanceRecords { get; set; }
+
+        [Required]
+        public required Course Course { get; set; }
+
+        [Required]
+        public required DateTime DateTime { get; set; }
+
+        [Required
+        public required List<Attendance> AttendanceRecords { get; set; }
     }
 }
