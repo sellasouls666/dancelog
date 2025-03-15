@@ -8,7 +8,7 @@ namespace dancelog.Data
             public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
                 : base(options)
             {
-                Database.Migrate();
+
             }
 
             public DbSet<Student> Students { get; set; }
