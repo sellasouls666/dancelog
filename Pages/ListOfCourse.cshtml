@@ -5,15 +5,15 @@
     ViewData["Title"] = "Список курсов";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 class="text-center">@ViewData["Title"]</h1>
 
-<div class="table-responsive">
+<div class="table-responsive shadow-sm p-3 mb-5 bg-white rounded">
     <table class="table table-borderless table-hover">
         <thead>
             <tr class="border-bottom">
                 <th>ID</th>
                 <th>Название курса</th>
-                <th class="text-end">Действия</th>
+
             </tr>
         </thead>
         <tbody>
@@ -33,4 +33,61 @@
     </table>
 </div>
 
-<a asp-page="./Create" class="btn btn-sm btn-outline-secondary">Добавить новый курс</a>
+
+<div class="mt-4 text-start">
+    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#addCourseModal">
+        <i class="fas fa-plus me-2"></i> Добавить новый курс
+    </button>
+</div>
+
+
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-labelledby="addCourseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+           
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCourseModalLabel">Добавить новый курс</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            
+            <div class="modal-body">
+                <form id="addCourseForm">
+                    
+                    <div class="mb-3">
+                        <label for="courseId" class="form-label">ID курса</label>
+                        <input type="text" class="form-control" id="courseId" placeholder="Введите ID курса" required>
+                        <div class="invalid-feedback">Пожалуйста, введите ID курса.</div>
+                    </div>
+                   
+                    <div class="mb-3">
+                        <label for="courseName" class="form-label">Название курса</label>
+                        <input type="text" class="form-control" id="courseName" placeholder="Введите название курса" required>
+                        <div class="invalid-feedback">Пожалуйста, введите название курса.</div>
+                    </div>
+                </form>
+            </div>
+      
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="saveCourseButton">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('saveCourseButton').addEventListener('click', function () {
+        const form = document.getElementById('addCourseForm');
+        if (form.checkValidity()) {
+            const courseId = document.getElementById('courseId').value;
+            const courseName = document.getElementById('courseName').value;
+            console.log('ID курса:', courseId);
+            console.log('Название курса:', courseName);
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addCourseModal'));
+            modal.hide();
+        } else {
+            form.classList.add('was-validated');
+        }
+    });
+</script>
