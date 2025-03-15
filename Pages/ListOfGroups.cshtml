@@ -1,4 +1,33 @@
 ﻿@page
 @model dancelog.Pages.ListOfGroupsModel
 @{
+    ViewData["Title"] = "Список групп";
 }
+
+<h1>Список групп</h1>
+@if (Model.Groups != null && Model.Groups.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Название группы</th>
+                <th>Название курса</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var group in Model.Groups)
+            {
+                <tr>
+                    <td>@group.Name</td>
+                    <td>@(group.Course?.Name ?? "Курс не указан")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Группы не найдены.</p>
+}
+
+<a asp-page="./Create" class="btn btn-sm btn-outline-secondary mb-3">Создать новую группу</a>
