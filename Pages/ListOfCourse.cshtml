@@ -1,4 +1,26 @@
 ﻿@page
 @model dancelog.Pages.ListOfCourseModel
+
 @{
+    ViewData["Title"] = "Список курсов";
 }
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название курса</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model.Courses)
+        {
+            <tr>
+                <td>@course.Id</td>
+                <td>@course.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
