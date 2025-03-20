@@ -46,7 +46,7 @@ namespace dancelog.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("AttendanceRecords");
+                    b.ToTable("AttendanceRecords", (string)null);
                 });
 
             modelBuilder.Entity("dancelog.Models.Course", b =>
@@ -64,7 +64,7 @@ namespace dancelog.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("dancelog.Models.Group", b =>
@@ -87,7 +87,7 @@ namespace dancelog.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Groups");
+                    b.ToTable("Groups", (string)null);
                 });
 
             modelBuilder.Entity("dancelog.Models.Lesson", b =>
@@ -108,7 +108,7 @@ namespace dancelog.Migrations
 
                     b.HasIndex("CourseId");
 
-                    b.ToTable("Lessons");
+                    b.ToTable("Lessons", (string)null);
                 });
 
             modelBuilder.Entity("dancelog.Models.Student", b =>
@@ -149,7 +149,7 @@ namespace dancelog.Migrations
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("dancelog.Models.Attendance", b =>
@@ -169,7 +169,6 @@ namespace dancelog.Migrations
                     b.Navigation("Lesson");
 
                     b.Navigation("Student");
-
                 });
 
             modelBuilder.Entity("dancelog.Models.Group", b =>
