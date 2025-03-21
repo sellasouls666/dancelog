@@ -1,0 +1,19 @@
+﻿@page
+@model dancelog.Pages.CourseModel
+@{
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form method="post">
+
+    <input type="hidden" asp-for="Course.Id" />
+
+    <div class="form-group">
+        <label asp-for="Course.Name">Название</label>
+        <input asp-for="Course.Name" type="text" class="form-control" />
+        <span asp-validation-for="Course.Name" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
