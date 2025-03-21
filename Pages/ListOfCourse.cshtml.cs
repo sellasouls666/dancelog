@@ -6,25 +6,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dancelog.Pages
 {
-    public class ListOfCourseModel(ApplicationDbContext context) : PageModel
+    public class ListOfCourseModel : PageModel
     {
-        private readonly ApplicationDbContext _context = context;
+        private readonly ApplicationDbContext _context;
 
-        public List<Course> Courses { get; set; } = [];
-        public void OnGet()
+        public List<Course> Courses { get; set; }
+
+        public ListOfCourseModel(ApplicationDbContext context)
         {
-            Courses = SampleData.GetCourses();
+            _context = context;
         }
 
-        public IActionResult OnPostDelete(int Id)
+        public void OnGet()
         {
-            var course = _context.Courses.Find(Id);
-            if (course != null)
-            {
-                _context.Courses.Remove(course);
-                _context.SaveChanges();
-            }
-            return RedirectToPage();
+            Courses = _context.Courses.ToList();
         }
     }
 }
