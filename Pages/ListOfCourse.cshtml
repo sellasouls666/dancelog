@@ -24,7 +24,7 @@
                     <td>@course.Name</td>
                     <td class="text-end">
                         <form method="post" asp-page-handler="Delete" asp-route-id="@course.Id" style="display:inline;">
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Удалить курс?')">Удалить</button>
+                            <a href="javascript:void(0);" onclick="if (confirm('Вы уверены?')) { window.location.href = '@Url.Page("CourseDelete", new { id = course.Id })'; }">Delete</a>
                         </form>
                     </td>
                 </tr>
