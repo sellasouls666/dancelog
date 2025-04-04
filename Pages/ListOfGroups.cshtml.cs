@@ -1,7 +1,7 @@
 using dancelog.Data;
 using dancelog.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace dancelog.Pages
 {
@@ -9,17 +9,16 @@ namespace dancelog.Pages
     {
         private readonly ApplicationDbContext _context;
 
-        public List<Group> Groups { get; set; }
-
         public ListOfGroupsModel(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public void OnGet()
-        {
-            Groups = _context.Groups.ToList();
-        }
+        public IList<Group> Groups { get; set; } = default!;
 
+        public async Task OnGetAsync()
+        {
+            Groups = await _context.Groups.Include(g => g.Course).ToListAsync();
+        }
     }
 }
