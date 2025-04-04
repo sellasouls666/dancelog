@@ -8,12 +8,12 @@ namespace dancelog.Models
 
         [Required(ErrorMessage = "Пожалуйста, введите название курса.")]
         [StringLength(255, ErrorMessage = "Название группы должно быть не длиннее 255 символов.")]
-        [Display(Name = "Название курса")]
+        [Display(Name = "Название группы")]
         public required string Name { get; set; }
 
         [Required]
         [Display(Name = "Курс")]
-        public required Course Course { get; set; }
-
+        public int CourseId { get; set; } 
+        public Course? Course { get; set; }
     }
 }
