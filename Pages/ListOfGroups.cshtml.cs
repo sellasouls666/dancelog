@@ -7,10 +7,18 @@ namespace dancelog.Pages
 {
     public class ListOfGroupsModel : PageModel
     {
-        public List<Group> Groups { get; set; } = new List<Group>();
+        private readonly ApplicationDbContext _context;
+
+        public List<Group> Groups { get; set; }
+
+        public ListOfGroupsModel(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public void OnGet()
         {
-            Groups = SampleData.GetGroups();
+            Groups = _context.Groups.ToList();
         }
 
     }
