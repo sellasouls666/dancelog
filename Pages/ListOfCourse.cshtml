@@ -5,38 +5,55 @@
 }
 
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="mb-0">@ViewData["Title"]</h1>
-        <a href="@Url.Page("Course", new { id = 0 })" class="btn btn-outline-dark">
-            Добавить курс
-        </a>
-    </div>
+    @if (Model.Courses.Any())
+    {
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">@ViewData["Title"]</h1>
+            <a href="@Url.Page("Course", new { id = 0 })" class="btn btn-outline-dark">
+                Добавить курс
+            </a>
+        </div>
 
-    <div class="row g-4">
-        @foreach (var course in Model.Courses)
-        {
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">@course.Name</h5>
-                    </div>
-                    <div class="card-footer bg-transparent border-top-0">
-                        <div class="d-flex justify-content-end">
-                            <a href="@Url.Page("Course", new { id = course.Id })"
-                               class="btn btn-sm btn-outline-secondary me-2">
-                                Изменить
-                            </a>
-                            <a href="javascript:void(0);"
-                               onclick="confirmDelete(@course.Id)"
-                               class="btn btn-sm btn-outline-secondary">
-                                Удалить
-                            </a>
+        <div class="row g-4">
+            @foreach (var course in Model.Courses)
+            {
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">@course.Name</h5>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <div class="d-flex justify-content-end">
+                                <a href="@Url.Page("Course", new { id = course.Id })"
+                                   class="btn btn-sm btn-outline-secondary me-2">
+                                    Изменить
+                                </a>
+                                <a href="javascript:void(0);"
+                                   onclick="confirmDelete(@course.Id)"
+                                   class="btn btn-sm btn-outline-secondary">
+                                    Удалить
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <div class="card shadow-sm">
+                <div class="card-body py-5">
+                    <h4 class="mt-3">Нет добавленных курсов</h4>
+                    <p class="text-muted">Нажмите кнопку ниже, чтобы создать курс</p>
+                    <a href="@Url.Page("Course", new { id = 0 })" class="btn btn-outline-dark mt-3">
+                        Создать новый курс
+                    </a>
+                </div>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>
 
 @section Scripts {
