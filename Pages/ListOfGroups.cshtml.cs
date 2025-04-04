@@ -10,7 +10,7 @@ namespace dancelog.Pages
         public List<Group> Groups { get; set; } = new List<Group>();
         public void OnGet()
         {
-            Groups = SampleData.GetGroups();
+            
         }
 
     }
