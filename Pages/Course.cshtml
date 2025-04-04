@@ -1,19 +1,42 @@
 ﻿@page
 @model dancelog.Pages.CourseModel
 @{
+    ViewData["Title"] = Model.Course.Id == 0 ? "Добавить курс" : "Редактировать курс";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h4 class="mb-0">@ViewData["Title"]</h4>
+                </div>
 
-<form method="post">
+                <div class="card-body">
+                    <form method="post">
+                        <input type="hidden" asp-for="Course.Id" />
 
-    <input type="hidden" asp-for="Course.Id" />
+                        <div class="mb-3">
+                            <label asp-for="Course.Name" class="form-label">Название курса</label>
+                            <input asp-for="Course.Name" class="form-control" required />
+                            <span asp-validation-for="Course.Name" class="text-danger small"></span>
+                        </div>
 
-    <div class="form-group">
-        <label asp-for="Course.Name">Название</label>
-        <input asp-for="Course.Name" type="text" class="form-control" />
-        <span asp-validation-for="Course.Name" class="text-danger"></span>
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="ListOfCourse" class="btn btn-outline-secondary me-2">
+                                Отмена
+                            </a>
+                            <button type="submit" class="btn btn-outline-dark">
+                                @(Model.Course.Id == 0 ? "Добавить" : "Сохранить")
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

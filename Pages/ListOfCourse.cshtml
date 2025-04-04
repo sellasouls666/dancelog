@@ -1,57 +1,50 @@
 ﻿@page
 @model dancelog.Pages.ListOfCourseModel
-
 @{
     ViewData["Title"] = "Список курсов";
 }
 
-<h1 class="text-center">@ViewData["Title"]</h1>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="mb-0">@ViewData["Title"]</h1>
+        <a href="@Url.Page("Course", new { id = 0 })" class="btn btn-outline-dark">
+            Добавить курс
+        </a>
+    </div>
 
-<div class="table-responsive shadow-sm p-3 mb-5 bg-white rounded">
-    <table class="table table-borderless table-hover">
-        <thead>
-            <tr class="border-bottom">
-                <th>ID</th>
-                <th>Название курса</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var course in Model.Courses)
-            {
-                <tr>
-                    <td>@course.Id</td>
-                    <td>@course.Name</td>
-                    <td class="text-end">
-                        <form method="post" asp-page-handler="Delete" asp-route-id="@course.Id" style="display:inline;">
-                            <a href="javascript:void(0);" onclick="if (confirm('Вы уверены?')) { window.location.href = '@Url.Page("CourseDelete", new { id = course.Id })'; }">Delete</a>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="row g-4">
+        @foreach (var course in Model.Courses)
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@course.Name</h5>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <div class="d-flex justify-content-end">
+                            <a href="@Url.Page("Course", new { id = course.Id })"
+                               class="btn btn-sm btn-outline-secondary me-2">
+                                Изменить
+                            </a>
+                            <a href="javascript:void(0);"
+                               onclick="confirmDelete(@course.Id)"
+                               class="btn btn-sm btn-outline-secondary">
+                                Удалить
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
 
-
-<p>
-    <a class="btn btn-primary" href="@Url.Page("Course", new { id = 0 })">Добавить новый курс</a>
-</p>
-
-
-<script>
-    document.getElementById('saveCourseButton').addEventListener('click', function () {
-        const form = document.getElementById('addCourseForm');
-        if (form.checkValidity()) {
-            const courseId = document.getElementById('courseId').value;
-            const courseName = document.getElementById('courseName').value;
-            console.log('ID курса:', courseId);
-            console.log('Название курса:', courseName);
-
-            const modal = bootstrap.Modal.getInstance(document.getElementById('addCourseModal'));
-            modal.hide();
-        } else {
-            form.classList.add('was-validated');
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            if (confirm('Вы уверены, что хотите удалить этот курс?')) {
+                window.location.href = '@Url.Page("CourseDelete")' + '?id=' + id;
+            }
         }
-    });
-</script>
+    </script>
+}
