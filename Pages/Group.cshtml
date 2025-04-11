@@ -1,27 +1,50 @@
 ﻿@page
 @model dancelog.Pages.GroupModel
 @{
+    ViewData["Title"] = Model.Group.Id == 0 ? "Добавить группу" : "Редактировать группу";
 }
 
-<h2>@ViewData["Title"]</h2>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
+                    <h4 class="mb-0">@ViewData["Title"]</h4>
+                </div>
 
-<form method="post">
+                <div class="card-body">
+                    <form method="post">
+                        <input type="hidden" asp-for="Group.Id" />
 
-    <input type="hidden" asp-for="Group.Id" />
+                        <div class="mb-3">
+                            <label asp-for="Group.Name" class="form-label">Название группы</label>
+                            <input asp-for="Group.Name" class="form-control" required />
+                            <span asp-validation-for="Group.Name" class="text-danger small"></span>
+                        </div>
 
-    <div class="form-group">
-        <label asp-for="Group.Name">Название</label>
-        <input asp-for="Group.Name" type="text" class="form-control" />
-        <span asp-validation-for="Group.Name" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="Group.CourseId" class="form-label">Курс</label>
+                            <select asp-for="Group.CourseId" class="form-control" asp-items="@Model.CourseOptions">
+                                <option value="">-- Выберите курс --</option>
+                            </select>
+                            <span asp-validation-for="Group.CourseId" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="ListOfGroups" class="btn btn-outline-secondary me-2">
+                                Отмена
+                            </a>
+                            <button type="submit" class="btn btn-outline-dark">
+                                @(Model.Group.Id == 0 ? "Добавить" : "Сохранить")
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <div class="form-group">
-        <label asp-for="Group.CourseId">Курс</label>
-        <select asp-for="Group.CourseId" class="form-control" asp-items="@Model.CourseOptions">
-            <option value="">-- Выберите курс --</option>
-        </select>
-        <span asp-validation-for="Group.CourseId" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
