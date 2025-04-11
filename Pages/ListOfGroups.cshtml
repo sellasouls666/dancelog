@@ -23,6 +23,11 @@
                     <td>@(group.Course?.Name ?? "Курс не указан")</td>
                     <td>
                         <a class="btn btn-sm btn-primary" href="@Url.Page("Group", new { id = group.Id })">Редактировать</a>
+                        <a href="javascript:void(0);"
+                           onclick="confirmDelete(@group.Id)"
+                           class="btn btn-sm btn-outline-secondary">
+                            Удалить
+                        </a>
                     </td>
                 </tr>
             }
@@ -35,3 +40,14 @@ else
 }
 
 <a class="btn btn-primary" href="@Url.Page("Group", new { id = 0 })">Создать новую группу</a>
+
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            if (confirm('Вы уверены, что хотите удалить эту группу?')) {
+                window.location.href = '@Url.Page("GroupDelete")' + '?id=' + id;
+            }
+        }
+    </script>
+}
