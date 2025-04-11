@@ -8,29 +8,85 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/dancelog.styles.css" asp-append-version="true" />
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/5969/5969724.png" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* Анимация для логотипа */
+        .navbar-brand img {
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover img {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        /* Анимация для ссылок навигации */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+            padding-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+            .nav-link i {
+                margin-right: 8px;
+                width: 20px;
+                text-align: center;
+            }
+
+            .nav-link:hover {
+                color: #0d6efd !important;
+                transform: translateY(-2px);
+            }
+
+            /* Подчеркивание при наведении */
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                width: 0;
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: #0d6efd;
+                transition: width 0.3s ease;
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow me-3">
             <div class="container">
                 <a class="navbar-brand fw-bold d-flex align-items-center w-100" asp-area="" asp-page="/Index">
-                    <span class="me-2">DanceLog</span> 
+                    <span class="me-2">DanceLog</span>
                     <img src="https://cdn-icons-png.flaticon.com/512/5969/5969724.png" alt="DanceLog Логотип" width="30" height="30" class="d-inline-block align-text-top">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
-                </button
+                </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 justify-content-end">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/ListOfCourse"><i class="fas fa-book me-1"></i>Курсы</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/ListOfCourse">
+                                <i class="fas fa-book me-1"></i>
+                                <span>Курсы</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/ListOfGroups"><i class="fas fa-users me-1"></i>Группы</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/ListOfGroups">
+                                <i class="fas fa-users me-1"></i>
+                                <span>Группы</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Lesson"><i class="fas fa-calendar-alt me-1"></i>Занятия</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Lesson">
+                                <i class="fas fa-calendar-alt me-1"></i>
+                                <span>Занятия</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -42,8 +98,6 @@
             @RenderBody()
         </main>
     </div>
-
-
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
