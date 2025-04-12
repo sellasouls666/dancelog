@@ -37,11 +37,11 @@
                 color: #0d6efd !important;
                 transform: translateY(-2px);
             }
-            /* Отключаем псевдоэлемент для подчеркивания */
+            /* Отключаем псевдоэлемент подчеркивания */
             .nav-link::after {
                 display: none !important;
             }
-        /* Отключение стандартного эффекта для элементов с классом .no-underline */
+        /* Отключение стандартного оформления для элементов с классом .no-underline */
         .no-underline {
             text-decoration: none !important;
         }
@@ -54,7 +54,7 @@
             .no-underline::after {
                 display: none !important;
             }
-        /* Универсальные правила для всех ссылок внутри .navbar-nav */
+        /* Универсальные правила для ссылок внутри .navbar-nav */
         .navbar-nav a:focus,
         .navbar-nav a:active {
             outline: none !important;
@@ -62,7 +62,7 @@
             background: transparent !important;
             border: none !important;
         }
-        /* Сохраняем эффект увеличения для иконки авторизации */
+        /* Эффект увеличения для иконки авторизации */
         .nav-item.dropdown .nav-link i {
             transition: transform 0.3s ease;
         }
@@ -80,8 +80,8 @@
                     <span class="me-2">DanceLog</span>
                     <img src="https://cdn-icons-png.flaticon.com/512/5969/5969724.png" alt="DanceLog Логотип" width="30" height="30" class="d-inline-block align-text-top">
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <!-- Область навигации с выравниванием по правой стороне и вертикальным центрированием -->
@@ -107,22 +107,46 @@
                             </a>
                         </li>
                     </ul>
-                    <!-- Элемент авторизации: иконка без синего подчеркивания -->
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link no-underline dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user-circle fa-lg"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li>
-                                    <a class="dropdown-item" asp-page="/Account/Login">Войти</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-page="/Account/Register">Регистрация</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <!-- Блок авторизации (выпадающее меню) -->
+                    @if (User.Identity?.IsAuthenticated ?? false)
+                    {
+                        // Извлекаем только первую часть из User.Identity.Name, если там хранится полное ФИО.
+                        var nameParts = (User.Identity.Name ?? "").Split(' ');
+                        var firstName = nameParts.Length > 0 ? nameParts[0] : User.Identity.Name;
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link no-underline dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle fa-lg"></i> @firstName
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-page="/Account/Profile">Профиль</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-page="/Account/Logout">Выход</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link no-underline dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user-circle fa-lg"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li>
+                                        <a class="dropdown-item" asp-page="/Account/Login">Войти</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-page="/Account/Register">Регистрация</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    }
                 </div>
             </div>
         </nav>

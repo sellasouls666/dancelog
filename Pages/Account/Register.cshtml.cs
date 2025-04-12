@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using dancelog.Models.Auth; // Здесь регистрирован RegisterModel
+using dancelog.Models.Auth;
 using dancelog.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,7 +19,7 @@ namespace dancelog.Pages.Account
             _context = context;
         }
 
-        // Это свойство, которое будет использоваться в форме
+        // Свойство для привязки данных из формы регистрации
         [BindProperty]
         public RegisterModel Input { get; set; }
 
@@ -40,7 +40,12 @@ namespace dancelog.Pages.Account
                 return Page();
             }
 
-            // Создаем нового пользователя (обратите внимание: пароль сохраняется в открытом виде, в реальном проекте необходимо хэшировать!)
+            // Определяем роль:
+            // Если база данных не содержит ни одного пользователя, то роль = "Админ".
+            // В противном случае используем выбранную пользователем роль ("Ученик" или "Учитель").
+            string role = _context.AuthUsers.Any() ? Input.SelectedRole : "Админ";
+
+            // Создаем нового пользователя (Обратите внимание: для продакшена пароль должен быть хэширован)
             var user = new AuthUser
             {
                 LastName = Input.LastName,
@@ -48,14 +53,13 @@ namespace dancelog.Pages.Account
                 MiddleName = Input.MiddleName,
                 Email = Input.Email,
                 Password = Input.Password,
-                Role = "User"
+                Role = role
             };
 
             _context.AuthUsers.Add(user);
             await _context.SaveChangesAsync();
 
             await Authenticate(user);
-
             return RedirectToPage("/Index");
         }
 
@@ -63,7 +67,8 @@ namespace dancelog.Pages.Account
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, user.FullName),
+                // Если хотите, чтобы в Navigation выводилось только имя, передавайте user.FirstName:
+                new Claim(ClaimTypes.Name, user.FirstName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Role)
             };

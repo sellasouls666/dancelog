@@ -25,5 +25,11 @@ namespace dancelog.Models.Auth
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string ConfirmPassword { get; set; }
+
+        // Добавляем выбор роли
+        // Предусматриваем, что пользователь может выбрать либо "Ученик", либо "Учитель"
+        [Required(ErrorMessage = "Выберите роль")]
+        [Display(Name = "Роль")]
+        public string SelectedRole { get; set; }
     }
 }
