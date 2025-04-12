@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using dancelog.Models;
+using dancelog.Models.Auth;
 
 namespace dancelog.Data
 {
@@ -16,6 +17,6 @@ namespace dancelog.Data
             public DbSet<Group> Groups { get; set; }
             public DbSet<Lesson> Lessons { get; set; }
             public DbSet<Attendance> AttendanceRecords { get; set; }
-
-        }
+            public DbSet<AuthUser> AuthUsers { get; set; }
+    }
 }
