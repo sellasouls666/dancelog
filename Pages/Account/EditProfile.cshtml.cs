@@ -5,6 +5,7 @@ using dancelog.Data;
 using dancelog.Models.Auth;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 
 namespace dancelog.Pages.Account
 {
@@ -21,46 +22,50 @@ namespace dancelog.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
 
+        public string CurrentRole { get; set; }
+
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Имя обязательно")]
             [Display(Name = "Имя")]
             public string FirstName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Фамилия обязательна")]
             [Display(Name = "Фамилия")]
             public string LastName { get; set; }
 
             [Display(Name = "Отчество")]
             public string MiddleName { get; set; }
 
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Email обязателен")]
+            [EmailAddress(ErrorMessage = "Некорректный email")]
             [Display(Name = "Email")]
             public string Email { get; set; }
         }
 
         public IActionResult OnGet()
         {
-            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
-            if (string.IsNullOrEmpty(email))
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            if (string.IsNullOrEmpty(userEmail))
             {
                 return RedirectToPage("/Account/Login");
             }
 
-            var user = _context.AuthUsers.FirstOrDefault(u => u.Email == email);
-            if (user == null)
+            var currentUser = _context.AuthUsers.FirstOrDefault(u => u.Email == userEmail);
+            if (currentUser == null)
             {
                 return NotFound();
             }
 
             Input = new InputModel
             {
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                MiddleName = user.MiddleName,
-                Email = user.Email
+                FirstName = currentUser.FirstName,
+                LastName = currentUser.LastName,
+                MiddleName = currentUser.MiddleName,
+                Email = currentUser.Email
             };
+
+            CurrentRole = currentUser.Role;
 
             return Page();
         }
@@ -69,20 +74,28 @@ namespace dancelog.Pages.Account
         {
             if (!ModelState.IsValid)
             {
+                // Восстанавливаем роль при повторном отображении страницы
+                var postUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+                var postUser = _context.AuthUsers.FirstOrDefault(u => u.Email == postUserEmail);
+                if (postUser != null)
+                {
+                    CurrentRole = postUser.Role;
+                }
+
                 return Page();
             }
 
-            var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
-            var user = _context.AuthUsers.FirstOrDefault(u => u.Email == email);
-            if (user == null)
+            var updateEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var userToUpdate = _context.AuthUsers.FirstOrDefault(u => u.Email == updateEmail);
+            if (userToUpdate == null)
             {
                 return NotFound();
             }
 
-            user.FirstName = Input.FirstName;
-            user.LastName = Input.LastName;
-            user.MiddleName = Input.MiddleName;
-            user.Email = Input.Email;
+            // Обновляем только изменяемые поля
+            userToUpdate.FirstName = Input.FirstName;
+            userToUpdate.LastName = Input.LastName;
+            userToUpdate.MiddleName = Input.MiddleName;
 
             _context.SaveChanges();
 
