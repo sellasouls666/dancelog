@@ -36,6 +36,7 @@
             opacity: 0;
             transform: translateY(10px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
@@ -53,20 +54,20 @@
         transition: var(--transition);
     }
 
-    .register-card:hover {
-        box-shadow: 0 12px 20px rgba(0,0,0,0.15);
-        transform: translateY(-3px);
-    }
+        .register-card:hover {
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+            transform: translateY(-3px);
+        }
 
-    .register-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: var(--primary-gradient);
-    }
+        .register-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
 
     .register-avatar {
         width: 90px;
@@ -90,9 +91,11 @@
         0% {
             transform: translateY(0px) rotate(0deg);
         }
+
         50% {
             transform: translateY(-10px) rotate(5deg);
         }
+
         100% {
             transform: translateY(0px) rotate(0deg);
         }
@@ -102,6 +105,7 @@
         0%, 100% {
             transform: scale(1);
         }
+
         50% {
             transform: scale(1.05);
         }
@@ -115,17 +119,16 @@
         font-weight: 600;
     }
 
-    .register-title::after {
-        content: "";
-        position: absolute;
-        bottom: -8px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 50px;
-        height: 3px;
-        background: var(--primary-gradient);
-        border-radius: 3px;
-    }
+        .register-title::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%; /* Полоска на всю ширину слова */
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 3px;
+        }
 
     .form-control {
         border: 1px solid var(--border-color);
@@ -136,17 +139,17 @@
         font-size: 0.95rem;
     }
 
-    .form-control:hover {
-        border-color: #bdbdbd;
-        background-color: white;
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-sm);
-    }
+        .form-control:hover {
+            border-color: #bdbdbd;
+            background-color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
 
-    .form-control:focus {
-        border-color: var(--primary-light);
-        box-shadow: 0 0 0 0.25rem rgba(37, 117, 252, 0.25);
-    }
+        .form-control:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 0.25rem rgba(37, 117, 252, 0.25);
+        }
 
     .btn-register {
         border-radius: 8px;
@@ -164,28 +167,28 @@
         letter-spacing: 0.5px;
     }
 
-    .btn-register:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-        color: white;
-    }
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
 
-    .btn-register::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
-        opacity: 0;
-        transition: var(--transition);
-        z-index: -1;
-    }
+        .btn-register::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
 
-    .btn-register:hover::after {
-        opacity: 1;
-    }
+        .btn-register:hover::after {
+            opacity: 1;
+        }
 
     .form-label {
         display: block;
@@ -212,40 +215,40 @@
         position: relative;
     }
 
-    .role-option input[type="radio"] {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
+        .role-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
 
-    .role-option label {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 15px 10px;
-        border: 2px solid var(--border-color);
-        border-radius: 8px;
-        background-color: white;
-        cursor: pointer;
-        transition: var(--transition);
-        text-align: center;
-        height: 100%;
-    }
+        .role-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            height: 100%;
+        }
 
-    .role-option label:hover {
-        border-color: var(--primary-light);
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-sm);
-    }
+            .role-option label:hover {
+                border-color: var(--primary-light);
+                transform: translateY(-3px);
+                box-shadow: var(--shadow-sm);
+            }
 
-    .role-option input[type="radio"]:checked + label {
-        border-color: var(--primary-dark);
-        background: linear-gradient(135deg, rgba(106, 17, 203, 0.1) 0%, rgba(37, 117, 252, 0.1) 100%);
-        color: var(--primary-dark);
-        font-weight: 600;
-    }
+        .role-option input[type="radio"]:checked + label {
+            border-color: var(--primary-dark);
+            background: linear-gradient(135deg, rgba(106, 17, 203, 0.1) 0%, rgba(37, 117, 252, 0.1) 100%);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
 
     .role-icon {
         font-size: 1.5rem;
@@ -264,17 +267,17 @@
         font-size: 0.9rem;
     }
 
-    .login-link a {
-        color: var(--primary-dark);
-        text-decoration: none;
-        font-weight: 500;
-        transition: var(--transition);
-    }
+        .login-link a {
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
 
-    .login-link a:hover {
-        color: var(--primary-light);
-        text-decoration: underline;
-    }
+            .login-link a:hover {
+                color: var(--primary-light);
+                text-decoration: underline;
+            }
 </style>
 
 <div class="container py-5">
