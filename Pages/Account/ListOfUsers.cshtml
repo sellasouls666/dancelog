@@ -5,31 +5,362 @@
 }
 
 <style>
-    .card {
-        transition: transform 0.2s ease-in-out;
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        --text-muted: #6c757d;
+        --light-gray: #f8f9fa;
+        --lighter-gray: #f0f0f0;
+        --border-color: #e0e0e0;
+        --shadow-sm: 0 2px 6px rgba(0,0,0,0.08);
+        --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+        --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+        --card-border-radius: 16px;
+        --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-        .card:hover {
+    body {
+        background-color: #f5f7fa;
+    }
+
+    .container {
+        max-width: 1400px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Стили для кнопки создания */
+    .btn-create {
+        border-radius: 12px;
+        padding: 10px 24px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        border: none;
+        background: var(--primary-gradient);
+        color: white !important;
+        box-shadow: var(--shadow-sm);
+        background-size: 200% 200%;
+    }
+
+        .btn-create:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(37, 117, 252, 0.4);
+            animation: gradientFlow 3s ease infinite;
+        }
+
+        .btn-create:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(37, 117, 252, 0.3);
+        }
+
+        .btn-create::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-create:hover::before {
+            left: 100%;
+        }
+
+    @@keyframes gradientFlow {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    /* Заголовок страницы */
+    .page-header {
+        position: relative;
+        padding-bottom: 1rem;
+        margin-bottom: 2.5rem;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+        .page-header h1 {
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+            margin-bottom: 0;
+        }
+
+            .page-header h1::after {
+                content: "";
+                position: absolute;
+                bottom: -12px;
+                left: 0;
+                width: 60px;
+                height: 4px;
+                background: var(--primary-gradient);
+                border-radius: 4px;
+                transition: width 0.6s ease;
+            }
+
+            .page-header h1:hover::after {
+                width: 100px;
+            }
+
+    /* Карточки пользователей */
+    .user-card {
+        border: none;
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        background: white;
+        transition: var(--transition);
+        height: 100%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+
+        .user-card:hover {
             transform: scale(1.03);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-lg);
         }
 
-    .btn-user-action {
-        transition: all 0.2s ease;
+        .user-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--primary-gradient);
+        }
+
+    .card-body {
+        padding: 1.75rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
     }
 
-        .btn-user-action:hover {
-            transform: scale(1.05);
+    .card-footer {
+        background: rgba(245, 247, 250, 0.7);
+        border-top: 1px solid rgba(0,0,0,0.05);
+        padding: 1.25rem;
+    }
+
+    /* Аватар пользователя */
+    .user-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.25rem;
+        border: 3px solid white;
+        box-shadow: var(--shadow-md);
+        font-size: 1.75rem;
+    }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
         }
+
+    /* Информация о пользователе */
+    .user-name {
+        font-weight: 600;
+        font-size: 1.15rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        color: #343a40;
+        flex: 1;
+        min-height: 3em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user-email {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .user-email i {
+            margin-right: 6px;
+            font-size: 0.9rem;
+        }
+
+    .user-password {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        word-break: break-all;
+        padding: 0.5rem;
+        background: rgba(245, 247, 250, 0.7);
+        border-radius: 8px;
+    }
+
+        .user-password i {
+            margin-right: 6px;
+            font-size: 0.9rem;
+        }
+
+    .user-role {
+        display: inline-block;
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        background: rgba(37, 117, 252, 0.1);
+        color: var(--primary-light);
+    }
+
+    /* Кнопки действий */
+    .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: auto;
+    }
+
+    .btn-action {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        border: none;
+        color: white !important;
+        box-shadow: var(--shadow-sm);
+        background: var(--primary-gradient);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-action::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255,255,255,0.2), rgba(255,255,255,0));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-action:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+            .btn-action:hover::before {
+                opacity: 1;
+            }
+
+        .btn-action:active {
+            transform: scale(1);
+            box-shadow: var(--shadow-sm);
+        }
+
+    /* Состояние "нет пользователей" */
+    .empty-state {
+        padding: 5rem 0;
+        text-align: center;
+    }
+
+    .empty-state-icon {
+        width: 120px;
+        height: 120px;
+        background: rgba(106, 17, 203, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        color: var(--primary-dark);
+        font-size: 3rem;
+    }
+
+    .empty-state-title {
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #343a40;
+        font-size: 1.5rem;
+    }
+
+    .empty-state-text {
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    /* Адаптивность */
+    @@media (max-width: 767.98px) {
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+            .page-header h1 {
+                margin-bottom: 1.5rem;
+            }
+
+        .btn-create {
+            width: 100%;
+            padding: 12px;
+        }
+    }
 </style>
 
-<div class="container py-4">
+<div class="container py-5">
     @if (Model.Users != null && Model.Users.Any())
     {
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0">@ViewData["Title"]</h1>
-            <a href="@Url.Page("User", new { id = 0 })" class="btn btn-outline-dark">
-                <i class="fas fa-plus me-1"></i> Создать пользователя
+        <div class="d-flex justify-content-between align-items-center mb-5 page-header">
+            <h1>@ViewData["Title"]</h1>
+            <a href="@Url.Page("User", new { id = 0 })" class="btn btn-create">
+                <i class="fas fa-plus me-2"></i> Создать пользователя
             </a>
         </div>
 
@@ -37,25 +368,31 @@
             @foreach (var user in Model.Users)
             {
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">@user.FullName</h5>
-                            <p class="card-text text-muted small mb-1">
-                                <i class="fas fa-envelope me-1"></i> @user.Email
+                    <div class="user-card">
+                        <div class="card-body text-center">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h5 class="user-name">@user.FullName</h5>
+                            <p class="user-email">
+                                <i class="fas fa-envelope"></i> @user.Email
                             </p>
-                            <p class="card-text">
-                                <span class="badge bg-secondary">@user.Role</span>
+                            <p class="user-password">
+                                <i class="fas fa-key"></i> @user.Password
                             </p>
+                            <span class="user-role">@user.Role</span>
                         </div>
-                        <div class="card-footer bg-transparent border-top-0">
-                            <div class="d-flex justify-content-end">
+                        <div class="card-footer">
+                            <div class="action-buttons">
                                 <a href="@Url.Page("User", new { id = user.Id })"
-                                   class="btn btn-sm btn-outline-secondary me-2 btn-user-action">
-                                    <i class="fas fa-edit"></i>
+                                   class="btn-action"
+                                   title="Редактировать">
+                                    <i class="fas fa-pencil-alt"></i>
                                 </a>
                                 <a href="javascript:void(0);"
-                                   onclick="confirmDelete(@user.Id)"
-                                   class="btn btn-sm btn-outline-secondary btn-user-action">
+                                   onclick="confirmDelete(@user.Id, '@user.FullName')"
+                                   class="btn-action"
+                                   title="Удалить">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
                             </div>
@@ -67,26 +404,39 @@
     }
     else
     {
-        <div class="text-center py-5">
-            <div class="card shadow-sm">
-                <div class="card-body py-5">
-                    <h4 class="mt-3">Нет добавленных пользователей</h4>
-                    <p class="text-muted">Нажмите кнопку ниже, чтобы создать пользователя</p>
-                    <a href="@Url.Page("User", new { id = 0 })" class="btn btn-outline-dark mt-3">
-                        <i class="fas fa-plus me-1"></i> Создать нового пользователя
-                    </a>
-                </div>
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-users"></i>
             </div>
+            <h3 class="empty-state-title">Нет добавленных пользователей</h3>
+            <p class="empty-state-text">
+                Начните работу, создав первого пользователя. Все созданные пользователи будут отображаться здесь.
+            </p>
+            <a href="@Url.Page("User", new { id = 0 })" class="btn btn-create">
+                <i class="fas fa-plus me-2"></i> Создать пользователя
+            </a>
         </div>
     }
 </div>
 
 @section Scripts {
     <script>
-        function confirmDelete(id) {
-            if (confirm('Вы уверены, что хотите удалить этого пользователя?')) {
-                window.location.href = '@Url.Page("UserDelete")' + '?id=' + id;
-            }
+        function confirmDelete(id, userName) {
+            Swal.fire({
+                title: 'Удалить пользователя?',
+                html: `Вы уверены, что хотите удалить <b>${userName}</b>?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#2575fc',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Да, удалить',
+                cancelButtonText: 'Отмена',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '@Url.Page("UserDelete")' + '?id=' + id;
+                }
+            });
         }
     </script>
 }
