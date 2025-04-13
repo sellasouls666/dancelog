@@ -35,6 +35,7 @@ namespace dancelog.Pages.Account
             public string LastName { get; set; }
 
             [Display(Name = "Отчество")]
+            [Required(ErrorMessage = "Отчество обязательно")]
             public string MiddleName { get; set; }
 
             [Required(ErrorMessage = "Email обязателен")]

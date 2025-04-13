@@ -58,7 +58,7 @@
         font-size: 0.875rem;
         color: var(--text-muted);
         font-weight: 500;
-        text-align: left; /* Выравнивание по левому краю */
+        text-align: left;
     }
 
     .profile-field {
@@ -94,7 +94,7 @@
         font-size: 1.5rem;
         color: var(--text-muted);
         margin-bottom: 1.25rem;
-        text-align: center; /* Только иконка замка по центру */
+        text-align: center;
     }
 
     .profile-field-readonly {
@@ -173,13 +173,7 @@
         margin-top: 0.5rem;
         color: #dc3545;
         display: block;
-        text-align: left; /* Выравнивание ошибок по левому краю */
-    }
-
-    .validation-summary-errors ul {
-        list-style: none;
-        padding-left: 0;
-        margin-bottom: 0;
+        text-align: left;
     }
 </style>
 
@@ -190,11 +184,9 @@
                 <h2 class="profile-title">@ViewData["Title"]</h2>
 
                 <form method="post" class="needs-validation" novalidate>
-                    <div asp-validation-summary="All" class="text-danger validation-summary-errors mb-4"></div>
-
                     <div class="form-group">
                         <label asp-for="Input.FirstName" class="form-label">Имя</label>
-                        <input asp-for="Input.FirstName" class="profile-field" />
+                        <input asp-for="Input.FirstName" class="profile-field" required />
                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                     </div>
 
