@@ -27,7 +27,7 @@ namespace dancelog.Pages.Account
         public async Task OnGetAsync(int id)
         {
             // Загружаем роли для выпадающего списка
-            var roles = new List<string> { "Admin", "Teacher", "Student" };
+            var roles = new List<string> { "Админ", "Учитель", "Ученик" };
             RoleOptions = new SelectList(roles);
 
             User = id == 0 ? new AuthUser() : await _context.AuthUsers.FindAsync(id);
