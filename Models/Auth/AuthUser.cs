@@ -21,7 +21,8 @@ namespace dancelog.Models.Auth
 
         [Required(ErrorMessage = "Не указано имя")]
         public string FirstName { get; set; }
-
+        
+        [Required(ErrorMessage = "Не указано отчество")]
         public string MiddleName { get; set; }
 
         // Вычисляемое свойство для полного имени

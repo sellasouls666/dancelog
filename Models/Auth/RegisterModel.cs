@@ -10,7 +10,7 @@ namespace dancelog.Models.Auth
         [Required(ErrorMessage = "Не указано имя")]
         public string FirstName { get; set; }
 
-        // Отчество можно оставить необязательным
+        [Required(ErrorMessage = "Не указано отчество")]
         public string MiddleName { get; set; }
 
         [Required(ErrorMessage = "Не указан Email")]
