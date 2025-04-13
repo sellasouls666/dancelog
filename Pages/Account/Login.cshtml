@@ -3,29 +3,279 @@
 @{
     ViewData["Title"] = "Вход";
 }
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h2>Вход</h2>
-            <form method="post">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        --primary-light: #2575fc;
+        --primary-dark: #6a11cb;
+        --text-muted: #6c757d;
+        --light-gray: #f8f9fa;
+        --lighter-gray: #f0f0f0;
+        --border-color: #e0e0e0;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
 
-                <div class="form-group">
-                    <label asp-for="Input.Email"></label>
-                    <input asp-for="Input.Email" class="form-control" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+    body {
+        background: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .login-container {
+        max-width: 500px;
+        margin: 2rem auto;
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        background: white;
+        position: relative;
+        transform: translateY(0);
+        transition: var(--transition);
+    }
+
+        .login-card:hover {
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+            transform: translateY(-3px);
+        }
+
+        .login-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-gradient);
+        }
+
+    .login-avatar {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: var(--primary-gradient);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: -45px auto 15px;
+        border: 4px solid white;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        font-size: 2.5rem;
+        position: relative;
+        z-index: 2;
+        animation: float 4s ease-in-out infinite, bounce 2s ease-in-out infinite;
+    }
+
+    @@keyframes float {
+        0% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-10px) rotate(5deg);
+        }
+
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+    }
+
+    @@keyframes bounce {
+        0%, 100% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    .login-title {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 25px;
+        color: #343a40;
+        font-weight: 600;
+    }
+
+    .title-word {
+        position: relative;
+        display: inline-block;
+    }
+
+        .title-word::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--primary-gradient);
+            border-radius: 3px;
+        }
+
+    .form-control {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 10px 15px;
+        background-color: var(--lighter-gray);
+        transition: var(--transition);
+        font-size: 0.95rem;
+    }
+
+        .form-control:hover {
+            border-color: #bdbdbd;
+            background-color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 0.25rem rgba(37, 117, 252, 0.25);
+        }
+
+    .btn-login {
+        border-radius: 8px;
+        padding: 12px 25px;
+        font-weight: 500;
+        transition: var(--transition);
+        background: var(--primary-gradient);
+        border: none;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+        width: 100%;
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+    }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: white;
+        }
+
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .btn-login:hover::after {
+            opacity: 1;
+        }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    .text-danger {
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+    }
+
+    .register-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+        .register-link a {
+            color: var(--primary-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+            .register-link a:hover {
+                color: var(--primary-light);
+                text-decoration: underline;
+            }
+
+    .remember-me {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+        .remember-me input {
+            margin-right: 8px;
+        }
+</style>
+
+<div class="container py-5">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="card-body p-4 p-md-5">
+                <!-- Аватарка с градиентом и анимацией -->
+                <div class="login-avatar">
+                    <i class="fas fa-sign-in-alt"></i>
                 </div>
 
-                <div class="form-group">
-                    <label asp-for="Input.Password"></label>
-                    <input asp-for="Input.Password" type="password" class="form-control" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                </div>
+                <!-- Заголовок с полоской под словом "Вход" -->
+                <h3 class="login-title text-center mb-4">
+                    <span class="title-word">Вход</span> в систему
+                </h3>
 
-                <button type="submit" class="btn btn-success">Войти</button>
-            </form>
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input asp-for="Input.Email" class="form-control" placeholder="Введите ваш email" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Пароль</label>
+                        <input asp-for="Input.Password" type="password" class="form-control" placeholder="Введите ваш пароль" />
+                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-login mb-3">
+                        <i class="fas fa-sign-in-alt me-2"></i> Войти
+                    </button>
+
+                    <div class="register-link">
+                        Нет аккаунта? <a asp-page="./Register">Зарегистрироваться</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
