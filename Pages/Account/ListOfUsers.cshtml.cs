@@ -3,7 +3,6 @@ using dancelog.Models.Auth;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace dancelog.Pages.Account
@@ -24,7 +23,6 @@ namespace dancelog.Pages.Account
             Users = await _context.AuthUsers
                 .OrderBy(u => u.LastName)
                 .ThenBy(u => u.FirstName)
-                .ThenBy(u => u.MiddleName)
                 .ToListAsync();
         }
     }
