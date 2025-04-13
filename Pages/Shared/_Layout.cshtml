@@ -32,35 +32,35 @@
             align-items: center;
         }
 
-        .nav-link i {
-            margin-right: 8px;
-            width: 20px;
-            text-align: center;
-        }
+            .nav-link i {
+                margin-right: 8px;
+                width: 20px;
+                text-align: center;
+            }
 
-        .nav-link:hover {
-            color: #0d6efd !important;
-            transform: translateY(-2px);
-        }
+            .nav-link:hover {
+                color: #0d6efd !important;
+                transform: translateY(-2px);
+            }
 
-        /* Отключаем псевдоэлемент подчеркивания */
-        .nav-link::after {
-            display: none !important;
-        }
+            /* Отключаем псевдоэлемент подчеркивания */
+            .nav-link::after {
+                display: none !important;
+            }
 
         /* Отключение стандартного оформления */
         .no-underline {
             text-decoration: none !important;
         }
 
-        .no-underline:hover {
-            color: inherit !important;
-            transform: none !important;
-        }
+            .no-underline:hover {
+                color: inherit !important;
+                transform: none !important;
+            }
 
-        .no-underline::after {
-            display: none !important;
-        }
+            .no-underline::after {
+                display: none !important;
+            }
 
         /* Универсальные правила для ссылок */
         .navbar-nav a:focus,
@@ -98,6 +98,7 @@
                 opacity: 0;
                 transform: scale(0.95) translateY(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1) translateY(0);
@@ -112,33 +113,33 @@
             font-weight: 500;
         }
 
-        .dropdown-item:first-child {
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
+            .dropdown-item:first-child {
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+            }
 
-        .dropdown-item:last-child {
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
+            .dropdown-item:last-child {
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
+            }
 
-        .dropdown-item:hover {
-            background: var(--primary-gradient);
-            color: white !important;
-            transform: translateX(5px);
-            padding-left: 20px;
-        }
+            .dropdown-item:hover {
+                background: var(--primary-gradient);
+                color: white !important;
+                transform: translateX(5px);
+                padding-left: 20px;
+            }
 
-        .dropdown-item:hover i {
-            color: white !important;
-        }
+                .dropdown-item:hover i {
+                    color: white !important;
+                }
 
-        .dropdown-item i {
-            margin-right: 10px;
-            width: 18px;
-            text-align: center;
-            color: #6c757d;
-        }
+            .dropdown-item i {
+                margin-right: 10px;
+                width: 18px;
+                text-align: center;
+                color: #6c757d;
+            }
 
         .dropdown-divider {
             margin: 0;
@@ -152,10 +153,10 @@
             transition: all 0.3s ease;
         }
 
-        .user-icon:hover {
-            color: #0d6efd;
-            transform: scale(1.1);
-        }
+            .user-icon:hover {
+                color: #0d6efd;
+                transform: scale(1.1);
+            }
     </style>
 </head>
 <body>
@@ -208,6 +209,14 @@
                                             <i class="fas fa-user"></i> Профиль
                                         </a>
                                     </li>
+                                    @if (User.IsInRole("Админ"))
+                                    {
+                                        <li>
+                                            <a class="dropdown-item" asp-page="/Account/ListOfUsers">
+                                                <i class="fas fa-server"></i> Пользователи
+                                            </a>
+                                        </li>
+                                    }
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
