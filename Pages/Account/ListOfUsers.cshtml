@@ -4,15 +4,24 @@
     ViewData["Title"] = "Список пользователей";
 }
 
-<h2>Список пользователей</h2>
+<h2>@ViewData["Title"]</h2>
 
-<table class="table">
-    <thead>
+<p>
+    <a asp-page="User" class="btn btn-primary">Добавить пользователя</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
         <tr>
             <th>ID</th>
             <th>Email</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
             <th>ФИО</th>
             <th>Роль</th>
+            <th>Пароль</th>
+            <th>Действия</th>
         </tr>
     </thead>
     <tbody>
@@ -21,8 +30,15 @@
             <tr>
                 <td>@user.Id</td>
                 <td>@user.Email</td>
+                <td>@user.LastName</td>
+                <td>@user.FirstName</td>
+                <td>@user.MiddleName</td>
                 <td>@user.FullName</td>
                 <td>@user.Role</td>
+                <td>@user.Password</td>
+                <td>
+                    <a asp-page="User" asp-route-id="@user.Id" class="btn btn-sm btn-warning">Редактировать</a>
+                </td>
             </tr>
         }
     </tbody>
