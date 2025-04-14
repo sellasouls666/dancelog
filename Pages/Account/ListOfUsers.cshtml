@@ -405,22 +405,10 @@
 
 @section Scripts {
     <script>
-        function confirmDelete(id, userName) {
-            Swal.fire({
-                title: 'Удалить пользователя?',
-                html: `Вы уверены, что хотите удалить <b>${userName}</b>?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#2575fc',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Да, удалить',
-                cancelButtonText: 'Отмена',
-                reverseButtons: true
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = '@Url.Page("UserDelete")' + '?id=' + id;
-                }
-            });
+        function confirmDelete(id) {
+            if (confirm('Вы уверены, что хотите удалить этого пользователя?')) {
+                window.location.href = '@Url.Page("UserDelete")' + '?id=' + id;
+            }
         }
     </script>
 }
