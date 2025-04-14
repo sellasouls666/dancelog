@@ -30,6 +30,7 @@
             padding-bottom: 5px;
             display: flex;
             align-items: center;
+            font-weight: normal; /* Убираем жирность */
         }
 
             .nav-link i {
@@ -90,27 +91,30 @@
             margin-top: 8px;
             min-width: 180px;
             transform-origin: top right;
-            animation: fadeIn 0.2s ease-out;
+            animation: fadeIn 0.15s ease-out;
+            font-family: inherit;
         }
 
         @@keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: scale(0.95) translateY(-10px);
+                transform: translateY(-5px);
             }
 
             to {
                 opacity: 1;
-                transform: scale(1) translateY(0);
+                transform: translateY(0);
             }
         }
 
         .dropdown-item {
             padding: 10px 15px;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             position: relative;
             color: #333;
-            font-weight: 500;
+            font-weight: normal; /* Убираем жирность */
+            font-family: inherit;
+            font-size: 0.9rem; /* Делаем размер шрифта таким же как у навигации */
         }
 
             .dropdown-item:first-child {
@@ -126,8 +130,7 @@
             .dropdown-item:hover {
                 background: var(--primary-gradient);
                 color: white !important;
-                transform: translateX(5px);
-                padding-left: 20px;
+                padding-left: 18px;
             }
 
                 .dropdown-item:hover i {
@@ -139,6 +142,7 @@
                 width: 18px;
                 text-align: center;
                 color: #6c757d;
+                font-size: 0.9rem; /* Размер иконок как в навигации */
             }
 
         .dropdown-divider {
