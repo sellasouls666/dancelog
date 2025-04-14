@@ -14,7 +14,18 @@
             --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         }
 
-        /* Анимация для логотипа */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .navbar,
+        .nav-link,
+        .dropdown-menu,
+        .dropdown-item,
+        .btn-outline-secondary {
+            transition: all 0.3s ease;
+        }
+
         .navbar-brand img {
             transition: transform 0.3s ease;
         }
@@ -23,14 +34,13 @@
             transform: rotate(15deg) scale(1.1);
         }
 
-        /* Стили для навигационных ссылок */
         .nav-link {
             position: relative;
             transition: all 0.3s ease;
             padding-bottom: 5px;
             display: flex;
             align-items: center;
-            font-weight: normal; /* Убираем жирность */
+            font-weight: normal;
         }
 
             .nav-link i {
@@ -44,12 +54,10 @@
                 transform: translateY(-2px);
             }
 
-            /* Отключаем псевдоэлемент подчеркивания */
             .nav-link::after {
                 display: none !important;
             }
 
-        /* Отключение стандартного оформления */
         .no-underline {
             text-decoration: none !important;
         }
@@ -63,7 +71,6 @@
                 display: none !important;
             }
 
-        /* Универсальные правила для ссылок */
         .navbar-nav a:focus,
         .navbar-nav a:active {
             outline: none !important;
@@ -72,7 +79,6 @@
             border: none !important;
         }
 
-        /* Эффект для иконки авторизации */
         .nav-item.dropdown .nav-link i {
             transition: transform 0.3s ease;
         }
@@ -81,7 +87,6 @@
             transform: scale(1.1);
         }
 
-        /* Стили для выпадающего списка */
         .dropdown-menu {
             border: none;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
@@ -112,9 +117,9 @@
             transition: all 0.2s ease;
             position: relative;
             color: #333;
-            font-weight: normal; /* Убираем жирность */
+            font-weight: normal;
             font-family: inherit;
-            font-size: 0.9rem; /* Делаем размер шрифта таким же как у навигации */
+            font-size: 0.9rem;
         }
 
             .dropdown-item:first-child {
@@ -142,7 +147,7 @@
                 width: 18px;
                 text-align: center;
                 color: #6c757d;
-                font-size: 0.9rem; /* Размер иконок как в навигации */
+                font-size: 0.9rem;
             }
 
         .dropdown-divider {
@@ -150,7 +155,6 @@
             border-color: rgba(0, 0, 0, 0.05);
         }
 
-        /* Стили для иконки пользователя */
         .user-icon {
             font-size: 1.5rem;
             color: #6c757d;
@@ -161,6 +165,54 @@
                 color: #0d6efd;
                 transform: scale(1.1);
             }
+
+        /* 🌙 Dark Theme Styles */
+        body.dark-theme {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+            body.dark-theme .navbar {
+                background-color: #1f1f1f !important;
+                border-bottom: 1px solid #333;
+            }
+
+            body.dark-theme .dropdown-menu {
+                background-color: #2c2c2c;
+            }
+
+            body.dark-theme .dropdown-item {
+                color: #ccc;
+            }
+
+                body.dark-theme .dropdown-item:hover {
+                    background: linear-gradient(135deg, #444 0%, #666 100%);
+                    color: white !important;
+                }
+
+            body.dark-theme .btn-outline-secondary {
+                color: #ccc;
+                border-color: #555;
+            }
+
+                body.dark-theme .btn-outline-secondary:hover {
+                    background-color: #444;
+                    color: #fff;
+                }
+
+            /* 🌈 Градиентный текст в тёмной теме */
+            body.dark-theme h1,
+            body.dark-theme h2,
+            body.dark-theme h3,
+            body.dark-theme a,
+            body.dark-theme .nav-link,
+            body.dark-theme .dropdown-item,
+            body.dark-theme .user-icon,
+            body.dark-theme span {
+                background: var(--primary-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
     </style>
 </head>
 <body>
@@ -169,7 +221,8 @@
             <div class="container">
                 <a class="navbar-brand fw-bold d-flex align-items-center" asp-area="" asp-page="/Index">
                     <span class="me-2">DanceLog</span>
-                    <img src="https://cdn-icons-png.flaticon.com/512/5969/5969724.png" alt="DanceLog Логотип" width="30" height="30" class="d-inline-block align-text-top">
+                    <img id="logo" src="https://cdn-icons-png.flaticon.com/512/5969/5969724.png"
+                         alt="DanceLog Логотип" width="30" height="30" class="d-inline-block align-text-top">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -197,6 +250,11 @@
                         </li>
                     </ul>
 
+                    <!-- 🌙 Theme toggle button -->
+                    <button id="themeToggle" class="btn btn-sm btn-outline-secondary ms-3" title="Сменить тему">
+                        <i class="fas fa-moon"></i>
+                    </button>
+
                     @if (User.Identity?.IsAuthenticated ?? false)
                     {
                         var nameParts = (User.Identity.Name ?? "").Split(' ');
@@ -221,9 +279,7 @@
                                             </a>
                                         </li>
                                     }
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <a class="dropdown-item" asp-page="/Account/Logout">
                                             <i class="fas fa-sign-out-alt"></i> Выход
@@ -267,6 +323,34 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- 🌙 Theme toggle script -->
+    <script>
+        const toggleBtn = document.getElementById('themeToggle');
+        const icon = toggleBtn.querySelector('i');
+        const logo = document.getElementById('logo');
+
+        const lightLogo = "https://cdn-icons-png.flaticon.com/512/5969/5969724.png";
+        const darkLogo = "https://cdn-icons-png.flaticon.com/512/5969/5969731.png"; // можно заменить
+
+        function applyTheme(theme) {
+            const isDark = theme === 'dark';
+            document.body.classList.toggle('dark-theme', isDark);
+            icon.classList.toggle('fa-sun', isDark);
+            icon.classList.toggle('fa-moon', !isDark);
+            logo.src = isDark ? darkLogo : lightLogo;
+            localStorage.setItem('theme', theme);
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(savedTheme);
+
+        toggleBtn.addEventListener('click', () => {
+            const newTheme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
