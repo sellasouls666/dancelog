@@ -5,16 +5,9 @@
 }
 
 <style>
-    /* Светлая тема по умолчанию */
-    body {
-        background-color: white;
-        color: black;
-    }
-
+    /* Анимации для карточек в стиле страницы групп */
     .card {
         transition: transform 0.2s ease-in-out;
-        background-color: #f8f9fa;
-        color: black;
     }
 
         .card:hover {
@@ -22,85 +15,14 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-    .card-footer {
-        background-color: #ffffff;
+    /* Анимация кнопок */
+    .btn-course-action {
+        transition: all 0.2s ease;
     }
 
-    .btn-outline-dark {
-        color: black;
-        border-color: black;
-    }
-
-        .btn-outline-dark:hover {
-            background-color: #ddd;
-            border-color: black;
+        .btn-course-action:hover {
+            transform: scale(1.05);
         }
-
-    .btn-sm {
-        color: black;
-        border-color: #ccc;
-    }
-
-        .btn-sm:hover {
-            background-color: #eee;
-            border-color: #ccc;
-        }
-
-    .text-muted {
-        color: #6c757d !important;
-    }
-
-    h1, h4,
-    .card-body {
-        color: black;
-    }
-
-    
-
-    {
-        background-color: #121212;
-        color: white;
-    }
-
-    .card {
-        background-color: #1e1e1e;
-        color: white;
-    }
-
-    .card-footer {
-        background-color: #2c2c2c;
-    }
-
-    .btn-outline-dark {
-        color: white;
-        border-color: white;
-    }
-
-        .btn-outline-dark:hover {
-            background-color: #444;
-            border-color: white;
-        }
-
-    .btn-sm {
-        color: white;
-        border-color: #444;
-    }
-
-        .btn-sm:hover {
-            background-color: #555;
-            border-color: #444;
-        }
-
-    .text-muted {
-        color: #b0b0b0 !important;
-    }
-
-    h1, h4,
-    .card-body {
-        color: white;
-    }
-
-    }
 </style>
 
 <div class="container py-4">
@@ -124,13 +46,13 @@
                         <div class="card-footer bg-transparent border-top-0">
                             <div class="d-flex justify-content-end">
                                 <a href="@Url.Page("Course", new { id = course.Id })"
-                                   class="btn btn-sm btn-outline-secondary me-2">
-                                    Изменить
+                                   class="btn btn-sm btn-outline-secondary me-2 btn-course-action">
+                                    <i class="fas fa-edit"></i>
                                 </a>
                                 <a href="javascript:void(0);"
                                    onclick="confirmDelete(@course.Id)"
-                                   class="btn btn-sm btn-outline-secondary">
-                                    Удалить
+                                   class="btn btn-sm btn-outline-secondary btn-course-action">
+                                    <i class="fas fa-trash-alt"></i>
                                 </a>
                             </div>
                         </div>
