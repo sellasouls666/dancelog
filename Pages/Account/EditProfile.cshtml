@@ -1,6 +1,5 @@
 ﻿@page
 @model dancelog.Pages.Account.EditProfileModel
-@using dancelog.Models.Auth
 @{
     ViewData["Title"] = "Редактирование профиля";
 }
@@ -185,32 +184,39 @@
 
                 <form method="post" class="needs-validation" novalidate>
                     <div class="form-group">
-                        <label asp-for="Input.FirstName" class="form-label">Имя</label>
-                        <input asp-for="Input.FirstName" class="profile-field" required />
-                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                        <label asp-for="UserModel.FirstName" class="form-label">Имя</label>
+                        <input asp-for="UserModel.FirstName" class="profile-field" required />
+                        <span asp-validation-for="UserModel.FirstName" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Input.LastName" class="form-label">Фамилия</label>
-                        <input asp-for="Input.LastName" class="profile-field" />
-                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                        <label asp-for="UserModel.LastName" class="form-label">Фамилия</label>
+                        <input asp-for="UserModel.LastName" class="profile-field" required />
+                        <span asp-validation-for="UserModel.LastName" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Input.MiddleName" class="form-label">Отчество</label>
-                        <input asp-for="Input.MiddleName" class="profile-field" />
-                        <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
+                        <label asp-for="UserModel.MiddleName" class="form-label">Отчество</label>
+                        <input asp-for="UserModel.MiddleName" class="profile-field" />
+                        <span asp-validation-for="UserModel.MiddleName" class="text-danger"></span>
                     </div>
+
+                    @if (Model.CurrentRole == "Ученик" && Model.StudentModel != null)
+                    {
+                        <div class="form-group">
+                            <label class="form-label">Группа</label>
+                            <input value="@Model.StudentModel.Group?.Name" class="profile-field profile-field-readonly" readonly />
+                        </div>
+                    }
 
                     <div class="readonly-section">
                         <div class="readonly-section-title">
-                            <i class="fas fa-lock"></i>
+                            <i class="fas fa-lock"></i> Неизменяемые данные
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">Email</label>
-                            <input asp-for="Input.Email" class="profile-field profile-field-readonly" readonly />
-                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            <input asp-for="UserModel.Email" class="profile-field profile-field-readonly" readonly />
                         </div>
 
                         <div class="form-group mb-0">
@@ -224,7 +230,7 @@
                             <i class="fas fa-arrow-left"></i> Назад
                         </a>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Сохранить
+                            <i class="fas fa-save"></i> Сохранить изменения
                         </button>
                     </div>
                 </form>
