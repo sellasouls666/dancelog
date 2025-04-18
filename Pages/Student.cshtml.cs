@@ -42,7 +42,6 @@ namespace dancelog.Pages
                 {
                     Surname = string.Empty,
                     Name = string.Empty,
-                    PhoneNumber = string.Empty
                 };
                 return Page();
             }
@@ -61,12 +60,6 @@ namespace dancelog.Pages
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!Regex.IsMatch(Student.PhoneNumber, @"^\d{10,11}$"))
-            {
-                ModelState.AddModelError("Student.PhoneNumber", "Номер телефона должен содержать 10-11 цифр");
-                Groups = new SelectList(await _context.Groups.ToListAsync(), "Id", "Name");
-                return Page();
-            }
 
             if (!ModelState.IsValid)
             {

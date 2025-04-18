@@ -29,11 +29,5 @@ namespace dancelog.Models
         [EmailAddress(ErrorMessage = "Некорректный email адрес")]
         [Display(Name = "Email")]
         public string? Email { get; set; }
-
-        [Required(ErrorMessage = "Поле обязательно для заполнения")]
-        [StringLength(11, MinimumLength = 10, ErrorMessage = "Номер должен содержать 10-11 цифр")]
-        [RegularExpression(@"^\d+$", ErrorMessage = "Номер должен содержать только цифры")]
-        [Display(Name = "Номер телефона")]
-        public required string PhoneNumber { get; set; }
     }
 }
