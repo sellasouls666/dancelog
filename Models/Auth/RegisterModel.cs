@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace dancelog.Models.Auth
 {
@@ -31,5 +32,11 @@ namespace dancelog.Models.Auth
         [Required(ErrorMessage = "Выберите роль")]
         [Display(Name = "Роль")]
         public string SelectedRole { get; set; }
+
+        [Display(Name = "Группа")]
+        public int? GroupId { get; set; }
+
+        // Список доступных групп
+        public SelectList? AvailableGroups { get; set; }
     }
 }
