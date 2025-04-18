@@ -4,110 +4,14 @@
     ViewData["Title"] = Model.Course.Id == 0 ? "Добавить курс" : "Редактировать курс";
 }
 
-<style>
-    :root {
-        --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        --primary-light: #2575fc;
-        --primary-dark: #6a11cb;
-        --text-muted: #6c757d;
-        --light-gray: #f8f9fa;
-        --lighter-gray: #f0f0f0;
-        --border-color: #e0e0e0;
-        --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-        --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    }
-
-    body {
-        background: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
-        min-height: 100vh;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .card {
-        border: none;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: var(--shadow-sm);
-        background: white;
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    }
-
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-
-    .card-header {
-        background: var(--primary-gradient);
-        color: #fff;
-    }
-
-    .form-label {
-        font-weight: 500;
-        color: #343a40;
-    }
-
-    .form-control {
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        padding: 10px 15px;
-        background-color: var(--lighter-gray);
-        transition: var(--transition);
-    }
-
-        .form-control:hover {
-            border-color: #bdbdbd;
-            background-color: #fff;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 0.25rem rgba(37, 117, 252, 0.25);
-        }
-
-    .btn-outline-dark {
-        border-radius: 8px;
-        padding: 8px 20px;
-        border-color: var(--primary-dark);
-        color: var(--primary-dark);
-        transition: var(--transition);
-    }
-
-        .btn-outline-dark:hover {
-            background: var(--primary-gradient);
-            border-color: var(--primary-gradient);
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
-        }
-
-    .btn-outline-secondary {
-        border-radius: 8px;
-        padding: 8px 20px;
-        border-color: var(--text-muted);
-        color: var(--text-muted);
-        transition: var(--transition);
-    }
-
-        .btn-outline-secondary:hover {
-            background: var(--light-gray);
-            color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
-        }
-</style>
-
 <div class="container py-4">
     <div class="row justify-content-center">
         <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
+            <div class="card shadow-sm">
+                <div class="card-header bg-light">
                     <h4 class="mb-0">@ViewData["Title"]</h4>
                 </div>
+
                 <div class="card-body">
                     <form method="post">
                         <input type="hidden" asp-for="Course.Id" />
