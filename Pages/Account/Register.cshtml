@@ -23,7 +23,15 @@
         background: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
         min-height: 100vh;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
     }
+
+        /* Темная тема */
+        body.dark-theme {
+            background: linear-gradient(to bottom, #000000, #000000);
+            color: #e0e0e0;
+        }
+
 
     .register-container {
         max-width: 500px;
@@ -31,16 +39,19 @@
         animation: fadeIn 0.5s ease-out;
     }
 
-    @@keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
+    keyframes fadeIn {
+        from
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
     }
 
     .register-card {
@@ -54,20 +65,15 @@
         transition: var(--transition);
     }
 
-        .register-card:hover {
-            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
-            transform: translateY(-3px);
-        }
+    /* Темная тема для карточки */
+    body.dark-theme .register-card {
+        background: #1f1f1f;
+    }
 
-        .register-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--primary-gradient);
-        }
+    .register-card:hover {
+        box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+        transform: translateY(-3px);
+    }
 
     .register-avatar {
         width: 90px;
@@ -87,28 +93,38 @@
         animation: float 4s ease-in-out infinite, bounce 2s ease-in-out infinite;
     }
 
-    @@keyframes float {
-        0% {
-            transform: translateY(0px) rotate(0deg);
-        }
-
-        50% {
-            transform: translateY(-10px) rotate(5deg);
-        }
-
-        100% {
-            transform: translateY(0px) rotate(0deg);
-        }
+    body.dark-theme .register-avatar {
+        background: var(--primary-dark);
     }
 
-    @@keyframes bounce {
-        0%, 100% {
-            transform: scale(1);
-        }
+    keyframes float {
+        0%
 
-        50% {
-            transform: scale(1.05);
-        }
+    {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    }
+
+    keyframes bounce {
+        0%, 100%
+
+    {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
     }
 
     .register-title {
@@ -119,16 +135,21 @@
         font-weight: 600;
     }
 
-        .register-title::after {
-            content: "";
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%; /* Полоска на всю ширину слова */
-            height: 3px;
-            background: var(--primary-gradient);
-            border-radius: 3px;
-        }
+    /* Темная тема для текста */
+    body.dark-theme .register-title {
+        color: #e0e0e0;
+    }
+
+    .register-title::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 100%; /* Полоска на всю ширину слова */
+        height: 3px;
+        background: var(--primary-gradient);
+        border-radius: 3px;
+    }
 
     .form-control {
         border: 1px solid var(--border-color);
@@ -139,17 +160,24 @@
         font-size: 0.95rem;
     }
 
-        .form-control:hover {
-            border-color: #bdbdbd;
-            background-color: white;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
-        }
+    /* Темная тема для полей ввода */
+    body.dark-theme .form-control {
+        background-color: #333;
+        border-color: #555;
+        color: #e0e0e0;
+    }
 
-        .form-control:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 0.25rem rgba(37, 117, 252, 0.25);
-        }
+    .form-control:hover {
+        border-color: #bdbdbd;
+        background-color: white;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-light);
+        box-shadow: 0 0 0 0.25rem rgba(37, 117, 252, 0.25);
+    }
 
     .btn-register {
         border-radius: 8px;
@@ -167,28 +195,32 @@
         letter-spacing: 0.5px;
     }
 
-        .btn-register:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-            color: white;
-        }
+    body.dark-theme .btn-register {
+        background: var(--primary-dark);
+    }
 
-        .btn-register::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
-        }
+    .btn-register:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+        color: white;
+    }
 
-        .btn-register:hover::after {
-            opacity: 1;
-        }
+    .btn-register::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
+        opacity: 0;
+        transition: var(--transition);
+        z-index: -1;
+    }
+
+    .btn-register:hover::after {
+        opacity: 1;
+    }
 
     .form-label {
         display: block;
@@ -203,7 +235,6 @@
         margin-top: 0.25rem;
     }
 
-    /* Стили для выбора роли */
     .role-selector {
         display: flex;
         gap: 10px;
@@ -237,23 +268,32 @@
             height: 100%;
         }
 
-            .role-option label:hover {
-                border-color: var(--primary-light);
-                transform: translateY(-3px);
-                box-shadow: var(--shadow-sm);
-            }
+    body.dark-theme .role-option label {
+        background-color: #333;
+        border-color: #555;
+    }
 
-        .role-option input[type="radio"]:checked + label {
-            border-color: var(--primary-dark);
-            background: linear-gradient(135deg, rgba(106, 17, 203, 0.1) 0%, rgba(37, 117, 252, 0.1) 100%);
-            color: var(--primary-dark);
-            font-weight: 600;
-        }
+    .role-option label:hover {
+        border-color: var(--primary-light);
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-sm);
+    }
+
+    .role-option input[type="radio"]:checked + label {
+        border-color: var(--primary-dark);
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        color: var(--primary-dark);
+        font-weight: 600;
+    }
 
     .role-icon {
         font-size: 1.5rem;
         margin-bottom: 8px;
         color: var(--text-muted);
+    }
+
+    body.dark-theme .role-icon {
+        color: var(--primary-dark);
     }
 
     .role-option input[type="radio"]:checked + label .role-icon {
@@ -278,28 +318,16 @@
                 color: var(--primary-light);
                 text-decoration: underline;
             }
-
-    /* Добавим в существующие стили */
-    #Input_GroupId {
-        transition: all 0.3s ease;
-    }
-
-        #Input_GroupId[disabled] {
-            opacity: 0.6;
-            background-color: #f8f9fa;
-        }
 </style>
 
 <div class="container py-5">
     <div class="register-container">
         <div class="register-card">
             <div class="card-body p-4 p-md-5">
-                <!-- Аватарка с градиентом и анимацией -->
                 <div class="register-avatar">
                     <i class="fas fa-user-plus"></i>
                 </div>
 
-                <!-- Заголовок с декоративной линией -->
                 <h3 class="register-title text-center mb-4">Регистрация</h3>
 
                 <form method="post">
@@ -341,7 +369,6 @@
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
 
-                    <!-- Красивый выбор роли -->
                     <div class="mb-4">
                         <label class="form-label">Кто вы?</label>
                         <div class="role-selector">
@@ -363,19 +390,6 @@
                         <span asp-validation-for="Input.SelectedRole" class="text-danger"></span>
                     </div>
 
-                    <!-- После блока выбора роли -->
-                    @if (Model.Input.SelectedRole == "Ученик")
-                    {
-                        <div class="mb-4">
-                            <label class="form-label">Группа*</label>
-                            <select asp-for="Input.GroupId" class="form-select"
-                                    asp-items="Model.Input.AvailableGroups">
-                                <option value="">Выберите группу</option>
-                            </select>
-                            <span asp-validation-for="Input.GroupId" class="text-danger"></span>
-                        </div>
-                    }
-
                     <button type="submit" class="btn btn-register mb-3">
                         <i class="fas fa-user-plus me-2"></i> Зарегистрироваться
                     </button>
@@ -391,27 +405,24 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
-    <script>
-        $(function () {
-            // Функция для переключения видимости поля группы
-            function toggleGroupField() {
-                const isStudent = $('#roleStudent').is(':checked');
-                const groupField = $('#Input_GroupId').closest('.mb-4');
-
-                groupField.toggle(isStudent);
-                $('#Input_GroupId').prop('required', isStudent);
-
-                if (!isStudent) {
-                    $('#Input_GroupId').val('');
-                }
-            }
-
-            // Обработчик изменения радиокнопок
-            $('input[name="Input.SelectedRole"]').change(toggleGroupField);
-
-            // Инициализация при загрузке
-            toggleGroupField();
-        });
-    </script>
 }
+
+<script>
+    // Для динамического переключения темы
+    const themeToggleButton = document.getElementById('themeToggle');
+    const body = document.body;
+
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    applyTheme(savedTheme);
+
+    function applyTheme(theme) {
+        const isDark = theme === 'dark';
+        body.classList.toggle('dark-theme', isDark);
+        localStorage.setItem('theme', theme);
+    }
+
+    themeToggleButton.addEventListener('click', () => {
+        const newTheme = body.classList.contains('dark-theme') ? 'light' : 'dark';
+        applyTheme(newTheme);
+    });
+</script>
