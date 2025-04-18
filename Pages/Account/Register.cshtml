@@ -32,15 +32,18 @@
     }
 
     @@keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
+        from
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
     }
 
     .register-card {
@@ -88,27 +91,33 @@
     }
 
     @@keyframes float {
-        0% {
-            transform: translateY(0px) rotate(0deg);
-        }
+        0%
 
-        50% {
-            transform: translateY(-10px) rotate(5deg);
-        }
+    {
+        transform: translateY(0px) rotate(0deg);
+    }
 
-        100% {
-            transform: translateY(0px) rotate(0deg);
-        }
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
     }
 
     @@keyframes bounce {
-        0%, 100% {
-            transform: scale(1);
-        }
+        0%, 100%
 
-        50% {
-            transform: scale(1.05);
-        }
+    {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
     }
 
     .register-title {
@@ -124,7 +133,7 @@
             position: absolute;
             bottom: -8px;
             left: 0;
-            width: 100%; /* Полоска на всю ширину слова */
+            width: 100%;
             height: 3px;
             background: var(--primary-gradient);
             border-radius: 3px;
@@ -260,33 +269,52 @@
         color: var(--primary-dark);
     }
 
-    .login-link {
-        text-align: center;
-        margin-top: 1.5rem;
-        color: var(--text-muted);
-        font-size: 0.9rem;
+    /* Стили для выбора групп */
+    .group-selector {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 20px;
     }
 
-        .login-link a {
-            color: var(--primary-dark);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
+    .group-option {
+        flex: 1 0 calc(33.333% - 10px);
+        position: relative;
+        box-sizing: border-box;
+    }
+
+        .group-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
         }
 
-            .login-link a:hover {
-                color: var(--primary-light);
-                text-decoration: underline;
+        .group-option label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            min-height: 50px;
+        }
+
+            .group-option label:hover {
+                border-color: var(--primary-light);
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-sm);
             }
 
-    /* Добавим в существующие стили */
-    #Input_GroupId {
-        transition: all 0.3s ease;
-    }
-
-        #Input_GroupId[disabled] {
-            opacity: 0.6;
-            background-color: #f8f9fa;
+        .group-option input[type="radio"]:checked + label {
+            border-color: var(--primary-dark);
+            background: linear-gradient(135deg, rgba(106,17,203,0.1) 0%, rgba(37,117,252,0.1) 100%);
+            color: var(--primary-dark);
+            font-weight: 600;
         }
 </style>
 
@@ -294,12 +322,12 @@
     <div class="register-container">
         <div class="register-card">
             <div class="card-body p-4 p-md-5">
-                <!-- Аватарка с градиентом и анимацией -->
+                <!-- Аватарка -->
                 <div class="register-avatar">
                     <i class="fas fa-user-plus"></i>
                 </div>
 
-                <!-- Заголовок с декоративной линией -->
+                <!-- Заголовок -->
                 <h3 class="register-title text-center mb-4">Регистрация</h3>
 
                 <form method="post">
@@ -341,19 +369,19 @@
                         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                     </div>
 
-                    <!-- Красивый выбор роли -->
+                    <!-- Выбор роли -->
                     <div class="mb-4">
                         <label class="form-label">Кто вы?</label>
                         <div class="role-selector">
                             <div class="role-option">
-                                <input type="radio" asp-for="Input.SelectedRole" id="roleStudent" value="Ученик" checked>
+                                <input type="radio" asp-for="Input.SelectedRole" id="roleStudent" value="Ученик" checked />
                                 <label for="roleStudent">
                                     <i class="fas fa-user-graduate role-icon"></i>
                                     Ученик
                                 </label>
                             </div>
                             <div class="role-option">
-                                <input type="radio" asp-for="Input.SelectedRole" id="roleTeacher" value="Учитель">
+                                <input type="radio" asp-for="Input.SelectedRole" id="roleTeacher" value="Учитель" />
                                 <label for="roleTeacher">
                                     <i class="fas fa-chalkboard-teacher role-icon"></i>
                                     Учитель
@@ -363,15 +391,23 @@
                         <span asp-validation-for="Input.SelectedRole" class="text-danger"></span>
                     </div>
 
-                    <!-- После блока выбора роли -->
+                    <!-- Выбор группы -->
                     @if (Model.Input.SelectedRole == "Ученик")
                     {
                         <div class="mb-4">
-                            <label class="form-label">Группа*</label>
-                            <select asp-for="Input.GroupId" class="form-select"
-                                    asp-items="Model.Input.AvailableGroups">
-                                <option value="">Выберите группу</option>
-                            </select>
+                            <label class="form-label">Из какой Вы группы?</label>
+                            <div class="group-selector">
+                                @foreach (var grp in Model.Input.AvailableGroups)
+                                {
+                                    <div class="group-option">
+                                        <input type="radio"
+                                               asp-for="Input.GroupId"
+                                               id="group_@grp.Value"
+                                               value="@grp.Value" />
+                                        <label for="group_@grp.Value">@grp.Text</label>
+                                    </div>
+                                }
+                            </div>
                             <span asp-validation-for="Input.GroupId" class="text-danger"></span>
                         </div>
                     }
@@ -391,26 +427,21 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
     <script>
         $(function () {
-            // Функция для переключения видимости поля группы
             function toggleGroupField() {
                 const isStudent = $('#roleStudent').is(':checked');
-                const groupField = $('#Input_GroupId').closest('.mb-4');
+                const groupBlock = $('.group-selector').closest('.mb-4');
 
-                groupField.toggle(isStudent);
-                $('#Input_GroupId').prop('required', isStudent);
+                groupBlock.toggle(isStudent);
+                $('input[name="Input.GroupId"]').prop('required', isStudent);
 
                 if (!isStudent) {
-                    $('#Input_GroupId').val('');
+                    $('input[name="Input.GroupId"]').prop('checked', false);
                 }
             }
 
-            // Обработчик изменения радиокнопок
             $('input[name="Input.SelectedRole"]').change(toggleGroupField);
-
-            // Инициализация при загрузке
             toggleGroupField();
         });
     </script>
