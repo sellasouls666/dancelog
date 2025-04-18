@@ -39,7 +39,7 @@
         animation: fadeIn 0.5s ease-out;
     }
 
-    keyframes fadeIn {
+   @@keyframes fadeIn {
         from
 
     {
@@ -95,7 +95,7 @@
 
    
 
-    keyframes float {
+    @@keyframes float {
         0%
 
     {
@@ -112,7 +112,7 @@
 
     }
 
-    keyframes bounce {
+    @@keyframes bounce {
         0%, 100%
 
     {
@@ -184,26 +184,27 @@
         padding: 12px 25px;
         font-weight: 500;
         transition: var(--transition);
-        background: var(--primary-gradient);
+        background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
         border: none;
         color: white;
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
         width: 100%;
         font-size: 1rem;
-        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
     }
 
-    body.dark-theme .btn-register {
-        background: var(--primary-dark);
-    }
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            opacity: 0.9;
+            color: white;
+        }
 
-    .btn-register:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-        color: white;
-    }
+        .btn-register i {
+            font-size: 1rem;
+        }
 
     .btn-register::after {
         content: '';
@@ -253,71 +254,87 @@
             height: 0;
         }
 
+        /* Базовый стиль карточек */
         .role-option label {
+            background-color: transparent;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 15px 10px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            background-color: white;
-            cursor: pointer;
             transition: var(--transition);
-            text-align: center;
-            height: 100%;
+            position: relative;
+            z-index: 0;
+            cursor: pointer;
         }
 
-    body.dark-theme .role-option label {
-        background-color: #333;
-        border-color: #555;
-    }
-
-    .role-option label:hover {
-        border-color: var(--primary-light);
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-sm);
-    }
-
-    .role-option input[type="radio"]:checked + label {
-        border-color: var(--primary-dark);
-        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        color: var(--primary-dark);
-        font-weight: 600;
-    }
-
+    /* Цвет иконок по умолчанию */
     .role-icon {
         font-size: 1.5rem;
         margin-bottom: 8px;
         color: var(--text-muted);
     }
 
+    /* Тёмная тема — базовая рамка */
+    body.dark-theme .role-option label {
+        border-color: #555;
+    }
+
+    /* Тёмная тема — иконка */
     body.dark-theme .role-icon {
+        color: var(--primary-light);
+    }
+
+    /* Выделение выбранной карточки */
+    .role-option input[type="radio"]:checked + label {
+        border: 2px solid transparent;
         color: var(--primary-dark);
+        font-weight: 600;
     }
 
-    .role-option input[type="radio"]:checked + label .role-icon {
-        color: var(--primary-dark);
-    }
-
-    .login-link {
-        text-align: center;
-        margin-top: 1.5rem;
-        color: var(--text-muted);
-        font-size: 0.9rem;
-    }
-
-        .login-link a {
-            color: var(--primary-dark);
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
+        /* Градиентная рамка через псевдоэлемент */
+        .role-option input[type="radio"]:checked + label::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 12px;
+            background: var(--primary-gradient);
+            padding: 2px;
+            z-index: -1;
+            /* Создаем рамку, вырезая середину */
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
         }
 
-            .login-link a:hover {
-                color: var(--primary-light);
-                text-decoration: underline;
-            }
+        /* Иконка в выбранной карточке */
+        .role-option input[type="radio"]:checked + label .role-icon {
+            color: var(--primary-dark);
+        }
+
+    .login-link a {
+        font-weight: 600;
+        font-size: 1rem;
+        background: var(--primary-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+        transition: var(--transition);
+        text-decoration: none;
+    }
+
+        .login-link a:hover {
+            opacity: 0.85;
+        }
+    
 </style>
 
 <div class="container py-5">
@@ -391,7 +408,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-register mb-3">
-                        <i class="fas fa-user-plus me-2"></i> Зарегистрироваться
+                        <i class="fas fa-sign-in-alt"></i> Зарегистрироваться
                     </button>
 
                     <div class="login-link">
