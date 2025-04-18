@@ -27,5 +27,8 @@ namespace dancelog.Models.Auth
 
         // Вычисляемое свойство для полного имени
         public string FullName => $"{LastName} {FirstName}{(string.IsNullOrWhiteSpace(MiddleName) ? "" : " " + MiddleName)}";
+
+        public int? GroupId { get; set; }
+        public Group? Group { get; set; }
     }
 }

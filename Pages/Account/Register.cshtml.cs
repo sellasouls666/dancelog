@@ -1,12 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using dancelog.Models.Auth;
 using dancelog.Data;
-using System.Linq;
-using System.Threading.Tasks;
+using dancelog.Models.Auth;
+using dancelog.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication;
 
 namespace dancelog.Pages.Account
 {
@@ -19,41 +20,54 @@ namespace dancelog.Pages.Account
             _context = context;
         }
 
-        // Свойство для привязки данных из формы регистрации
         [BindProperty]
-        public RegisterModel Input { get; set; }
+        public RegisterModel Input { get; set; } = new();
 
-        public void OnGet()
+        public async Task OnGet()
         {
+            await LoadGroups();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-                return Page();
+            await LoadGroups();
 
-            // Проверяем, существует ли уже пользователь с таким Email
-            var existingUser = _context.AuthUsers.FirstOrDefault(u => u.Email == Input.Email);
-            if (existingUser != null)
+            // Дополнительная валидация для студентов
+            if (Input.SelectedRole == "Ученик" && !Input.GroupId.HasValue)
             {
-                ModelState.AddModelError(string.Empty, "Пользователь с таким Email уже существует");
+                ModelState.AddModelError("Input.GroupId", "Для студентов необходимо выбрать группу");
+            }
+
+            if (!ModelState.IsValid)
+            {
                 return Page();
             }
 
-            // Определяем роль:
-            // Если база данных не содержит ни одного пользователя, то роль = "Админ".
-            // В противном случае используем выбранную пользователем роль ("Ученик" или "Учитель").
-            string role = _context.AuthUsers.Any() ? Input.SelectedRole : "Админ";
+            // Проверка существования пользователя
+            if (await _context.AuthUsers.AnyAsync(u => u.Email == Input.Email))
+            {
+                ModelState.AddModelError("Input.Email", "Пользователь с таким email уже существует");
+                return Page();
+            }
 
-            // Создаем нового пользователя (Обратите внимание: для продакшена пароль должен быть хэширован)
+            // Проверка существования группы (если выбрана)
+            if (Input.GroupId.HasValue &&
+                !await _context.Groups.AnyAsync(g => g.Id == Input.GroupId.Value))
+            {
+                ModelState.AddModelError("Input.GroupId", "Выбранная группа не существует");
+                return Page();
+            }
+
+            // Создаем пользователя
             var user = new AuthUser
             {
                 LastName = Input.LastName,
                 FirstName = Input.FirstName,
                 MiddleName = Input.MiddleName,
                 Email = Input.Email,
-                Password = Input.Password,
-                Role = role
+                Password = Input.Password, // В реальном приложении нужно хэшировать!
+                Role = _context.AuthUsers.Any() ? Input.SelectedRole : "Админ",
+                GroupId = Input.SelectedRole == "Ученик" ? Input.GroupId : null
             };
 
             _context.AuthUsers.Add(user);
@@ -63,20 +77,35 @@ namespace dancelog.Pages.Account
             return RedirectToPage("/Index");
         }
 
+        private async Task LoadGroups()
+        {
+            Input.AvailableGroups = new SelectList(
+                await _context.Groups.OrderBy(g => g.Name).ToListAsync(),
+                nameof(Group.Id),
+                nameof(Group.Name));
+        }
+
         private async Task Authenticate(AuthUser user)
         {
-            var claims = new[]
-            {
-                // Если хотите, чтобы в Navigation выводилось только имя, передавайте user.FirstName:
-                new Claim(ClaimTypes.Name, user.FirstName),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role)
-            };
+            var claims = new List<Claim>
+        {
+            new(ClaimTypes.Name, user.FirstName),
+            new(ClaimTypes.Email, user.Email),
+            new(ClaimTypes.Role, user.Role)
+        };
 
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            if (user.GroupId.HasValue)
+            {
+                claims.Add(new("GroupId", user.GroupId.Value.ToString()));
+            }
+
+            var identity = new ClaimsIdentity(claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
             var principal = new ClaimsPrincipal(identity);
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal);
         }
     }
 }
