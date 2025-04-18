@@ -25,6 +25,8 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+        
+
     .login-container {
         max-width: 500px;
         margin: 2rem auto;
@@ -41,6 +43,7 @@
             opacity: 1;
             transform: translateY(0);
         }
+
     }
 
     .login-card {
@@ -55,7 +58,7 @@
     }
 
         .login-card:hover {
-            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+            box-shadow: 0 12px 20px rgba(250, 250, 250);
             transform: translateY(-3px);
         }
 
@@ -80,11 +83,12 @@
         justify-content: center;
         margin: -45px auto 15px;
         border: 4px solid white;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        box-shadow: 0 4px 12px rgba(250, 250, 250);
         font-size: 2.5rem;
         position: relative;
         z-index: 2;
         animation: float 4s ease-in-out infinite, bounce 2s ease-in-out infinite;
+        box-shadow: 0 0 15px rgba(37, 117, 252, 0.8), 0 0 30px rgba(106, 17, 203, 0.6);
     }
 
     @@keyframes float {
@@ -236,6 +240,79 @@
         .remember-me input {
             margin-right: 8px;
         }
+
+    body.dark-theme {
+        background: #000000 !important;
+        color: #e0e0e0;
+    }
+
+        body.dark-theme .login-card {
+            background: #1e1e1e;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        body.dark-theme .login-title {
+            color: #ffffff;
+            <<<<<<< Updated upstream ======= >>>>>>> Stashed changes
+        }
+
+        body.dark-theme .form-label,
+        body.dark-theme .register-link,
+        body.dark-theme .register-link a {
+            color: #cccccc;
+            <<<<<<< Updated upstream ======= >>>>>>> Stashed changes
+        }
+
+        body.dark-theme .form-control {
+            background-color: #2c2c2c;
+            color: #f0f0f0;
+            border: 1px solid #444;
+            <<<<<<< Updated upstream ======= >>>>>>> Stashed changes
+        }
+
+            body.dark-theme .form-control:hover {
+                background-color: #333;
+                border-color: #666;
+            }
+
+            body.dark-theme .form-control:focus {
+                border-color: var(--primary-light);
+                box-shadow: 0 0 0 0.25rem rgba(0,0,0,);
+            }
+        /* Для тёмной темы — тень у текста "Вход" */
+        body.dark-theme .title-word {
+            color: #ffffff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+        }
+
+            /* Для тёмной темы — более тёмный градиент под словом */
+            body.dark-theme .title-word::after {
+                background: linear-gradient(135deg, #6a11cb, #2575fc); /* можно поиграть с цветами */
+            }
+
+        body.dark-theme .title-word {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            font-weight: 600;
+        }
+
+        body.dark-theme .title-word {
+            background: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            /* Убираем обводку и блеск */
+            text-shadow: none;
+            filter: none;
+            /* Тонкое сглаживание */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
 </style>
 
 <div class="container py-5">
