@@ -27,7 +27,8 @@ namespace dancelog.Pages.Account
         {
             Input = new RegisterModel
             {
-                AvailableGroups = await GetGroupsSelectList()
+                AvailableGroups = await GetGroupsSelectList(),
+                SelectedRole = "Ученик"
             };
         }
 
@@ -52,7 +53,7 @@ namespace dancelog.Pages.Account
             if (await _context.AuthUsers.AnyAsync(u => u.Email == Input.Email))
             {
                 ModelState.AddModelError("Input.Email", "Пользователь с таким email уже существует");
-                await LoadGroups();
+                await GetGroupsSelectList();
                 return Page();
             }
 
@@ -93,14 +94,6 @@ namespace dancelog.Pages.Account
 
             await Authenticate(user);
             return RedirectToPage("/Index");
-        }
-
-        private async Task LoadGroups()
-        {
-            Input.AvailableGroups = new SelectList(
-                await _context.Groups.OrderBy(g => g.Name).ToListAsync(),
-                nameof(Group.Id),
-                nameof(Group.Name));
         }
 
         private async Task Authenticate(AuthUser user)
