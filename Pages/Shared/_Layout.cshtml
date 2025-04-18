@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,12 +9,17 @@
     <link rel="stylesheet" href="~/dancelog.styles.css" asp-append-version="true" />
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/5969/5969724.png" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
     <style>
         :root {
             --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         }
 
         body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        * {
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
@@ -52,10 +57,6 @@
             .nav-link:hover {
                 color: #0d6efd !important;
                 transform: translateY(-2px);
-            }
-
-            .nav-link::after {
-                display: none !important;
             }
 
         .no-underline {
@@ -100,16 +101,20 @@
             font-family: inherit;
         }
 
-        @@keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-5px);
-            }
+        keyframes fadeIn {
+            from from:
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+
+        {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         }
 
         .dropdown-item {
@@ -138,10 +143,6 @@
                 padding-left: 18px;
             }
 
-                .dropdown-item:hover i {
-                    color: white !important;
-                }
-
             .dropdown-item i {
                 margin-right: 10px;
                 width: 18px;
@@ -166,7 +167,6 @@
                 transform: scale(1.1);
             }
 
-        /* Логотип и иконка пользователя с градиентом */
         .gradient-icon {
             display: inline-block;
             background: var(--primary-gradient);
@@ -174,6 +174,127 @@
             -webkit-text-fill-color: transparent;
             color: transparent;
         }
+
+        body.dark-theme {
+            background-color: #000000;
+            color: #e0e0e0;
+        }
+
+            body.dark-theme p,
+            body.dark-theme li,
+            body.dark-theme td,
+            body.dark-theme th,
+            body.dark-theme input,
+            body.dark-theme label,
+            body.dark-theme h1,
+            body.dark-theme h2,
+            body.dark-theme h3,
+            body.dark-theme h4,
+            body.dark-theme h5,
+            body.dark-theme h6 {
+                color: #e0e0e0;
+            }
+
+            body.dark-theme a:not(.nav-link):not(.dropdown-item) {
+                color: #7aa7ff;
+            }
+
+            body.dark-theme a:hover {
+                color: #a6c8ff;
+            }
+
+            body.dark-theme table {
+                color: #e0e0e0;
+            }
+
+                body.dark-theme table th,
+                body.dark-theme table td {
+                    border-color: rgba(255, 255, 255, 0.1);
+                }
+
+            body.dark-theme input,
+            body.dark-theme textarea,
+            body.dark-theme select {
+                background-color: #000000;
+                border: 1px solid #444;
+                color: #fff;
+            }
+
+                body.dark-theme input::placeholder,
+                body.dark-theme textarea::placeholder {
+                    color: #aaa;
+                }
+
+            body.dark-theme .nav-link i,
+            body.dark-theme .dropdown-item i {
+                background: var(--primary-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                color: transparent;
+            }
+
+            body.dark-theme #themeToggle i {
+                background: none !important;
+                -webkit-text-fill-color: initial !important;
+                color: #cccccc !important;
+            }
+
+            body.dark-theme .logo-img {
+                filter: drop-shadow(0 0 2px rgba(240, 240, 240));
+            }
+
+            body.dark-theme .user-icon {
+                background: var(--primary-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                color: transparent;
+            }
+
+            body.dark-theme .navbar {
+                background-color: #000000 !important;
+                border-bottom: 1px solid #000000;
+
+            }
+
+            body.dark-theme .navbar {
+                border-bottom: 1px solid #000000 !important;
+                box-shadow: none !important;
+            }
+
+            body.dark-theme .dropdown-menu {
+                background-color: #000000;
+            }
+
+            body.dark-theme .dropdown-item {
+                color: #ccc;
+            }
+
+                body.dark-theme .dropdown-item:hover {
+                    background: linear-gradient(135deg, #444 0%, #666 100%);
+                    color: black !important;
+                }
+
+            body.dark-theme .btn-outline-secondary {
+                color: #ccc;
+                border-color: #000000;
+            }
+
+                body.dark-theme .btn-outline-secondary:hover {
+                    background-color: #444;
+                    color: #fff;
+                }
+
+            body.dark-theme h1,
+            body.dark-theme h2,
+            body.dark-theme h3,
+            body.dark-theme a:not(.nav-link):not(.dropdown-item),
+            body.dark-theme .nav-link span,
+            body.dark-theme .dropdown-item span {
+                background: var(--primary-gradient);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+
+            }
     </style>
 </head>
 <body>
@@ -243,6 +364,11 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li class="nav-item">
+                                <button id="themeToggle" class="btn btn-sm btn-outline-secondary ms-2" title="Сменить тему">
+                                    <i class="fas fa-moon"></i>
+                                </button>
+                            </li>
                         </ul>
                     }
                     else
@@ -265,6 +391,11 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li class="nav-item">
+                                <button id="themeToggle" class="btn btn-sm btn-outline-secondary ms-2" title="Сменить тему">
+                                    <i class="fas fa-moon"></i>
+                                </button>
+                            </li>
                         </ul>
                     }
                 </div>
@@ -278,10 +409,96 @@
         </main>
     </div>
 
+    <!-- 🎵 Sound effect -->
+    <audio id="themeSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7b8f5e4b35.mp3?filename=switch-click-106763.mp3" preload="auto"></audio>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+
+
+    <script>
+        const toggleBtn = document.getElementById('themeToggle');
+        const icon = toggleBtn.querySelector('i');
+        const logo = document.getElementById('logo');
+        const themeSound = document.getElementById('themeSound');
+        const userIcons = document.querySelectorAll('.user-icon');
+
+        function applyTheme(theme) {
+            const isDark = theme === 'dark';
+            document.body.classList.toggle('dark-theme', isDark);
+            icon.classList.toggle('fa-sun', isDark);
+            icon.classList.toggle('fa-moon', !isDark);
+
+            if (isDark) {
+                logo.classList.add('gradient-icon');
+                userIcons.forEach(icon => icon.classList.add('gradient-icon'));
+            } else {
+                logo.classList.remove('gradient-icon');
+                userIcons.forEach(icon => icon.classList.remove('gradient-icon'));
+            }
+
+            localStorage.setItem('theme', theme);
+        }
+
+        const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme') || (systemPrefersDark ? 'dark' : 'light');
+        applyTheme(savedTheme);
+
+        toggleBtn.addEventListener('click', () => {
+            themeSound.currentTime = 0;
+            themeSound.play();
+
+            const newTheme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+    </script>
+
+
+    <script>
+        const toggleBtn = document.getElementById('themeToggle');
+        const icon = toggleBtn.querySelector('i');
+        const logo = document.getElementById('logo');
+        const themeSound = document.getElementById('themeSound');
+        const userIcons = document.querySelectorAll('.user-icon');
+
+        function applyTheme(theme) {
+            const isDark = theme === 'dark';
+            document.body.classList.toggle('dark-theme', isDark);
+            icon.classList.toggle('fa-sun', isDark);
+            icon.classList.toggle('fa-moon', !isDark);
+
+            if (isDark) {
+                logo.classList.add('gradient-icon');
+                userIcons.forEach(icon => icon.classList.add('gradient-icon'));
+            } else {
+                logo.classList.remove('gradient-icon');
+                userIcons.forEach(icon => icon.classList.remove('gradient-icon'));
+            }
+
+            localStorage.setItem('theme', theme);
+        }
+
+        const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme') || (systemPrefersDark ? 'dark' : 'light');
+        applyTheme(savedTheme);
+
+        toggleBtn.addEventListener('click', () => {
+            toggleBtn.classList.add('clicked', 'glow');
+            themeSound.currentTime = 0;
+            themeSound.play();
+
+            setTimeout(() => {
+                toggleBtn.classList.remove('clicked', 'glow');
+            }, 400);
+
+            const newTheme = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+            applyTheme(newTheme);
+        });
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
+    <audio id="themeSound" src="~/sounds/theme-switch.mp3" preload="auto"></audio>
 </body>
 </html>
