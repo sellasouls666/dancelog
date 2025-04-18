@@ -28,10 +28,8 @@
 
         /* Темная тема */
         body.dark-theme {
-            background: linear-gradient(to bottom, #000000, #000000);
-            color: #e0e0e0;
+            background: linear-gradient(to bottom, #121212, #1a1a1a, #121212);
         }
-
 
     .register-container {
         max-width: 500px;
@@ -93,9 +91,6 @@
         animation: float 4s ease-in-out infinite, bounce 2s ease-in-out infinite;
     }
 
-    body.dark-theme .register-avatar {
-        background: var(--primary-dark);
-    }
 
     keyframes float {
         0%
@@ -196,7 +191,7 @@
     }
 
     body.dark-theme .btn-register {
-        background: var(--primary-dark);
+        background: var(--primary-gradient); /* добавляем градиент в темной теме */
     }
 
     .btn-register:hover {
