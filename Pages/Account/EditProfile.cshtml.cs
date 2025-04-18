@@ -2,10 +2,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using dancelog.Data;
-using dancelog.Models;
 using dancelog.Models.Auth;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
 
 namespace dancelog.Pages.Account
 {
@@ -20,14 +20,31 @@ namespace dancelog.Pages.Account
         }
 
         [BindProperty]
-        public AuthUser UserModel { get; set; }
-
-        [BindProperty]
-        public Student? StudentModel { get; set; }
+        public InputModel Input { get; set; }
 
         public string CurrentRole { get; set; }
 
-        public async Task<IActionResult> OnGet()
+        public class InputModel
+        {
+            [Required(ErrorMessage = "Имя обязательно")]
+            [Display(Name = "Имя")]
+            public string FirstName { get; set; }
+
+            [Required(ErrorMessage = "Фамилия обязательна")]
+            [Display(Name = "Фамилия")]
+            public string LastName { get; set; }
+
+            [Display(Name = "Отчество")]
+            [Required(ErrorMessage = "Отчество обязательно")]
+            public string MiddleName { get; set; }
+
+            [Required(ErrorMessage = "Email обязателен")]
+            [EmailAddress(ErrorMessage = "Некорректный email")]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
+        }
+
+        public IActionResult OnGet()
         {
             var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
             if (string.IsNullOrEmpty(userEmail))
@@ -35,38 +52,32 @@ namespace dancelog.Pages.Account
                 return RedirectToPage("/Account/Login");
             }
 
-            // Загружаем пользователя с связанными данными студента
-            var currentUser = await _context.AuthUsers
-                .Include(u => u.Student)
-                .FirstOrDefaultAsync(u => u.Email == userEmail);
-
+            var currentUser = _context.AuthUsers.FirstOrDefault(u => u.Email == userEmail);
             if (currentUser == null)
             {
                 return NotFound();
             }
 
-            UserModel = currentUser;
-            CurrentRole = currentUser.Role;
-
-            // Если пользователь - студент, загружаем его данные
-            if (currentUser.Role == "Ученик" && currentUser.Student != null)
+            Input = new InputModel
             {
-                StudentModel = currentUser.Student;
-            }
+                FirstName = currentUser.FirstName,
+                LastName = currentUser.LastName,
+                MiddleName = currentUser.MiddleName,
+                Email = currentUser.Email
+            };
+
+            CurrentRole = currentUser.Role;
 
             return Page();
         }
 
-        public async Task<IActionResult> OnPost()
+        public IActionResult OnPost()
         {
             if (!ModelState.IsValid)
             {
                 // Восстанавливаем роль при повторном отображении страницы
                 var postUserEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-                var postUser = await _context.AuthUsers
-                    .Include(u => u.Student)
-                    .FirstOrDefaultAsync(u => u.Email == postUserEmail);
-
+                var postUser = _context.AuthUsers.FirstOrDefault(u => u.Email == postUserEmail);
                 if (postUser != null)
                 {
                     CurrentRole = postUser.Role;
@@ -76,30 +87,18 @@ namespace dancelog.Pages.Account
             }
 
             var updateEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-            var userToUpdate = await _context.AuthUsers
-                .Include(u => u.Student)
-                .FirstOrDefaultAsync(u => u.Email == updateEmail);
-
+            var userToUpdate = _context.AuthUsers.FirstOrDefault(u => u.Email == updateEmail);
             if (userToUpdate == null)
             {
                 return NotFound();
             }
 
-            // Обновляем основные данные пользователя
-            userToUpdate.FirstName = UserModel.FirstName;
-            userToUpdate.LastName = UserModel.LastName;
-            userToUpdate.MiddleName = UserModel.MiddleName;
+            // Обновляем только изменяемые поля
+            userToUpdate.FirstName = Input.FirstName;
+            userToUpdate.LastName = Input.LastName;
+            userToUpdate.MiddleName = Input.MiddleName;
 
-            // Если пользователь - студент, обновляем и его данные
-            if (userToUpdate.Role == "Ученик" && userToUpdate.Student != null)
-            {
-                userToUpdate.Student.Surname = UserModel.LastName;
-                userToUpdate.Student.Name = UserModel.FirstName;
-                userToUpdate.Student.Patronymic = UserModel.MiddleName;
-                userToUpdate.Student.Email = UserModel.Email;
-            }
-
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return RedirectToPage("Profile");
         }
