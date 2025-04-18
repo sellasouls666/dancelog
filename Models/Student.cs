@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using dancelog.Models.Auth;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace dancelog.Models
@@ -29,5 +30,8 @@ namespace dancelog.Models
         [EmailAddress(ErrorMessage = "Некорректный email адрес")]
         [Display(Name = "Email")]
         public string? Email { get; set; }
+
+        public int AuthUserId { get; set; }
+        public AuthUser AuthUser { get; set; }
     }
 }
