@@ -18,5 +18,15 @@ namespace dancelog.Data
             public DbSet<Lesson> Lessons { get; set; }
             public DbSet<Attendance> AttendanceRecords { get; set; }
             public DbSet<AuthUser> AuthUsers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Student>()
+                .HasOne(s => s.AuthUser)
+                .WithOne(a => a.Student)
+                .HasForeignKey<Student>(s => s.AuthUserId)
+                .IsRequired();
+
+        }
     }
 }

@@ -393,23 +393,25 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
-        $(document).ready(function () {
-            // Обработка изменения роли
-            $('input[name="Input.SelectedRole"]').change(function () {
-                toggleGroupField();
-            });
-
-            // Инициализация при загрузке
-            toggleGroupField();
-
+        $(function () {
+            // Функция для переключения видимости поля группы
             function toggleGroupField() {
-                const isStudent = $('input[name="Input.SelectedRole"]:checked').val() === 'Ученик';
-                $('#Input_GroupId').closest('.mb-4').toggle(isStudent);
+                const isStudent = $('#roleStudent').is(':checked');
+                const groupField = $('#Input_GroupId').closest('.mb-4');
+
+                groupField.toggle(isStudent);
+                $('#Input_GroupId').prop('required', isStudent);
 
                 if (!isStudent) {
                     $('#Input_GroupId').val('');
                 }
             }
+
+            // Обработчик изменения радиокнопок
+            $('input[name="Input.SelectedRole"]').change(toggleGroupField);
+
+            // Инициализация при загрузке
+            toggleGroupField();
         });
     </script>
 }

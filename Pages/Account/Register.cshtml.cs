@@ -25,18 +25,24 @@ namespace dancelog.Pages.Account
 
         public async Task OnGet()
         {
-            await LoadGroups();
+            Input = new RegisterModel
+            {
+                AvailableGroups = await GetGroupsSelectList(),
+                SelectedRole = "Ученик"
+            };
+        }
+
+        private async Task<SelectList> GetGroupsSelectList()
+        {
+            var groups = await _context.Groups
+                .OrderBy(g => g.Name)
+                .ToListAsync();
+            return new SelectList(groups, "Id", "Name");
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await LoadGroups();
-
-            // Дополнительная валидация для студентов
-            if (Input.SelectedRole == "Ученик" && !Input.GroupId.HasValue)
-            {
-                ModelState.AddModelError("Input.GroupId", "Для студентов необходимо выбрать группу");
-            }
+            Input.AvailableGroups = await GetGroupsSelectList();
 
             if (!ModelState.IsValid)
             {
@@ -47,42 +53,47 @@ namespace dancelog.Pages.Account
             if (await _context.AuthUsers.AnyAsync(u => u.Email == Input.Email))
             {
                 ModelState.AddModelError("Input.Email", "Пользователь с таким email уже существует");
+                await GetGroupsSelectList();
                 return Page();
             }
 
-            // Проверка существования группы (если выбрана)
-            if (Input.GroupId.HasValue &&
-                !await _context.Groups.AnyAsync(g => g.Id == Input.GroupId.Value))
-            {
-                ModelState.AddModelError("Input.GroupId", "Выбранная группа не существует");
-                return Page();
-            }
+            // Определяем роль
+            string role = await _context.AuthUsers.AnyAsync() ? Input.SelectedRole : "Админ";
 
             // Создаем пользователя
             var user = new AuthUser
             {
-                LastName = Input.LastName,
                 FirstName = Input.FirstName,
+                LastName = Input.LastName,
                 MiddleName = Input.MiddleName,
                 Email = Input.Email,
-                Password = Input.Password, // В реальном приложении нужно хэшировать!
-                Role = _context.AuthUsers.Any() ? Input.SelectedRole : "Админ",
+                Password = Input.Password, // В реальном приложении хэшируйте пароль!
+                Role = role,
                 GroupId = Input.SelectedRole == "Ученик" ? Input.GroupId : null
             };
+
+            // Если регистрируется студент - создаем запись в Students
+            if (Input.SelectedRole == "Ученик")
+            {
+                var student = new Student
+                {
+                    Surname = Input.LastName,
+                    Name = Input.FirstName,
+                    Patronymic = Input.MiddleName,
+                    GroupId = Input.GroupId.Value,
+                    Email = Input.Email,
+                    AuthUser = user
+                };
+
+                _context.Students.Add(student);
+                user.Student = student;
+            }
 
             _context.AuthUsers.Add(user);
             await _context.SaveChangesAsync();
 
             await Authenticate(user);
             return RedirectToPage("/Index");
-        }
-
-        private async Task LoadGroups()
-        {
-            Input.AvailableGroups = new SelectList(
-                await _context.Groups.OrderBy(g => g.Name).ToListAsync(),
-                nameof(Group.Id),
-                nameof(Group.Name));
         }
 
         private async Task Authenticate(AuthUser user)
