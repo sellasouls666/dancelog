@@ -1,55 +1,152 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Журнал посещаемости студента";
+    ViewData["Title"] = "DanceLog";
 }
 
 <style>
-    /* Анимации кнопок в едином стиле */
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        --primary-light: #2575fc;
+        --primary-dark: #6a11cb;
+        --text-light: #FFFFFF;
+        --text-muted: rgba(255, 255, 255, 0.85);
+        --card-radius: 16px;
+        --transition: all 0.3s ease;
+        --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    body {
+        margin: 0;
+        background: #f5f5f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+    }
+
+    /* Hero Section Edge-to-Edge */
+    .hero {
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+        width: 100vw;
+        background: var(--primary-gradient);
+        color: var(--text-light);
+        padding: 80px 0;
+        text-align: center;
+        overflow: hidden;
+    }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+    /* Основные кнопки */
     .btn-main-action {
-        transition: all 0.2s ease;
-        border-width: 1px;
+        background: transparent;
+        color: var(--text-light);
+        border: 2px solid var(--text-light);
+        border-radius: 50px;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none;
     }
 
         .btn-main-action:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--text-light);
+            color: var(--text-light);
+            transform: translateY(-3px);
+            text-decoration: none;
         }
 
-    /* Анимация заголовка */
-    .welcome-title {
-        animation: fadeInUp 0.6s ease-out;
+    /* Feature Cards */
+    .features {
+        padding: 60px 0;
     }
 
-    @@keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
+    .feature-card {
+        background: #fff;
+        border-radius: var(--card-radius);
+        padding: 2rem;
+        box-shadow: var(--shadow-lg);
+        transition: var(--transition);
+        text-align: center;
+    }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
+        .feature-card i {
+            font-size: 2.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
         }
-    }
+
+        .feature-card h5 {
+            margin-top: 0.5rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: #666;
+            font-size: 0.95rem;
+        }
 </style>
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8 text-center">
-            <div class="welcome-title">
-                <h1 class="display-4 fw-bold mb-4">Добро пожаловать в DanceLog</h1>
-                <h2 class="display-6 fw-normal text-muted mb-4">Журнал посещаемости</h2>
-                <p class="fs-5 text-muted mb-5">Здесь вы можете вести учет посещаемости студентов.</p>
-            </div>
+<div class="hero">
+    <div class="container">
+        <h1>DanceLog</h1>
+        <p>Управляйте посещаемостью студентов легко и стильно</p>
+        <a href="/ListOfAttendance" class="btn-main-action me-3">
+            <i class="fas fa-clipboard-list me-2"></i>Посещаемость
+        </a>
+        <a href="/ListOfStudents" class="btn-main-action">
+            <i class="fas fa-users me-2"></i>Студенты
+        </a>
+    </div>
+</div>
 
-            <div class="d-flex justify-content-center gap-3">
-                <a href="/ListOfAttendance" class="btn btn-outline-dark btn-main-action px-4 py-2">
-                    <i class="fas fa-clipboard-list me-2"></i>Посещаемость
-                </a>
-                <a href="/ListOfStudents" class="btn btn-outline-dark btn-main-action px-4 py-2">
-                    <i class="fas fa-users me-2"></i>Студенты
-                </a>
+<div class="features container">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="feature-card">
+                <i class="fas fa-chart-line"></i>
+                <h5>Аналитика посещаемости</h5>
+                <p>Отслеживайте динамику посещений и выявляйте закономерности за считанные минуты.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <i class="fas fa-user-graduate"></i>
+                <h5>Управление студентами</h5>
+                <p>Добавляйте, редактируйте и группируйте студентов по курсам и группам.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <i class="fas fa-file-export"></i>
+                <h5>Экспорт отчётов</h5>
+                <p>Сохраняйте отчёты в формате HTML и делитесь ими с коллегами.</p>
             </div>
         </div>
     </div>
