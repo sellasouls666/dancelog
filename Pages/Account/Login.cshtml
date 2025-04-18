@@ -273,17 +273,42 @@
 
             body.dark-theme .form-control:focus {
                 border-color: var(--primary-light);
-                box-shadow: 0 0 0 0.25rem rgba(37, 117, 252, 0.25);
+                box-shadow: 0 0 0 0.25rem rgba(0,0,0,);
+            }
+        /* Для тёмной темы — тень у текста "Вход" */
+        body.dark-theme .title-word {
+            color: #ffffff;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+        }
+
+            /* Для тёмной темы — более тёмный градиент под словом */
+            body.dark-theme .title-word::after {
+                background: linear-gradient(135deg, #000000, #888); /* можно поиграть с цветами */
             }
 
-        body.dark-theme .text-danger {
-            color: #ff6b6b;
+        body.dark-theme .title-word {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            font-weight: 600;
         }
 
-        body.dark-theme .register-link a:hover {
-            color: var(--primary-light);
+        body.dark-theme .title-word {
+            background: var(--primary-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            /* Убираем обводку и блеск */
+            text-shadow: none;
+            filter: none;
+            /* Тонкое сглаживание */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        
+  
 </style>
 
 <div class="container py-5">
