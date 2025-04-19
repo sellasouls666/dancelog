@@ -18,6 +18,9 @@
         --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
         --card-border-radius: 16px;
         --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        --bg-color: #ffffff;
+        --card-bg: #ffffff;
+        --text-color: #212529; /* Черный цвет текста по умолчанию */
     }
 
     body {
@@ -34,20 +37,21 @@
             opacity: 0;
             transform: translateY(20px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
 
-    /* Стили для карточки формы */
     .form-card {
         border: none;
         border-radius: var(--card-border-radius);
         overflow: hidden;
         box-shadow: var(--shadow-lg);
-        background: white;
+        background: var(--card-bg);
         transition: var(--transition);
+        color: var(--text-color);
     }
 
     .card-header {
@@ -79,10 +83,9 @@
         padding: 2rem;
     }
 
-    /* Стили для формы */
     .form-label {
         font-weight: 500;
-        color: #495057;
+        color: var(--text-color);
         margin-bottom: 0.5rem;
     }
 
@@ -92,19 +95,21 @@
         border: 1px solid var(--border-color);
         transition: var(--transition);
         box-shadow: var(--shadow-sm);
+        background-color: var(--bg-color);
+        color: var(--text-color); /* Важное изменение - цвет текста */
     }
 
         .form-control:focus {
-            border-color: #6a11cb;
+            border-color: var(--primary-dark);
             box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
         }
 
     .text-danger {
         font-size: 0.85rem;
         margin-top: 0.25rem;
+        color: #dc3545;
     }
 
-    /* Стили для кнопок */
     .btn {
         border-radius: 12px;
         padding: 10px 24px;
@@ -137,26 +142,28 @@
     .btn-outline-secondary {
         border: 1px solid var(--border-color);
         color: var(--text-muted);
+        background-color: transparent;
     }
 
         .btn-outline-secondary:hover {
-            background: var(--light-gray);
-            color: #495057;
+            background: var(--lighter-gray);
+            color: var(--text-color);
         }
 
     @@keyframes gradientFlow {
         0% {
             background-position: 0% 50%;
         }
+
         50% {
             background-position: 100% 50%;
         }
+
         100% {
             background-position: 0% 50%;
         }
     }
 
-    /* Стили для выбора роли */
     .role-selector {
         display: flex;
         gap: 10px;
@@ -183,11 +190,12 @@
             padding: 15px 10px;
             border: 2px solid var(--border-color);
             border-radius: 8px;
-            background-color: white;
+            background-color: var(--bg-color);
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
             height: 100%;
+            color: var(--text-color);
         }
 
             .role-option label:hover {
@@ -213,11 +221,14 @@
         color: var(--primary-dark);
     }
 
-    /* Стили для выбора группы */
     .group-select-container {
         display: none;
         margin-bottom: 20px;
         animation: fadeIn 0.5s ease-out;
+        background-color: var(--bg-color); /* Добавлено */
+        border-radius: 10px; /* Добавлено */
+        padding: 15px; /* Добавлено */
+        border: 1px solid var(--border-color); /* Добавлено */
     }
 
     .group-select {
@@ -227,14 +238,15 @@
         border: 1px solid var(--border-color);
         transition: var(--transition);
         box-shadow: var(--shadow-sm);
+        background-color: var(--bg-color);
+        color: var(--text-color);
     }
 
         .group-select:focus {
-            border-color: #6a11cb;
+            border-color: var(--primary-dark);
             box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
         }
 
-    /* Анимация при загрузке */
     .form-group {
         animation: slideUp 0.5s ease-out forwards;
         opacity: 0;
@@ -245,13 +257,13 @@
             opacity: 0;
             transform: translateY(20px);
         }
+
         to {
             opacity: 1;
             transform: translateY(0);
         }
     }
 
-    /* Задержки для анимации полей формы */
     .form-group:nth-child(1) {
         animation-delay: 0.1s;
     }
@@ -271,10 +283,76 @@
     .form-group:nth-child(5) {
         animation-delay: 0.5s;
     }
+
+
+    select option {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+
+    .dark-theme {
+        --bg-color: #1a1a1a;
+        --card-bg: #121212;
+        --text-color: #f8f9fa; /* Белый цвет текста в темной теме */
+        --light-gray: #121212;
+        --lighter-gray: #121212;
+        --border-color: #495057;
+        --primary-gradient: linear-gradient(135deg, #8a2be2 0%, #4b6cb7 100%);
+        --primary-light: #4b6cb7;
+        --primary-dark: #8a2be2;
+        --text-muted: #adb5bd;
+        --text-danger: #ff6b6b;
+    }
+
+        .dark-theme .form-control {
+            background-color: var(--light-gray);
+            color: var(--text-color); /* Убедимся, что цвет текста белый */
+        }
+
+        .dark-theme .group-select {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+        }
+
+        .dark-theme .role-option label {
+            background-color: var(--light-gray);
+        }
+
+        .dark-theme .btn-outline-secondary {
+            background-color: transparent;
+        }
+
+            .dark-theme .btn-outline-secondary:hover {
+                background-color: var(--lighter-gray);
+            }
+
+    .theme-toggle-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    .theme-toggle-btn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+
+    .dark-theme .theme-toggle-btn {
+        color: var(--text-color);
+    }
 </style>
 
 <div class="container py-5">
-    <div class="form-card">
+    <div class="form-card" id="formCard">
+        <div class="theme-toggle-container">
+            <button class="theme-toggle-btn" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
         <div class="card-header">
             <h4 class="mb-0">@ViewData["Title"]</h4>
         </div>
@@ -315,7 +393,6 @@
                     <span asp-validation-for="User.Password" class="text-danger"></span>
                 </div>
 
-                <!-- Красивый выбор роли -->
                 <div class="mb-4 form-group">
                     <label class="form-label">Роль пользователя</label>
                     <div class="role-selector">
@@ -344,7 +421,6 @@
                     <span asp-validation-for="User.Role" class="text-danger"></span>
                 </div>
 
-                <!-- Выбор группы (только для учеников) -->
                 <div id="groupSelectContainer" class="group-select-container form-group">
                     <label asp-for="User.GroupId" class="form-label">Группа</label>
                     <select asp-for="User.GroupId" asp-items="@Model.GroupOptions" class="group-select">
@@ -391,7 +467,7 @@
             function toggleGroupSelect(show) {
                 const container = document.getElementById('groupSelectContainer');
                 const select = container.querySelector('select');
-                
+
                 if (show) {
                     container.style.display = 'block';
                     select.setAttribute('required', 'required');
@@ -401,6 +477,24 @@
                     select.value = '';
                 }
             }
+
+            // Переключение темы
+            const themeToggle = document.getElementById('themeToggle');
+            const formCard = document.getElementById('formCard');
+
+            // Проверяем сохраненную тему
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                formCard.classList.add('dark-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            themeToggle.addEventListener('click', function() {
+                formCard.classList.toggle('dark-theme');
+                const isDark = formCard.classList.contains('dark-theme');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
         });
     </script>
 }

@@ -17,6 +17,13 @@
         --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
         --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
         --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        --bg-color: #ffffff;
+        --card-bg: #ffffff;
+        --text-color: #212529;
+    }
+
+    body {
+        background-color: #f5f7fa;
     }
 
     .profile-container {
@@ -42,8 +49,9 @@
         border-radius: 14px;
         overflow: hidden;
         box-shadow: var(--shadow-lg);
-        background: white;
+        background: var(--card-bg);
         position: relative;
+        color: var(--text-color);
     }
 
     .form-group {
@@ -61,24 +69,26 @@
     }
 
     .profile-field {
-        border: 1px solid var(--border-color);
+        border: none;
         border-radius: 10px;
         padding: 12px 16px;
-        background-color: white;
+        background-color: var(--light-gray);
         transition: var(--transition);
         width: 100%;
         font-size: 0.95rem;
+        color: var(--text-color);
+        box-shadow: var(--shadow-sm);
     }
 
         .profile-field:hover {
-            border-color: #bdbdbd;
-            box-shadow: var(--shadow-sm);
+            box-shadow: var(--shadow-md);
+            background-color: var(--lighter-gray);
         }
 
         .profile-field:focus {
-            border-color: var(--primary-light);
             box-shadow: 0 0 0 3px rgba(37, 117, 252, 0.2);
             outline: none;
+            background-color: var(--bg-color);
         }
 
     .readonly-section {
@@ -86,7 +96,7 @@
         border-radius: 12px;
         padding: 1.5rem;
         margin-top: 1.5rem;
-        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
     }
 
     .readonly-section-title {
@@ -99,7 +109,6 @@
     .profile-field-readonly {
         background-color: var(--lighter-gray);
         cursor: not-allowed;
-        opacity: 0.9;
     }
 
     .action-buttons {
@@ -124,6 +133,7 @@
         background: var(--primary-gradient);
         border: none;
         color: white;
+        box-shadow: var(--shadow-sm);
     }
 
         .btn-primary:hover {
@@ -132,15 +142,38 @@
         }
 
     .btn-outline {
-        border: 1px solid var(--border-color);
-        background: white;
+        border: 2px solid transparent;
+        background: var(--bg-color);
         color: var(--text-muted);
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
     }
+
+        .btn-outline::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background: var(--primary-gradient) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            z-index: -1;
+            transition: var(--transition);
+        }
+
+
 
         .btn-outline:hover {
             background: var(--light-gray);
             transform: translateY(-2px);
             box-shadow: var(--shadow-sm);
+            color: var(--primary-dark);
         }
 
     .btn i {
@@ -153,6 +186,7 @@
         margin-bottom: 2rem;
         position: relative;
         padding-bottom: 1rem;
+        color: var(--text-color);
     }
 
         .profile-title::after {
@@ -174,10 +208,78 @@
         display: block;
         text-align: left;
     }
+
+    /* Темная тема */
+    .dark-theme {
+        --bg-color: #121212;
+        --card-bg: #121212;
+        --text-color: #f8f9fa;
+        --light-gray: #343a40;
+        --lighter-gray: #495057;
+        --border-color: #495057;
+        --text-muted: #adb5bd;
+        --primary-gradient: linear-gradient(135deg, #8a2be2 0%, #4b6cb7 100%);
+    }
+
+        .dark-theme body {
+            background-color: #121212;
+        }
+
+        .dark-theme .profile-field {
+            background-color: #2d2d2d;
+            color: #f8f9fa;
+        }
+
+            .dark-theme .profile-field:hover {
+                background-color: #3d3d3d;
+            }
+
+            .dark-theme .profile-field:focus {
+                background-color: #2d2d2d;
+            }
+
+        .dark-theme .profile-field-readonly {
+            background-color: #3d3d3d;
+        }
+
+        .dark-theme .readonly-section {
+            background-color: #2d2d2d;
+        }
+
+        .dark-theme .btn-outline {
+            background-color: #2d2d2d;
+            border-color: #3d3d3d;
+            color: #e0e0e0;
+        }
+
+            .dark-theme .btn-outline:hover {
+                color: var(--primary-light);
+            }
+
+    /* Переключатель темы */
+    .theme-toggle-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+
+    .theme-toggle-btn {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
 </style>
 
 <div class="container py-4">
-    <div class="profile-container">
+    <div class="profile-container" id="profileContainer">
+        <div class="theme-toggle-container">
+            <button class="theme-toggle-btn" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+
         <div class="profile-card">
             <div class="card-body p-4 p-lg-5">
                 <h2 class="profile-title">@ViewData["Title"]</h2>
@@ -241,4 +343,24 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const profileContainer = document.getElementById('profileContainer');
+
+            // Проверяем сохраненную тему
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                profileContainer.classList.add('dark-theme');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+
+            themeToggle.addEventListener('click', function() {
+                profileContainer.classList.toggle('dark-theme');
+                const isDark = profileContainer.classList.contains('dark-theme');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            });
+        });
+    </script>
 }
