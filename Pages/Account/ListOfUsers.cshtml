@@ -454,6 +454,69 @@
             background: var(--primary-gradient);
             color: white;
         }
+    @@keyframes pulse {
+        0%
+
+    {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.9;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    }
+
+    /* Анимация для аватарок пользователей */
+    .user-avatar i {
+        animation: pulse 3s infinite ease-in-out;
+        transition: all 0.3s ease;
+    }
+
+    /* Разные задержки для асинхронной анимации */
+    .user-card:nth-child(1) .user-avatar i {
+        animation-delay: 0s;
+    }
+
+    .user-card:nth-child(2) .user-avatar i {
+        animation-delay: 0.5s;
+    }
+
+    .user-card:nth-child(3) .user-avatar i {
+        animation-delay: 1s;
+    }
+
+    .user-card:nth-child(4) .user-avatar i {
+        animation-delay: 1.5s;
+    }
+    /* и так далее для большего количества карточек */
+
+    /* Анимация для иконок действий (редактирование/удаление) */
+    .btn-action i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-action:hover i {
+        transform: scale(1.2);
+        animation: none; /* Отключаем пульсацию при наведении */
+    }
+
+    /* Для темной темы добавляем свечение */
+    .dark-theme .user-avatar i {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Анимация для иконки в состоянии "нет пользователей" */
+    .empty-state-icon i {
+        animation: pulse 2.5s infinite ease-in-out;
+    }
 
 </style>
 
