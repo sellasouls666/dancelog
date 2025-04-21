@@ -8,28 +8,66 @@
     <h1>@ViewData["Title"]</h1>
 
     <form method="post">
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
         <input type="hidden" asp-for="Lesson.Id" />
 
         <div class="mb-3">
+            <label asp-for="Lesson.Name" class="form-label">Название урока</label>
+            <input asp-for="Lesson.Name" class="form-control" />
+            <span asp-validation-for="Lesson.Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
             <label asp-for="Lesson.GroupId" class="form-label">Группа</label>
-            <select asp-for="Lesson.GroupId" class="form-select" asp-items="@Model.Groups">
+            <select asp-for="Lesson.GroupId"
+                    class="form-select"
+                    asp-items="@Model.Groups">
                 <option value="">Выберите группу</option>
             </select>
             <span asp-validation-for="Lesson.GroupId" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="Lesson.DateTime" class="form-label">Дата и время</label>
-            <input asp-for="Lesson.DateTime" type="datetime-local" class="form-control" />
-            <span asp-validation-for="Lesson.DateTime" class="text-danger"></span>
+            <label asp-for="LessonDate" class="form-label">Дата</label>
+            <input asp-for="LessonDate"
+                   type="date"
+                   asp-format="{0:yyyy-MM-dd}"
+                   class="form-control" />
+            <span asp-validation-for="LessonDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="SelectedTimeSlot" class="form-label">Время</label>
+            <select asp-for="SelectedTimeSlot" class="form-select">
+                <option value="">Выберите время</option>
+                <option value="First">Первая пара (8:00–9:35)</option>
+                <option value="Second">Вторая пара (9:45–11:20)</option>
+                <option value="Third">Третья пара (11:50–13:25)</option>
+                <option value="Fourth">Четвёртая пара (13:35–15:10)</option>
+                <option value="Extra">Доп. урок</option>
+            </select>
+            <span asp-validation-for="SelectedTimeSlot" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3" id="extraTimeDiv" style="display:none;">
+            <label asp-for="ExtraTime" class="form-label">Время для доп. урока</label>
+            <input asp-for="ExtraTime" type="time" class="form-control" />
+            <span asp-validation-for="ExtraTime" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-primary">Сохранить</button>
-
-        <a asp-page="./ListOfLessons" class="btn btn-secondary">Отмена</a>
+        <a asp-page="./ListOfLessons"
+           class="btn btn-secondary ms-2">Отмена</a>
     </form>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        var ts = document.querySelector('select[name="SelectedTimeSlot"]');
+        var ex = document.getElementById('extraTimeDiv');
+        ts.addEventListener('change', () => ex.style.display = ts.value === 'Extra' ? 'block' : 'none');
+        if (ts.value === 'Extra') ex.style.display = 'block';
+    </script>
 }
