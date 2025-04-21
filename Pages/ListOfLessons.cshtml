@@ -1,0 +1,86 @@
+﻿@page
+@model dancelog.Pages.ListOfLessonsModel
+@{
+    ViewData["Title"] = "Расписание занятий";
+}
+
+<div class="container py-4">
+    @if (Model.Lessons != null && Model.Lessons.Any())
+    {
+        <div class="d-flex justify-content-between align-items-center page-header">
+            <h1>@ViewData["Title"]</h1>
+            @if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
+            {
+                <a href="@Url.Page("Lesson", new { id = 0 })" class="btn btn-create btn-lesson-action">
+                    <i class="fas fa-plus me-1"></i> Добавить занятие
+                </a>
+            }
+        </div>
+
+        <div class="row g-4">
+            @foreach (var lesson in Model.Lessons)
+            {
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-content">
+                                <h5 class="card-title">@lesson.DateTime.ToString("dd.MM.yyyy HH:mm")</h5>
+                                @if (lesson.Group != null)
+                                {
+                                    <span class="badge-course">
+                                        <i class="fas fa-users me-1"></i> @lesson.Group.Name
+                                    </span>
+                                }
+                            </div>
+                            <div class="action-buttons">
+                                @if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
+                                {
+                                    <a href="@Url.Page("Lesson", new { id = lesson.Id })"
+                                       class="btn btn-sm btn-outline-secondary btn-lesson-action" title="Редактировать">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                }
+                                @if (User.IsInRole("Админ") || User.IsInRole("Учитель")) 
+                                {
+                                    <a href="javascript:void(0);"
+                                       onclick="confirmDelete(@lesson.Id)"
+                                       class="btn btn-sm btn-outline-secondary btn-lesson-action" title="Удалить">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-5 empty-state">
+            <div class="card mx-auto" style="max-width: 400px;">
+                <div class="card-body py-5">
+                    <h4 class="mt-3">Нет добавленных занятий</h4>
+                    @if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
+                    {
+                        <p class="text-muted">Нажмите кнопку ниже, чтобы добавить занятие</p>
+                        <a href="@Url.Page("Lesson", new { id = 0 })"
+                           class="btn btn-create btn-lesson-action mt-3">
+                            <i class="fas fa-plus me-1"></i> Добавить новое занятие
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(id) {
+            if (confirm('Вы уверены, что хотите удалить это занятие?')) {
+                window.location.href = '@Url.Page("LessonDelete")' + '?id=' + id;
+            }
+        }
+    </script>
+}

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dancelog.Models
 {
@@ -6,10 +7,17 @@ namespace dancelog.Models
     {
         public int Id { get; set; }
 
-        [Required]
-        public required Course Course { get; set; }
+        [Required(ErrorMessage = "Необходимо выбрать группу")]
+        [Display(Name = "Группа")]
+        public int GroupId { get; set; } // Внешний ключ
 
-        [Required]
-        public required DateTime DateTime { get; set; }
+        [ForeignKey("GroupId")]
+        [Display(Name = "Группа")]
+        public Group? Group { get; set; }
+
+        [Required(ErrorMessage = "Дата и время обязательны")]
+        [Display(Name = "Дата и время")]
+        [DataType(DataType.DateTime)]
+        public DateTime DateTime { get; set; } = DateTime.Now;
     }
 }

@@ -1,0 +1,35 @@
+﻿@page
+@model dancelog.Pages.LessonModel
+@{
+    ViewData["Title"] = Model.IsNew ? "Добавить занятие" : "Редактировать занятие";
+}
+
+<div class="container py-4">
+    <h1>@ViewData["Title"]</h1>
+
+    <form method="post">
+        <input type="hidden" asp-for="Lesson.Id" />
+
+        <div class="mb-3">
+            <label asp-for="Lesson.GroupId" class="form-label">Группа</label>
+            <select asp-for="Lesson.GroupId" class="form-select" asp-items="@Model.Groups">
+                <option value="">Выберите группу</option>
+            </select>
+            <span asp-validation-for="Lesson.GroupId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Lesson.DateTime" class="form-label">Дата и время</label>
+            <input asp-for="Lesson.DateTime" type="datetime-local" class="form-control" />
+            <span asp-validation-for="Lesson.DateTime" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+
+        <a asp-page="./ListOfLessons" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
