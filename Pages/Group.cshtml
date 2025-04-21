@@ -6,31 +6,57 @@
 
 <style>
     :root {
+        /* === Основные цвета (светлая тема) === */
         --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         --primary-light: #2575fc;
         --primary-dark: #6a11cb;
         --text-muted: #6c757d;
-        --light-gray: #f8f9fa;
-        --lighter-gray: #f0f0f0;
         --border-color: #e0e0e0;
         --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
         --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
         --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
         --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        --bg-page: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
+        --card-bg: #ffffff;
+        --table-bg: #ffffff;
+        --lighter-gray: #f0f0f0;
+        --form-bg: #f0f0f0; /* фон полей в светлой теме */
+        --form-bg-hover: #eaeaea;
+        --form-bg-focus: #ffffff;
+        --text-color: #212529;
     }
 
     body {
-        background: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
+        background: var(--bg-page);
         min-height: 100vh;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-color);
     }
 
+        /* === Тёмная тема === */
+        body.dark-theme {
+            --bg-page: #000000;
+            --card-bg: #2a2a2a;
+            --table-bg: #3a3a3a;
+            --lighter-gray: #2a2a2a;
+            --form-bg: #3a3a3a;
+            --form-bg-hover: #4a4a4a;
+            --form-bg-focus: #4a4a4a;
+            --border-color: #444444;
+            --text-muted: #a0a0a0;
+            --text-color: #f1f1f1;
+            --form-bg: #3a3a3a; /* фон по умолчанию */
+            --form-bg-hover: #4a4a4a; /* при наведении */
+            --form-bg-focus: #4a4a4a; /* при фокусе */
+        }
+
+    /* Карточки */
     .card {
         border: none;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: var(--shadow-sm);
-        background: white;
+        background: var(--card-bg);body.dark-theme .form-control
         transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
 
@@ -44,82 +70,49 @@
         color: #fff;
     }
 
+    /* Формы */
     .form-label {
         font-weight: 500;
-        color: #343a40;
+        color: var(--text-color);
         display: block;
         margin-bottom: 0.5rem;
     }
 
     .form-control {
+        background-color: var(--form-bg);
         border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 10px 15px;
-        background-color: var(--lighter-gray);
+        color: var(--text-color);
         transition: var(--transition);
     }
 
+    body.dark-theme .form-control {
+        background-color: var(--form-bg) !important;
+        color: var(--text-color) !important;
+    }
+
         .form-control:hover {
-            border-color: #bdbdbd;
-            background-color: #fff;
-            transform: translateY(-1px);
+        background-color: var(--form-bg-hover) !important;
+            border-color: var(--primary-light);
             box-shadow: var(--shadow-sm);
         }
 
         .form-control:focus {
+        background-color: var(--form-bg-hover) !important;
             border-color: var(--primary-light);
-            box-shadow: 0 0 0 0.25rem rgba(37, 117, 252, 0.25);
+            box-shadow: 0 0 0 0.25rem rgba(37,117,252,0.25);
+            outline: none;
         }
 
-    /* Стили для выбора курса как панели */
-    .course-selector {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
+    body.dark-theme .form-control::placeholder {
+        color: #bbb;
+        opacity: 1;
     }
 
-    .course-option {
-        flex: 1 0 calc(50% - 10px);
-        position: relative;
-    }
+    
 
-        .course-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .course-option label {
-            display: block;
-            padding: 12px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            background-color: white;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-            font-weight: 500;
-            color: #343a40;
-        }
-
-            .course-option label:hover {
-                border-color: var(--primary-light);
-                transform: translateY(-2px);
-                box-shadow: var(--shadow-sm);
-            }
-
-        .course-option input[type="radio"]:checked + label {
-            border-color: var(--primary-dark);
-            background: linear-gradient(135deg, rgba(106,17,203,0.1) 0%, rgba(37,117,252,0.1) 100%);
-            color: var(--primary-dark);
-        }
-
-    .d-flex-end {
-        display: flex;
-        justify-content: flex-end;
-    }
-
+    /* Кнопки */
     .btn-outline-dark {
         border-radius: 8px;
         padding: 8px 20px;
@@ -150,6 +143,71 @@
             transform: translateY(-2px);
             box-shadow: var(--shadow-sm);
         }
+
+    /* Course selector */
+    .course-selector {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .course-option {
+        flex: 1 0 calc(50% - 10px);
+        position: relative;
+    }
+
+        .course-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .course-option label {
+            display: block;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--card-bg);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+            .course-option label:hover {
+                border-color: var(--primary-light);
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-sm);
+            }
+
+        .course-option input[type="radio"]:checked + label {
+            border-color: var(--primary-dark);
+            background: linear-gradient(135deg, rgba(106,17,203,0.1) 0%, rgba(37,117,252,0.1) 100%);
+            color: var(--primary-dark);
+        }
+
+    /* Таблицы */
+    table,
+    .table {
+        width: 100%;
+        background-color: var(--table-bg);
+        color: var(--text-color);
+        border-collapse: collapse;
+    }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--table-bg);
+        }
+
+    .d-flex-end {
+        display: flex;
+        justify-content: flex-end;
+    }
 </style>
 
 <div class="container py-4">
@@ -175,7 +233,10 @@
                                 @foreach (var opt in Model.CourseOptions)
                                 {
                                     <div class="course-option">
-                                        <input type="radio" asp-for="Group.CourseId" id="course_@opt.Value" value="@opt.Value" />
+                                        <input type="radio"
+                                               asp-for="Group.CourseId"
+                                               id="course_@opt.Value"
+                                               value="@opt.Value" />
                                         <label for="course_@opt.Value">@opt.Text</label>
                                     </div>
                                 }

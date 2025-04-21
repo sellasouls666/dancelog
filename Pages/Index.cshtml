@@ -111,6 +111,25 @@
             color: #666;
             font-size: 0.95rem;
         }
+    /* Стили для карточек в темной теме */
+    body.dark-theme .feature-card {
+        background-color: #3a3a3a; /* Серый фон для карточек в темной теме */
+        color: #ffffff; /* Белый текст */
+    }
+
+        body.dark-theme .feature-card i {
+            background: var(--primary-gradient); /* Иконки с градиентом в темной теме */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.dark-theme .feature-card h5 {
+            color: #ffffff; /* Белый цвет заголовков в темной теме */
+        }
+
+        body.dark-theme .feature-card p {
+            color: #b0b0b0; /* Светлый текст для параграфов в темной теме */
+        }
 </style>
 
 <div class="hero">
