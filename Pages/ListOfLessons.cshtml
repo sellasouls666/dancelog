@@ -1,0 +1,98 @@
+﻿@page
+@model dancelog.Pages.ListOfLessonsModel
+@{
+    ViewData["Title"] = "Расписание занятий";
+}
+
+<div class="container py-4">
+
+    <!-- Фильтры: выбор группы + навигация по неделям -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label asp-for="SelectedGroupId" class="form-label">Группа</label>
+            <select asp-for="SelectedGroupId"
+                    asp-items="@Model.Groups"
+                    class="form-select"
+                    onchange="this.form.submit()">
+                <option value="">-- выберите группу --</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Неделя</label>
+            <div class="input-group">
+                <a asp-page="./ListOfLessons"
+                   asp-route-SelectedGroupId="@Model.SelectedGroupId"
+                   asp-route-WeekStart="@(Model.WeekStart.AddDays(-7).ToString("yyyy-MM-dd"))"
+                   class="btn btn-outline-secondary">&lt;</a>
+                <span class="form-control text-center border-start-0 border-end-0">
+                    @Model.WeekStart.ToString("dd.MM.yyyy") — @Model.WeekStart.AddDays(5).ToString("dd.MM.yyyy")
+                </span>
+                <a asp-page="./ListOfLessons"
+                   asp-route-SelectedGroupId="@Model.SelectedGroupId"
+                   asp-route-WeekStart="@(Model.WeekStart.AddDays(7).ToString("yyyy-MM-dd"))"
+                   class="btn btn-outline-secondary">&gt;</a>
+            </div>
+        </div>
+    </form>
+
+    @if (!Model.SelectedGroupId.HasValue)
+    {
+        <div class="alert alert-info text-center">
+            Пожалуйста, выберите группу, чтобы увидеть расписание.
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered text-center align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Время ↓ / День →</th>
+                    @for (int d = 0; d < 6; d++)
+                    {
+                        var day = Model.WeekStart.AddDays(d);
+                        <th>@day.ToString("dddd dd.MM")</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var slot in Model.TimeSlots)
+                {
+                    <tr>
+                        <td><strong>@slot.Display</strong></td>
+                        @for (int d = 0; d < 6; d++)
+                        {
+                            var cellDt = Model.WeekStart.AddDays(d).Date + slot.Time;
+                            var lesson = Model.Lessons.FirstOrDefault(l => l.DateTime == cellDt);
+
+                            <td style="vertical-align: middle;">
+                                @if (lesson != null)
+                                {
+                                    <div>
+                                        <strong>@lesson.Name</strong>
+                                        @if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
+                                        {
+                                            <button type="button"
+                                                    class="btn btn-sm btn-link text-danger"
+                                                    onclick="if(confirm('Удалить занятие?')) location='@Url.Page("LessonDelete")?id=@lesson.Id'">
+                                                🗑️
+                                            </button>
+                                        }
+                                    </div>
+                                }
+                                else if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
+                                {
+                                    <a asp-page="Lesson"
+                                       asp-route-id="0"
+                                       asp-route-groupId="@Model.SelectedGroupId"
+                                       asp-route-lessonDate="@cellDt.ToString("yyyy-MM-dd")"
+                                       asp-route-timeSlot="@slot.Key"
+                                       class="btn btn-sm btn-success" title="Добавить">＋</a>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
