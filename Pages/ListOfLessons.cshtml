@@ -4,95 +4,338 @@
     ViewData["Title"] = "Расписание занятий";
 }
 
-<div class="container py-4">
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        --text-muted: #6c757d;
+        --light-gray: #f8f9fa;
+        --lighter-gray: #f0f0f0;
+        --border-color: #e0e0e0;
+        --shadow-sm: 0 2px 6px rgba(0,0,0,0.08);
+        --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+        --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+        --card-border-radius: 16px;
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
 
-    <!-- Фильтры: выбор группы + навигация по неделям -->
-    <form method="get" class="row g-3 mb-4">
-        <div class="col-md-4">
-            <label asp-for="SelectedGroupId" class="form-label">Группа</label>
-            <select asp-for="SelectedGroupId"
-                    asp-items="@Model.Groups"
-                    class="form-select"
-                    onchange="this.form.submit()">
-                <option value="">-- выберите группу --</option>
-            </select>
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Неделя</label>
-            <div class="input-group">
-                <a asp-page="./ListOfLessons"
-                   asp-route-SelectedGroupId="@Model.SelectedGroupId"
-                   asp-route-WeekStart="@(Model.WeekStart.AddDays(-7).ToString("yyyy-MM-dd"))"
-                   class="btn btn-outline-secondary">&lt;</a>
-                <span class="form-control text-center border-start-0 border-end-0">
-                    @Model.WeekStart.ToString("dd.MM.yyyy") — @Model.WeekStart.AddDays(5).ToString("dd.MM.yyyy")
-                </span>
-                <a asp-page="./ListOfLessons"
-                   asp-route-SelectedGroupId="@Model.SelectedGroupId"
-                   asp-route-WeekStart="@(Model.WeekStart.AddDays(7).ToString("yyyy-MM-dd"))"
-                   class="btn btn-outline-secondary">&gt;</a>
+    body {
+        background-color: #f5f7fa;
+    }
+
+    .container {
+        max-width: 1400px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .page-header {
+        position: relative;
+        padding-bottom: 1rem;
+        margin-bottom: 2.5rem;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+        .page-header h1 {
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0;
+            position: relative;
+        }
+
+            .page-header h1::after {
+                content: "";
+                position: absolute;
+                bottom: -12px;
+                left: 0;
+                width: 60px;
+                height: 4px;
+                background: var(--primary-gradient);
+                border-radius: 4px;
+                transition: width 0.6s ease;
+            }
+
+            .page-header h1:hover::after {
+                width: 100px;
+            }
+
+    .filter-card {
+        background: white;
+        border-radius: var(--card-border-radius);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+        transition: var(--transition);
+    }
+
+        .filter-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+    .form-select, .form-control {
+        border-radius: 12px;
+        padding: 10px 16px;
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+        appearance: none;
+        background-color: white;
+    }
+
+        .form-select:focus, .form-control:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
+            outline: none;
+        }
+
+    /* Custom select wrapper to add icon */
+    .select-wrapper {
+        position: relative;
+    }
+
+        .select-wrapper .select-icon {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+    .btn-week-nav {
+        border-radius: 12px;
+        padding: 10px 16px;
+        font-weight: 500;
+        background: white;
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+    }
+
+        .btn-week-nav:hover {
+            background: var(--light-gray);
+            transform: translateY(-1px);
+        }
+
+    .week-display {
+        font-weight: 500;
+        background: var(--primary-gradient);
+        color: white;
+        border-radius: 12px;
+        padding: 10px 16px;
+        text-align: center;
+    }
+
+    .schedule-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 16px;
+    }
+
+    .day-header {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 1rem;
+        text-align: center;
+        border-radius: var(--card-border-radius);
+    }
+
+    .slot-label {
+        font-weight: 600;
+        padding: 1rem;
+    }
+
+    .lesson-panel {
+        background: rgba(37, 117, 252, 0.1);
+        border-radius: 8px;
+        padding: 0.75rem;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+    }
+
+        .lesson-panel:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+    /* Styled delete button */
+    .btn-delete-lesson {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: none;
+        background: rgba(220,53,69,0.1);
+        border-radius: 50%;
+        color: #dc3545;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+    }
+
+        .btn-delete-lesson:hover {
+            background: rgba(220,53,69,0.2);
+            color: #bd2130;
+            transform: scale(1.1);
+        }
+
+    .btn-add-lesson {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        background: var(--primary-gradient);
+        color: white !important;
+        box-shadow: var(--shadow-sm);
+        margin: auto;
+    }
+
+        .btn-add-lesson:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+    .empty-state {
+        padding: 5rem 0;
+        text-align: center;
+    }
+
+    .empty-state-icon {
+        width: 120px;
+        height: 120px;
+        background: rgba(106, 17, 203, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        color: var(--primary-gradient);
+        font-size: 3rem;
+    }
+
+    .empty-state-title {
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #343a40;
+        font-size: 1.5rem;
+    }
+
+    .empty-state-text {
+        color: var(--text-muted);
+        max-width: 500px;
+        margin: 0 auto 2rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="page-header">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    <div class="filter-card">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <label asp-for="SelectedGroupId" class="form-label">Группа</label>
+                <div class="select-wrapper">
+                    <select asp-for="SelectedGroupId"
+                            asp-items="@Model.Groups"
+                            class="form-select"
+                            onchange="this.form.submit()">
+                        <option value="">-- выберите группу --</option>
+                    </select>
+                    <i class="fas fa-angle-down select-icon"></i>
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="col-md-4">
+                <label class="form-label">Неделя</label>
+                <div class="input-group">
+                    <a asp-page="./ListOfLessons"
+                       asp-route-SelectedGroupId="@Model.SelectedGroupId"
+                       asp-route-WeekStart="@(Model.WeekStart.AddDays(-7).ToString("yyyy-MM-dd"))"
+                       class="btn btn-week-nav"><i class="fas fa-chevron-left"></i></a>
+                    <span class="form-control week-display">
+                        @Model.WeekStart.ToString("dd.MM.yyyy") — @Model.WeekStart.AddDays(5).ToString("dd.MM.yyyy")
+                    </span>
+                    <a asp-page="./ListOfLessons"
+                       asp-route-SelectedGroupId="@Model.SelectedGroupId"
+                       asp-route-WeekStart="@(Model.WeekStart.AddDays(7).ToString("yyyy-MM-dd"))"
+                       class="btn btn-week-nav"><i class="fas fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </form>
+    </div>
 
     @if (!Model.SelectedGroupId.HasValue)
     {
-        <div class="alert alert-info text-center">
-            Пожалуйста, выберите группу, чтобы увидеть расписание.
+        <div class="empty-state">
+            <div class="empty-state-icon"><i class="fas fa-calendar-alt"></i></div>
+            <h3 class="empty-state-title">Выберите группу</h3>
+            <p class="empty-state-text">Пожалуйста, выберите группу из списка, чтобы увидеть расписание занятий на выбранную неделю.</p>
         </div>
     }
     else
     {
-        <table class="table table-bordered text-center align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>Время ↓ / День →</th>
-                    @for (int d = 0; d < 6; d++)
-                    {
-                        var day = Model.WeekStart.AddDays(d);
-                        <th>@day.ToString("dddd dd.MM")</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var slot in Model.TimeSlots)
-                {
-                    <tr>
-                        <td><strong>@slot.Display</strong></td>
-                        @for (int d = 0; d < 6; d++)
-                        {
-                            var cellDt = Model.WeekStart.AddDays(d).Date + slot.Time;
-                            var lesson = Model.Lessons.FirstOrDefault(l => l.DateTime == cellDt);
+        <div class="schedule-grid">
+            <div class="day-header">Время / День</div>
+            @for (int d = 0; d < 6; d++)
+            {
+                var day = Model.WeekStart.AddDays(d);
+                <div class="day-header">@day.ToString("dddd dd.MM")</div>
+            }
 
-                            <td style="vertical-align: middle;">
-                                @if (lesson != null)
-                                {
-                                    <div>
-                                        <strong>@lesson.Name</strong>
-                                        @if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
-                                        {
-                                            <button type="button"
-                                                    class="btn btn-sm btn-link text-danger"
-                                                    onclick="if(confirm('Удалить занятие?')) location='@Url.Page("LessonDelete")?id=@lesson.Id'">
-                                                🗑️
-                                            </button>
-                                        }
-                                    </div>
-                                }
-                                else if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
-                                {
-                                    <a asp-page="Lesson"
-                                       asp-route-id="0"
-                                       asp-route-groupId="@Model.SelectedGroupId"
-                                       asp-route-lessonDate="@cellDt.ToString("yyyy-MM-dd")"
-                                       asp-route-timeSlot="@slot.Key"
-                                       class="btn btn-sm btn-success" title="Добавить">＋</a>
-                                }
-                            </td>
+            @foreach (var slot in Model.TimeSlots)
+            {
+                <div class="slot-label">@slot.Display</div>
+                @for (int d = 0; d < 6; d++)
+                {
+                    var cellDt = Model.WeekStart.AddDays(d).Date + slot.Time;
+                    var lesson = Model.Lessons.FirstOrDefault(l => l.DateTime == cellDt);
+                    <div>
+                        @if (lesson != null)
+                        {
+                            <div class="lesson-panel">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <strong>@lesson.Name</strong>
+                                    @if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
+                                    {
+                                        <button type="button" class="btn-delete-lesson" onclick="if(confirm('Удалить занятие?')) location='@Url.Page("LessonDelete")?id=@lesson.Id'">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    }
+                                </div>
+                            </div>
                         }
-                    </tr>
+                        else if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
+                        {
+                            <a asp-page="Lesson"
+                               asp-route-id="0"
+                               asp-route-groupId="@Model.SelectedGroupId"
+                               asp-route-lessonDate="@cellDt.ToString("yyyy-MM-dd")"
+                               asp-route-timeSlot="@slot.Key"
+                               class="btn-add-lesson" title="Добавить">
+                                <i class="fas fa-plus"></i>
+                            </a>
+                        }
+                    </div>
                 }
-            </tbody>
-        </table>
+            }
+        </div>
     }
 </div>
