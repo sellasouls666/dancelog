@@ -10,7 +10,8 @@
     <form method="post">
         <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-        <input type="hidden" asp-for="Lesson.Id" />
+        <input type="hidden" asp-for="Lesson.Id" value="@(Model.Lesson?.Id ?? 0)" />
+        <input type="hidden" asp-for="SlotFromQuery" value="@Model.SlotFromQuery" />
 
         <div class="mb-3">
             <label asp-for="Lesson.Name" class="form-label">Название урока</label>
@@ -65,9 +66,21 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script>
-        var ts = document.querySelector('select[name="SelectedTimeSlot"]');
-        var ex = document.getElementById('extraTimeDiv');
-        ts.addEventListener('change', () => ex.style.display = ts.value === 'Extra' ? 'block' : 'none');
-        if (ts.value === 'Extra') ex.style.display = 'block';
+        document.addEventListener('DOMContentLoaded', function() {
+            const timeSlotSelect = document.querySelector('select[name="SelectedTimeSlot"]');
+            const extraTimeDiv = document.getElementById('extraTimeDiv');
+
+            function toggleExtraTime() {
+                const isExtra = timeSlotSelect.value === 'Extra';
+                extraTimeDiv.style.display = isExtra ? 'block' : 'none';
+                if (isExtra) {
+                    document.querySelector('input[name="ExtraTime"]').required = true;
+                }
+            }
+
+            timeSlotSelect.addEventListener('change', toggleExtraTime);
+            toggleExtraTime(); // Инициализация при загрузке
+        });
     </script>
+
 }

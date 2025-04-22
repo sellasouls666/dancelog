@@ -244,6 +244,7 @@
     }
 </style>
 
+
 <div class="container py-5">
     <div class="page-header">
         <h1>@ViewData["Title"]</h1>
@@ -315,6 +316,9 @@
                                     <strong>@lesson.Name</strong>
                                     @if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
                                     {
+                                        <a asp-page="Lesson" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-secondary btn-lesson-action" title="Редактировать">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
                                         <button type="button" class="btn-delete-lesson" onclick="if(confirm('Удалить занятие?')) location='@Url.Page("LessonDelete")?id=@lesson.Id'">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
