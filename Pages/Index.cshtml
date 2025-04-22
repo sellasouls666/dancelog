@@ -81,6 +81,7 @@
     }
 
     .feature-card {
+        background-color: #121212 !important;
         background: #fff;
         border-radius: var(--card-radius);
         padding: 2rem;
@@ -130,6 +131,51 @@
         body.dark-theme .feature-card p {
             color: #b0b0b0; /* Светлый текст для параграфов в темной теме */
         }
+
+    .hero .btn-main-action,
+    .hero .btn-main-action i {
+        color: #fff !important;
+        border-color: #fff !important;
+    }
+
+        /* При наведении тоже остаёмся белыми */
+        .hero .btn-main-action:hover,
+        .hero .btn-main-action:hover i {
+            color: #fff !important;
+            border-color: #fff !important;
+        }
+    /* Сделать feature‑карточки гораздо темнее */
+    .feature-card {
+        background-color: #fff !important;
+        color: #333 !important;
+        box-shadow: var(--shadow-lg) !important;
+    }
+
+        .feature-card p {
+            color: #666 !important;
+        }
+
+    /* ===== Тёмная тема: затемняем только когда body.dark-theme ===== */
+    body.dark-theme .feature-card {
+        background-color: #121212 !important;
+        color: #e0e0e0 !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.7) !important;
+    }
+
+        body.dark-theme .feature-card p {
+            color: #a0a0a0 !important;
+        }
+
+        /* Немного смягчить цвет описания */
+        
+
+        /* Иконки оставим с градиентом как раньше */
+        .feature-card i {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
 </style>
 
 <div class="hero">

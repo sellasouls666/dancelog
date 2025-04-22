@@ -28,7 +28,7 @@
 
     body.dark-theme {
         --bg-color: #121212;
-        --card-bg: #1f1f1f;
+        --card-bg: #121212;
         --text-color: #f1f1f1;
         --border-color: #333;
         --table-bg: #1a1a1a;
@@ -176,6 +176,80 @@
         background-color: var(--table-bg);
         color: var(--text-color);
     }
+    /* Убираем скругления у самих кнопок */
+    .btn-course-action {
+        border-radius: 0 !important;
+    }
+
+        /* И у их “цветной рамки” в ::before */
+        .btn-course-action::before {
+            border-radius: 0 !important;
+        }
+        /* Иконки в кнопках всегда белые */
+        .btn-course-action i {
+            color: #fff !important;
+        }
+
+        /* Чтобы на ховере они тоже не менялись */
+        .btn-course-action:hover i {
+            color: #fff !important;
+        }
+    /* Для кнопки “Добавить курс” */
+    .btn-create {
+        color: #fff !important; /* белый текст */
+    }
+
+        /* И иконка внутри */
+        .btn-create i {
+            color: #fff !important;
+        }
+
+        /* рамка из ::before делаем белой */
+        /* Сбрасываем прежний белый бордер */
+        .btn-create::before {
+            background: var(--primary-gradient) !important;
+        }
+
+    /* У самой кнопки только прозрачный фон и белый текст */
+    .btn-create {
+        background: transparent !important;
+        color: #fff !important;
+        position: relative;
+        z-index: 1;
+    }
+
+        /* Иконка внутри — тоже белая */
+        .btn-create i {
+            color: #fff !important;
+        }
+
+        /* Hover-эффект — пусть рамка чуть светлее */
+        .btn-create:hover::before {
+            filter: brightness(1.2);
+        }
+    /* ===== Кнопки “Редактировать”/“Удалить” и “Добавить курс” ===== */
+    /* По умолчанию (светлая тема) — чёрный текст и иконки */
+    .btn-course-action,
+    .btn-create {
+        color: var(--text-color) !important;
+    }
+
+        .btn-course-action i,
+        .btn-create i {
+            color: var(--text-color) !important;
+        }
+
+    /* В тёмной теме — белый текст и иконки */
+    body.dark-theme .btn-course-action,
+    body.dark-theme .btn-create {
+        color: #fff !important;
+    }
+
+        body.dark-theme .btn-course-action i,
+        body.dark-theme .btn-create i {
+            color: #fff !important;
+        }
+
 </style>
 
 <div class="container py-4">
