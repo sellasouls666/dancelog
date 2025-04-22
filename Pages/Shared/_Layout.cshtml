@@ -125,6 +125,15 @@
             font-size: 1.5rem;
             color: #6c757d;
             transition: all 0.3s ease;
+
+        }
+        /* ужимаем отступ между иконкой и именем */
+        .nav-item.dropdown.d-flex .user-icon {
+            margin-right: 2px !important;
+        }
+
+        .nav-item.dropdown.d-flex > span.nav-link {
+            margin-left: 2px !important;
         }
 
             .user-icon:hover {
@@ -304,6 +313,46 @@
         body.dark-theme .theme-card i {
             color: #a6c8ff; /* Цвет иконки в темной теме */
         }
+        /* Разрешаем любым элементам в navbar показывать overflow */
+        .navbar,
+        .navbar-nav,
+        .nav-item,
+        .nav-link {
+            overflow: visible !important;
+        }
+
+        /* Устанавливаем центр трансформации, чтобы увеличение было равномерным */
+        .user-icon {
+            transform-origin: center center;
+        }
+
+        .nav-item.dropdown > .nav-link {
+            overflow: visible !important;
+        }
+            /* 1) Отменяем подскок всей ссылки при hover */
+            .nav-item.dropdown > .nav-link:hover {
+                transform: none !important;
+            }
+
+        /* 2) Отключаем любое масштабирование иконки */
+        .user-icon:hover {
+            transform: none !important;
+        }
+
+        /* 3) Разрешаем «вылазить» всему в navbar и collapse */
+        .navbar,
+        .navbar-collapse,
+        .collapse,
+        .nav-item,
+        .nav-link {
+            overflow: visible !important;
+        }
+        /* Градиентный фон для пунктов dropdown при hover/focus */
+        .dropdown-menu .dropdown-item:hover,
+        .dropdown-menu .dropdown-item:focus {
+            background: var(--primary-gradient) !important;
+            color: #fff !important;
+        }
     </style>
 </head>
 <body>
@@ -348,13 +397,17 @@
                         var nameParts = (User.Identity.Name ?? "").Split(' ');
                         var firstName = nameParts.Length > 0 ? nameParts[0] : User.Identity.Name;
                         <ul class="navbar-nav align-items-center">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link no-underline dropdown-toggle" href="#" id="userDropdown"
-                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <li class="nav-item dropdown d-flex align-items-center">
+                                <!-- Только иконка — dropdown-toggle -->
+                                <a class="nav-link no-underline"
+                                   href="#" id="userDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-user-circle user-icon"></i>
-                                    <span class="ms-2">@firstName</span>
                                 </a>
+                                <span class="nav-link no-underline ms-0">@firstName</span>
+
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+
                                     <li>
                                         <a class="dropdown-item" asp-page="/Account/Profile">
                                             <i class="fas fa-user"></i> Профиль
