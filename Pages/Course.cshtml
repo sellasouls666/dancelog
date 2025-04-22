@@ -6,31 +6,53 @@
 
 <style>
     :root {
+        /* === Основные цвета (светлая тема) === */
         --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         --primary-light: #2575fc;
         --primary-dark: #6a11cb;
         --text-muted: #6c757d;
-        --light-gray: #f8f9fa;
-        --lighter-gray: #f0f0f0;
         --border-color: #e0e0e0;
         --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
         --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
         --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
         --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        --bg-page: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
+        --card-bg: #ffffff;
+        --form-bg: #f0f0f0; /* фон полей в светлой теме */
+        --form-bg-hover: #eaeaea;
+        --form-bg-focus: #ffffff;
+        --text-color: #212529;
+        --header-bg: var(--primary-gradient);
     }
 
     body {
-        background: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
+        background: var(--bg-page);
         min-height: 100vh;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-color);
     }
 
+        /* === Тёмная тема === */
+        body.dark-theme {
+            --bg-page: #000000;
+            --card-bg: #2a2a2a;
+            --border-color: #444444;
+            --text-muted: #a0a0a0;
+            --text-color: #f1f1f1;
+            --form-bg: #3a3a3a;
+            --form-bg-hover: #4a4a4a;
+            --form-bg-focus: #4a4a4a;
+            --header-bg: var(--primary-gradient);
+            background: var(--bg-page) !important;
+        }
+
+    /* Карточка */
     .card {
         border: none;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: var(--shadow-sm);
-        background: white;
+        background: var(--card-bg);
         transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
     }
 
@@ -40,35 +62,45 @@
         }
 
     .card-header {
-        background: var(--primary-gradient);
+        background: var(--header-bg);
         color: #fff;
     }
 
+    /* Поля */
     .form-label {
         font-weight: 500;
-        color: #343a40;
+        color: var(--text-color);
     }
 
     .form-control {
+        background-color: var(--form-bg) !important;
         border: 1px solid var(--border-color);
         border-radius: 8px;
         padding: 10px 15px;
-        background-color: var(--lighter-gray);
+        color: var(--text-color) !important;
         transition: var(--transition);
     }
 
         .form-control:hover {
-            border-color: #bdbdbd;
-            background-color: #fff;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-sm);
+            background-color: var(--form-bg-hover) !important;
+            border-color: var(--primary-light) !important;
+            box-shadow: var(--shadow-sm) !important;
         }
 
         .form-control:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 0.25rem rgba(37, 117, 252, 0.25);
+            background-color: var(--form-bg-focus) !important;
+            border-color: var(--primary-light) !important;
+            box-shadow: 0 0 0 0.25rem rgba(37,117,252,0.25) !important;
+            outline: none;
+            color: var(--text-color) !important;
         }
 
+    body.dark-theme .form-control::placeholder {
+        color: #bbb !important;
+        opacity: 1;
+    }
+
+    /* Кнопки */
     .btn-outline-dark {
         border-radius: 8px;
         padding: 8px 20px;
@@ -119,9 +151,7 @@
                         </div>
 
                         <div class="d-flex justify-content-end mt-4">
-                            <a href="ListOfCourse" class="btn btn-outline-secondary me-2">
-                                Отмена
-                            </a>
+                            <a href="ListOfCourse" class="btn btn-outline-secondary me-2">Отмена</a>
                             <button type="submit" class="btn btn-outline-dark">
                                 @(Model.Course.Id == 0 ? "Добавить" : "Сохранить")
                             </button>
