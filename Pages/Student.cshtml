@@ -7,87 +7,116 @@
 <style>
     :root {
         --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        --text-muted: #6c757d;
-        --border-color: #e0e0e0;
-        --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-        --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        --bg-page: #18191a;
+        --bg-card: #242526;
+        --bg-input: #2e2e2e;
+        --text-color: #e4e6eb;
+        --text-muted: #8a8c8e;
+        --border-color: #3a3b3c;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
+        --shadow-lg: 0 4px 12px rgba(0,0,0,0.7);
+        --transition: all 0.2s ease;
+
     }
 
     body {
-        background: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        min-height: 100vh;
+        background: var(--bg-page);
+        color: var(--text-color);
     }
 
     .card {
-        border: none;
+        background: var(--bg-card);
         border-radius: 12px;
         box-shadow: var(--shadow-sm);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: none;
+        overflow: hidden;
     }
-
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-        }
 
     .card-header {
         background: var(--primary-gradient);
         color: #fff;
-        padding: 1rem 1.5rem;
-    }
-
-    .form-label {
-        font-weight: 500;
-        color: #343a40;
-        margin-bottom: 0.5rem;
-        display: block;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
     }
 
     .form-control {
-        width: 100%;
-        padding: 10px 15px;
+        color: var(--text-color);
         border: 1px solid var(--border-color);
         border-radius: 8px;
-        background: #f0f0f0;
+        padding: .75rem 1rem;
+        height: 48px;
         transition: var(--transition);
+        background: var(--bg-input);
+        color: var(--text-color);
     }
 
-        .form-control:hover,
+        /* серый фон для редактируемых полей */
+        .form-control:not([readonly]) {
+            background: var(--bg-input);
+            color: #fff;
+        }
+
+        /* светлый фон у readonly (Email) */
+        .form-control[readonly] {
+            background: var(--bg-input); /* тёмно-серый фон, как у остальных */
+             color: var(--text-muted);
+            
+        }
+
+        .form-control::placeholder {
+            color: var(--text-muted);
+        }
+
         .form-control:focus {
-            background: #fff;
-            box-shadow: var(--shadow-sm);
-            border-color: #2575fc;
+            background: var(--bg-input);
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52,152,219,0.3);
             outline: none;
         }
 
-    /* Новая секция выбора группы */
-    .group-selection {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 0.5rem;
+    /* кнопка «Отмена» */
+    .btn-cancel {
+        background: var(--bg-card); /* или оставьте свой фон */
+        color: #fff; /* белый текст */
+        border: 1px solid #fff; /* белая обводка */
+        border-radius: 8px;
+        padding: .75rem 1.5rem;
+        transition: background .2s ease;
     }
 
-    .btn-check {
-        display: none;
+        .btn-cancel:hover {
+            background: rgba(255,255,255,0.1); /* лёгкий подсвет на чёрном фоне */
+        }
+
+    /* градиентная кнопка «Сохранить» */
+    .btn-gradient {
+        background: #6c1f76 !important; /* более тёмный фиолет */
+        color: #fff !important;
+        border: none;
+        border-radius: 8px;
+        padding: .75rem 1.5rem;
+        font-weight: 600; /* более жирный текст */
+        transition: transform .2s ease, box-shadow .2s ease;
     }
 
+        .btn-gradient:hover {
+            transform: translateY(-2px); /* лёгкое поднятие */
+            box-shadow: var(--shadow-lg); /* мягкая подсветка */
+            background: #5a1a63 !important; /* ещё чуть темнее при наведении */
+        }
+
+    /* выбор группы */
     .btn-group-select {
-        padding: 0.5rem 1rem;
+        background: var(--bg-card);
+        color: var(--text-color);
         border: 1px solid var(--border-color);
         border-radius: 8px;
-        cursor: pointer;
+        padding: 1rem;
         transition: var(--transition);
-        background: #f0f0f0;
-        user-select: none;
     }
 
         .btn-group-select:hover {
-            background: #fff;
-            box-shadow: var(--shadow-sm);
-            border-color: #bdbdbd;
+            background: var(--bg-input);
         }
 
     .btn-check:checked + .btn-group-select {
@@ -96,86 +125,113 @@
         border-color: var(--primary-gradient);
     }
 
-    .readonly-section {
-        margin-top: 1.5rem;
-        padding: 1rem;
-        background: #f8f9fa;
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-    }
-
-    .profile-field-readonly {
-        background: #e4e8eb;
-        cursor: not-allowed;
-        opacity: 0.8;
-    }
-
+    /* выравнивание кнопок вправо */
     .action-buttons {
-        margin-top: 2rem;
         display: flex;
         justify-content: flex-end;
-        gap: 0.5rem;
+        gap: .75rem;
+        margin-top: 1.5rem;
     }
 
-    .btn-outline-secondary,
-    .btn-outline-dark {
+    .btn-cancel {
+        background: transparent;
+        color: #fff; /* белый текст по умолчанию */
+        border: 1px solid #fff;
         border-radius: 8px;
-        padding: 8px 20px;
-        transition: var(--transition);
+        padding: .75rem 1.5rem;
+        text-decoration: none; /* убираем подчерк */
+        transition: background .2s ease, color .2s ease;
     }
 
-    .btn-outline-secondary {
-        border-color: var(--text-muted);
-        color: var(--text-muted);
-    }
-
-        .btn-outline-secondary:hover {
-            background: #f0f0f0;
-            color: #343a40;
-            box-shadow: var(--shadow-sm);
+        .btn-cancel:hover,
+        .btn-cancel:focus {
+            background: rgba(255,255,255,0.1); /* лёгкая белая заливка при наведении */
+            color: #fff; /* текст остаётся белым */
         }
-
-    .btn-outline-dark {
-        border-color: #343a40;
-        color: #343a40;
+    /* перебиваем все состояния ссылки */
+    a.btn-cancel,
+    a.btn-cancel:link,
+    a.btn-cancel:visited,
+    a.btn-cancel:hover,
+    a.btn-cancel:focus,
+    a.btn-cancel:active {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: .75rem 1.5rem;
+        border: 1px solid #fff !important;
+        border-radius: 8px;
+        background: transparent !important;
+        color: #fff !important; /* белый текст во всех состояниях */
+        text-decoration: none !important; /* убираем подчёркивание */
+        transition: background .2s ease;
     }
 
-        .btn-outline-dark:hover {
-            background: #343a40;
-            color: #fff;
-            box-shadow: var(--shadow-sm);
+        /* только hover/focus дают заливку */
+        a.btn-cancel:hover,
+        a.btn-cancel:focus {
+            background: rgba(255,255,255,0.1) !important;
         }
+    /* вместо градиента делаем сплошной фиолетовый фон и белый текст */
+    .btn-check:checked + .btn-group-select {
+        background: var(--bg-card) !important; /* тот же фон, что и у остальных */
+        border-color: #8e44ad !important; /* ярко-фиолетовая рамка */
+        color: #8e44ad !important; /* икона и текст фиолетовые */
+    }
+    /* Чтобы внутри .btn-group-select иконка брала цвет родителя */
+    .btn-group-select i {
+        color: inherit;
+    }
 </style>
 
 <div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-header">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header p-4">
                     <h4 class="mb-0">@ViewData["Title"]</h4>
                 </div>
                 <div class="card-body p-4">
                     <form method="post">
                         <input type="hidden" asp-for="Student.Id" />
 
-                        <div class="mb-3">
-                            <label asp-for="Student.Surname" class="form-label">Фамилия</label>
-                            <input asp-for="Student.Surname" class="form-control" required />
-                            <span asp-validation-for="Student.Surname" class="text-danger small"></span>
+                        <!-- 1) Email -->
+                        <div class="mb-email mb-4">
+                            <label asp-for="Student.Email" class="form-label">
+                                <i class="fas fa-lock me-1"></i>Email
+                            </label>
+                            <input asp-for="Student.Email"
+                                   class="form-control"
+                                   readonly />
+                            <span asp-validation-for="Student.Email" class="text-danger small"></span>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Student.Name" class="form-label">Имя</label>
-                            <input asp-for="Student.Name" class="form-control" required />
-                            <span asp-validation-for="Student.Name" class="text-danger small"></span>
+                        <!-- 2) Фамилия/Имя/Отчество в ряд -->
+                        <div class="row row-cols-3 g-3 mb-4">
+                            <div class="col">
+                                <label asp-for="Student.Surname" class="form-label">Фамилия</label>
+                                <input asp-for="Student.Surname"
+                                       class="form-control"
+                                       placeholder="Фамилия" required />
+                                <span asp-validation-for="Student.Surname" class="text-danger small"></span>
+                            </div>
+                            <div class="col">
+                                <label asp-for="Student.Name" class="form-label">Имя</label>
+                                <input asp-for="Student.Name"
+                                       class="form-control"
+                                       placeholder="Имя" required />
+                                <span asp-validation-for="Student.Name" class="text-danger small"></span>
+                            </div>
+                            <div class="col">
+                                <label asp-for="Student.Patronymic" class="form-label">Отчество</label>
+                                <input asp-for="Student.Patronymic"
+                                       class="form-control"
+                                       placeholder="Отчество" />
+                            </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Student.Patronymic" class="form-label">Отчество</label>
-                            <input asp-for="Student.Patronymic" class="form-control" />
-                        </div>
-
-                        <div class="mb-3">
+                        <!-- 3) Выбор группы -->
+                        <div class="mb-4">
                             <label class="form-label">Группа</label>
                             <div class="group-selection">
                                 @foreach (var grp in Model.Groups)
@@ -194,19 +250,11 @@
                             <span asp-validation-for="Student.GroupId" class="text-danger small"></span>
                         </div>
 
-                        <div class="readonly-section">
-                            <label asp-for="Student.Email" class="form-label">
-                                <i class="fas fa-lock"></i> Email
-                            </label>
-                            <input asp-for="Student.Email"
-                                   class="form-control profile-field-readonly"
-                                   readonly />
-                            <span asp-validation-for="Student.Email" class="text-danger small"></span>
-                        </div>
-
+                        <!-- 4) Кнопки выровнены вправо -->
                         <div class="action-buttons">
-                            <a href="@Url.Page("ListOfStudents")" class="btn btn-outline-secondary">Отмена</a>
-                            <button type="submit" class="btn btn-outline-dark">
+                            <a href="…" class="btn-cancel">Отмена</a>
+                            <button type="submit" class="btn-gradient">
+                                <i class="fas fa-save me-1"></i>
                                 @(Model.Id == 0 ? "Добавить" : "Сохранить")
                             </button>
                         </div>
