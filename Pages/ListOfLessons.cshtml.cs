@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using dancelog.Data;
 using dancelog.Models;
+using System.Security.Claims;
 
 namespace dancelog.Pages
 {
@@ -77,14 +78,32 @@ namespace dancelog.Pages
                 WeekStart = today.AddDays(-diff);
             }
 
-            var q = _context.Lessons.Include(l => l.Group).AsQueryable();
-            if (SelectedGroupId.HasValue)
-                q = q.Where(l => l.GroupId == SelectedGroupId.Value);
+            var q = _context.Lessons.Include(l => l.Group).Include(l => l.CompletedByTeacher).AsQueryable();
 
             var weekEnd = WeekStart.AddDays(5).AddHours(23).AddMinutes(59);
             q = q.Where(l => l.DateTime >= WeekStart && l.DateTime <= weekEnd);
 
             Lessons = await q.ToListAsync();
+        }
+
+        public async Task<IActionResult> OnPostCompleteLesson(int lessonId, bool isCompleted)
+        {
+            if (!User.IsInRole("Учитель") && !User.IsInRole("Админ"))
+            {
+                return Forbid();
+            }
+
+            var lesson = await _context.Lessons.FindAsync(lessonId);
+            if (lesson == null)
+            {
+                return NotFound();
+            }
+
+            lesson.IsCompleted = isCompleted;
+            lesson.CompletedByTeacherId = isCompleted ? User.FindFirst(ClaimTypes.NameIdentifier)?.Value : null;
+
+            await _context.SaveChangesAsync();
+            return RedirectToPage(new { SelectedGroupId, WeekStart = WeekStartString });
         }
     }
 }
