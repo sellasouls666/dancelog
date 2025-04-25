@@ -4,26 +4,69 @@
     ViewData["Title"] = "Список студентов";
 }
 
+
+
 <style>
     :root {
+        /* Общие переменные */
         --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         --primary-light: #2575fc;
         --primary-dark: #6a11cb;
+        /* Цвета для светлой темы */
+        --bg-page: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
+        --bg-card: #ffffff;
+        --text-color: #343a40;
         --text-muted: #6c757d;
-        --light-gray: #f8f9fa;
-        --lighter-gray: #f0f0f0;
         --border-color: #e0e0e0;
         --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
         --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-        --card-border-radius: 12px;
-        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
+    /* Переопределение для тёмной темы */
+    body.dark-theme {
+        --bg-page: #000000;
+        --bg-card: #1e1e1e;
+        --text-color: #e4e6eb;
+        --text-muted: #8a8c8e;
+        --border-color: #333333;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
+        --shadow-lg: 0 4px 6px rgba(0,0,0,0.8);
+    }
+    /* в тёмной теме: фиолетовая иконка и обводка */
+body.dark-theme .btn-student-action {
+    color: var(--primary-dark);        /* иконка и текст — фиолетовые */
+    border-color: var(--primary-dark); /* рамка — фиолетовая */
+    background: transparent;           /* фон прозрачный, чтобы был цвет карточки */
+}
+body.dark-theme .btn-student-action i {
+    color: inherit;                    /* иконка наследует цвет кнопки */
+}
+            /* в тёмной теме: граница и иконка — фиолетовые как на втором скрине */
+            body.dark-theme .btn-student-action.btn-outline-secondary {
+                /* рамка */
+                border-color: var(--primary-dark) !important;
+                /* цвет текста/иконки */
+                color: var(--primary-dark) !important;
+                background: transparent; /* чтобы фон не перекрывал темный фон страницы */
+            }
+
+                /* иконка наследует цвет кнопки */
+                body.dark-theme .btn-student-action.btn-outline-secondary i {
+                    color: inherit !important;
+                }
+
+                body.dark-theme .btn-student-action.btn-outline-secondary:hover {
+                    border-color: var(--primary-dark) !important;
+                    color: var(--primary-dark) !important;
+                    background: rgba(106, 17, 203, 0.1); /* лёгкий фиолетовый фон при ховере */
+                }
+
     body {
-        background: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
+        background: var(--bg-page);
+        color: var(--text-color);
         min-height: 100vh;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        transition: background 0.3s, color 0.3s;
     }
 
     .container {
@@ -32,18 +75,20 @@
     }
 
     @@keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
+        from
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    {
+        opacity: 0;
+        transform: translateY(20px);
     }
 
-    /* Заголовок страницы с декоративной линией */
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
     .page-header {
         position: relative;
         padding-bottom: 0.5rem;
@@ -53,10 +98,9 @@
 
         .page-header h1 {
             font-weight: 600;
-            position: relative;
             display: inline-block;
             margin-bottom: 0;
-            color: #343a40;
+            color: var(--text-color);
         }
 
             .page-header h1::after {
@@ -75,14 +119,14 @@
                 width: 100px;
             }
 
-    /* Стили карточек */
     .card {
+        background: var(--bg-card);
+        color: var(--text-color);
         border: none;
-        border-radius: var(--card-border-radius);
+        border-radius: 12px;
         overflow: hidden;
         box-shadow: var(--shadow-sm);
-        background: white;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s, color 0.3s;
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -103,7 +147,7 @@
     .card-title {
         font-size: 1.25rem;
         margin-bottom: 0.75rem;
-        color: #333;
+        color: var(--text-color);
     }
 
     .badge-group {
@@ -115,6 +159,14 @@
         border-radius: 0.5rem;
         font-size: 0.85rem;
         font-weight: 500;
+    }
+
+    .list-group-item {
+        background: transparent;
+        border: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 0.75rem 0;
+        color: var(--text-color);
     }
 
     .action-buttons {
@@ -141,11 +193,6 @@
         text-align: center;
     }
 
-    .list-group-item {
-        border-left: 0;
-        border-right: 0;
-        padding: 0.75rem 0;
-    }
 </style>
 
 <div class="container py-4">
@@ -162,19 +209,16 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">@student.Surname @student.Name</h5>
-
                             @if (student.Group != null)
                             {
                                 <span class="badge-group">
                                     <i class="fas fa-layer-group me-1"></i> @student.Group.Name
                                 </span>
                             }
-
                             <ul class="list-group list-group-flush mb-3">
                                 <li class="list-group-item">@student.Patronymic</li>
                                 <li class="list-group-item"><i class="fas fa-envelope me-1"></i> @student.Email</li>
                             </ul>
-
                             <div class="action-buttons">
                                 <a href="@Url.Page("Student", new { id = student.Id })"
                                    class="btn btn-sm btn-outline-secondary btn-student-action" title="Изменить">
