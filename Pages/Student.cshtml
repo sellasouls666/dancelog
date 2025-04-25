@@ -7,16 +7,41 @@
 <style>
     :root {
         --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        --bg-page: #ffffff;
+        --bg-card: #ffffff;
+        --bg-input: #ffffff;
+        --text-color: #212529; /* основной текст */
+        --text-muted: #6c757d; /* подсказки и метки */
+        --border-color: #ced4da; /* рамки */
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
+        --shadow-lg: 0 4px 12px rgba(0,0,0,0.7);
+        --transition: all 0.2s ease;
+
+    }
+
+    body.dark-theme {
         --bg-page: #18191a;
         --bg-card: #242526;
         --bg-input: #2e2e2e;
         --text-color: #e4e6eb;
         --text-muted: #8a8c8e;
         --border-color: #3a3b3c;
+        --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         --shadow-sm: 0 1px 3px rgba(0,0,0,0.6);
         --shadow-lg: 0 4px 12px rgba(0,0,0,0.7);
-        --transition: all 0.2s ease;
+    }
+    /* ========== 1) в светлой теме чуть затемнённый фон инпутов ========== */
+    body:not(.dark-theme) .form-control:not([readonly]) {
+        background: #f2f2f2 !important; /* чуть серее, чтобы текст не сливался */
+        color: var(--text-color) !important; /* тёмный текст из переменной */
+    }
 
+    /* ========== 2) в светлой теме кнопка «Отмена» тёмная и с рамкой ========== */
+    body:not(.dark-theme) .btn-cancel,
+    body:not(.dark-theme) a.btn-cancel {
+        background: transparent !important;
+        color: var(--text-color) !important; /* тёмный текст */
+        border: 1px solid var(--border-color) !important; /* тёмная рамка */
     }
 
     body {
@@ -90,20 +115,22 @@
 
     /* градиентная кнопка «Сохранить» */
     .btn-gradient {
-        background: #6c1f76 !important; /* более тёмный фиолет */
+        background: var(--primary-gradient) !important;
         color: #fff !important;
         border: none;
         border-radius: 8px;
         padding: .75rem 1.5rem;
-        font-weight: 600; /* более жирный текст */
-        transition: transform .2s ease, box-shadow .2s ease;
+        font-weight: 600;
+        transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
     }
+    
 
         .btn-gradient:hover {
-            transform: translateY(-2px); /* лёгкое поднятие */
-            box-shadow: var(--shadow-lg); /* мягкая подсветка */
-            background: #5a1a63 !important; /* ещё чуть темнее при наведении */
-        }
+        ttransform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        filter: brightness(1.1);
+    }
+        
 
     /* выбор группы */
     .btn-group-select {
