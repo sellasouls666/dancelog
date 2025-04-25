@@ -9,72 +9,41 @@
         --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         --primary-light: #2575fc;
         --primary-dark: #6a11cb;
-        --text-muted: #a0a0a0;
-        --light-gray: #2a2a2a;
-        --lighter-gray: #1e1e1e;
-        --border-color: #333;
-        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-        --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
-        --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.6);
+        --text-muted: #6c757d;
+        --light-gray: #f8f9fa;
+        --lighter-gray: #f0f0f0;
+        --border-color: #e0e0e0;
+        --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+        --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
         --card-border-radius: 12px;
         --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        --bg-color: #ffffff;
         --card-bg: #ffffff;
-        --text-color: #000000;
-        --border-color: #dee2e6;
-        --table-bg: #ffffff;
-        --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    }
-
-    body.dark-theme {
-        --bg-color: #121212;
-        --card-bg: #121212;
-        --text-color: #f1f1f1;
-        --border-color: #333;
-        --table-bg: #1a1a1a;
+        --text-color: #212529;
+        --btn-text-color: #212529; /* Цвет текста кнопок по умолчанию */
+        --btn-icon-color: #212529; /* Цвет иконок по умолчанию */
     }
 
     body {
-        --bg-color: #ffffff;
-        --card-bg: #ffffff;
-        --text-color: #000000;
-        --border-color: #dee2e6;
-        --table-bg: #ffffff;
+        background: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-color);
     }
 
-    .btn-course-action {
-        position: relative;
-        background-color: transparent;
-        color: var(--primary-light);
-        border: none;
-        z-index: 1;
-    }
-
-        .btn-course-action::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: var(--primary-gradient);
-            border-radius: 8px;
-            z-index: -1;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            -webkit-mask-composite: destination-out;
-            padding: 2px;
+        body.dark-theme {
+            --text-muted: #a0a0a0;
+            --light-gray: #2a2a2a;
+            --lighter-gray: #1e1e1e;
+            --border-color: #444;
+            --card-bg: #121212;
+            --text-color: #f1f1f1;
+            --btn-text-color: #ffffff; /* Белый текст кнопок в темной теме */
+            --btn-icon-color: #ffffff; /* Белые иконки в темной теме */
+            background: #000000 !important;
         }
 
-        /* Optional: Hover effect to make it pop */
-        .btn-course-action:hover {
-            color: #fff;
-        }
-
-            .btn-course-action:hover::before {
-                filter: brightness(1.2);
-            }
-
+    /* Остальные стили остаются без изменений */
     .container {
         max-width: 1400px;
         animation: fadeIn 0.8s ease-out;
@@ -96,7 +65,7 @@
         position: relative;
         padding-bottom: 0.5rem;
         margin-bottom: 1.5rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
         .page-header h1 {
@@ -104,7 +73,7 @@
             position: relative;
             display: inline-block;
             margin-bottom: 0;
-            color: var(--text-color); /* ← вот так */
+            color: var(--text-color);
         }
 
             .page-header h1::after {
@@ -124,132 +93,105 @@
             }
 
     .card {
-        border: 1px solid var(--border-color); /* например #ccc */
-        border-radius: 12px;
+        border: none;
+        border-radius: var(--card-border-radius);
         overflow: hidden;
         box-shadow: var(--shadow-sm);
-        background: #1f1f1f;
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        background: var(--card-bg);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s;
+        display: flex;
+        flex-direction: column;
         height: 100%;
         color: var(--text-color);
-        background-color: var(--card-bg); /* в светлой теме пусть будет #ffffff */
-        color: var(--text-color);
-        border-color: var(--border-color);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
-
     }
 
         .card:hover {
-            transform: scale(1.03);
+            transform: translateY(-5px) scale(1.02);
             box-shadow: var(--shadow-lg);
         }
 
-    .btn-course-action {
-        transition: transform 0.2s ease, background 0.2s ease;
-        color: var(--primary-light);
-        border-color: var(--primary-light);
+    .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 1.5rem;
+        text-align: center;
     }
 
-        .btn-course-action:hover {
-            transform: scale(1.05);
-            background: var(--primary-gradient);
-            border-color: var(--primary-gradient);
-            color: #fff;
-        }
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-color);
+    }
 
     .action-buttons {
         display: flex;
+        gap: 0.5rem;
+        margin-top: auto;
+        margin-top: 1.2rem;
         justify-content: center;
-        gap: 10px;
     }
+
+    .btn-course-action {
+        position: relative;
+        background: transparent !important;
+        color: var(--btn-text-color) !important;
+        border: 2px solid transparent !important;
+        border-image-source: var(--primary-gradient) !important;
+        border-image-slice: 1 !important;
+        border-image-repeat: stretch !important;
+        border-radius: var(--card-border-radius) !important;
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+        .btn-course-action i {
+            color: var(--btn-icon-color) !important;
+        }
+
+        .btn-course-action:hover {
+            transform: scale(1.1);
+            background: var(--primary-gradient) !important;
+            color: #fff !important;
+        }
+
+            .btn-course-action:hover i {
+                color: #fff !important;
+            }
 
     .empty-state .card-body {
         text-align: center;
     }
 
+    .btn-create {
+        position: relative;
+        background: transparent !important;
+        color: var(--btn-text-color) !important;
+        border: 2px solid transparent !important;
+        border-image-source: var(--primary-gradient) !important;
+        border-image-slice: 1 !important;
+        border-image-repeat: stretch !important;
+        border-radius: var(--card-border-radius) !important;
+        transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+        .btn-create i {
+            color: var(--btn-icon-color) !important;
+        }
+
+        .btn-create:hover {
+            transform: scale(1.05);
+            background: var(--primary-gradient) !important;
+            color: #fff !important;
+        }
+
+            .btn-create:hover i {
+                color: #fff !important;
+            }
+
     .text-muted {
         color: var(--text-muted) !important;
     }
-
-    table {
-        background-color: var(--table-bg);
-        color: var(--text-color);
-    }
-    /* Убираем скругления у самих кнопок */
-    .btn-course-action {
-        border-radius: 0 !important;
-    }
-
-        /* И у их “цветной рамки” в ::before */
-        .btn-course-action::before {
-            border-radius: 0 !important;
-        }
-        /* Иконки в кнопках всегда белые */
-        .btn-course-action i {
-            color: #fff !important;
-        }
-
-        /* Чтобы на ховере они тоже не менялись */
-        .btn-course-action:hover i {
-            color: #fff !important;
-        }
-    /* Для кнопки “Добавить курс” */
-    .btn-create {
-        color: #fff !important; /* белый текст */
-    }
-
-        /* И иконка внутри */
-        .btn-create i {
-            color: #fff !important;
-        }
-
-        /* рамка из ::before делаем белой */
-        /* Сбрасываем прежний белый бордер */
-        .btn-create::before {
-            background: var(--primary-gradient) !important;
-        }
-
-    /* У самой кнопки только прозрачный фон и белый текст */
-    .btn-create {
-        background: transparent !important;
-        color: #fff !important;
-        position: relative;
-        z-index: 1;
-    }
-
-        /* Иконка внутри — тоже белая */
-        .btn-create i {
-            color: #fff !important;
-        }
-
-        /* Hover-эффект — пусть рамка чуть светлее */
-        .btn-create:hover::before {
-            filter: brightness(1.2);
-        }
-    /* ===== Кнопки “Редактировать”/“Удалить” и “Добавить курс” ===== */
-    /* По умолчанию (светлая тема) — чёрный текст и иконки */
-    .btn-course-action,
-    .btn-create {
-        color: var(--text-color) !important;
-    }
-
-        .btn-course-action i,
-        .btn-create i {
-            color: var(--text-color) !important;
-        }
-
-    /* В тёмной теме — белый текст и иконки */
-    body.dark-theme .btn-course-action,
-    body.dark-theme .btn-create {
-        color: #fff !important;
-    }
-
-        body.dark-theme .btn-course-action i,
-        body.dark-theme .btn-create i {
-            color: #fff !important;
-        }
-
 </style>
 
 <div class="container py-4">
@@ -257,7 +199,7 @@
     {
         <div class="d-flex justify-content-between align-items-center page-header">
             <h1>@ViewData["Title"]</h1>
-            <a href="@Url.Page("Course", new { id = 0 })" class="btn btn-create btn-course-action">
+            <a href="@Url.Page("Course", new { id = 0 })" class="btn btn-create">
                 <i class="fas fa-plus me-1"></i> Добавить курс
             </a>
         </div>
@@ -267,10 +209,8 @@
             {
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                     <div class="card">
-                        <div class="card-body d-flex align-items-center justify-content-center">
-                            <h5 class="card-title text-center mb-0">@course.Name</h5>
-                        </div>
-                        <div class="card-footer bg-transparent border-top-0">
+                        <div class="card-body">
+                            <h5 class="card-title">@course.Name</h5>
                             <div class="action-buttons">
                                 <a href="@Url.Page("Course", new { id = course.Id })"
                                    class="btn btn-sm btn-outline-secondary btn-course-action" title="Редактировать">
@@ -296,7 +236,7 @@
                     <h4 class="mt-3">Нет добавленных курсов</h4>
                     <p class="text-muted">Нажмите кнопку ниже, чтобы создать курс</p>
                     <a href="@Url.Page("Course", new { id = 0 })"
-                       class="btn btn-create btn-course-action mt-3">
+                       class="btn btn-create mt-3">
                         <i class="fas fa-plus me-1"></i> Создать новый курс
                     </a>
                 </div>
@@ -312,7 +252,8 @@
                 window.location.href = '@Url.Page("CourseDelete")' + '?id=' + id;
             }
         }
-                function toggleTheme() {
+
+        function toggleTheme() {
             document.body.classList.toggle('dark-theme');
         }
     </script>

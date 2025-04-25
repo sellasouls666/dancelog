@@ -6,160 +6,246 @@
 
 <style>
     :root {
-        /* === Основные цвета (светлая тема) === */
         --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         --primary-light: #2575fc;
         --primary-dark: #6a11cb;
         --text-muted: #6c757d;
+        --light-gray: #f8f9fa;
+        --lighter-gray: #f0f0f0;
         --border-color: #e0e0e0;
-        --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-        --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        --bg-page: linear-gradient(to bottom, #f5f7fa 0%, #e4e8eb 100%);
+        --shadow-sm: 0 2px 6px rgba(0,0,0,0.08);
+        --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+        --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+        --card-border-radius: 16px;
+        --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        --bg-color: #ffffff;
         --card-bg: #ffffff;
-        --form-bg: #f0f0f0; /* фон полей в светлой теме */
-        --form-bg-hover: #eaeaea;
-        --form-bg-focus: #ffffff;
         --text-color: #212529;
-        --header-bg: var(--primary-gradient);
+        --cancel-btn-border: var(--border-color);
+        --cancel-btn-text: var(--text-muted);
+        --cancel-btn-hover-bg: var(--lighter-gray);
     }
 
     body {
-        background: var(--bg-page);
-        min-height: 100vh;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f5f7fa;
+    }
+
+    .container {
+        max-width: 800px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-card {
+        border: none;
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        background: var(--card-bg);
+        transition: var(--transition);
         color: var(--text-color);
     }
 
-        /* === Тёмная тема === */
-        body.dark-theme {
-            --bg-page: #000000;
-            --card-bg: #121212;
-            --border-color: #444444;
-            --text-muted: #a0a0a0;
-            --text-color: #f1f1f1;
-            --form-bg: #121212;
-            --form-bg-hover: #4a4a4a;
-            --form-bg-focus: #4a4a4a;
-            --header-bg: var(--primary-gradient);
-            background: var(--bg-page) !important;
-        }
-
-
-    /* Карточка */
-    .card {
-        border: none;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: var(--shadow-sm);
-        background: var(--card-bg);
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    }
-
-        .card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-md);
-        }
-
     .card-header {
-        background: var(--header-bg);
-        color: #fff;
+        background: var(--primary-gradient);
+        color: white;
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
     }
 
-    /* Поля */
+        .card-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .card-header h4 {
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+    .card-body {
+        padding: 2rem;
+    }
+
     .form-label {
         font-weight: 500;
         color: var(--text-color);
+        margin-bottom: 0.5rem;
     }
 
     .form-control {
-        background-color: var(--form-bg) !important;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
         border: 1px solid var(--border-color);
-        border-radius: 8px;
-        padding: 10px 15px;
-        color: var(--text-color) !important;
         transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+        background-color: var(--bg-color);
+        color: var(--text-color);
     }
-
-        .form-control:hover {
-            background-color: var(--form-bg-hover) !important;
-            border-color: var(--primary-light) !important;
-            box-shadow: var(--shadow-sm) !important;
-        }
 
         .form-control:focus {
-            background-color: var(--form-bg-focus) !important;
-            border-color: var(--primary-light) !important;
-            box-shadow: 0 0 0 0.25rem rgba(37,117,252,0.25) !important;
-            outline: none;
-            color: var(--text-color) !important;
+            border-color: var(--primary-dark);
+            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
         }
 
-    body.dark-theme .form-control::placeholder {
-        color: #bbb !important;
-        opacity: 1;
+    .text-danger {
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        color: #dc3545;
     }
 
-    /* Кнопки */
-    .btn-outline-dark {
-        border-radius: 8px;
-        padding: 8px 20px;
-        border-color: var(--primary-dark);
-        color: var(--primary-dark);
+    .btn {
+        border-radius: 12px;
+        padding: 10px 24px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
         transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
     }
 
-        .btn-outline-dark:hover {
-            background: var(--primary-gradient);
-            border-color: var(--primary-gradient);
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
+    .btn-primary {
+        background: var(--primary-gradient);
+        border: none;
+        box-shadow: var(--shadow-sm);
+        background-size: 200% 200%;
+        color: white;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(37, 117, 252, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
         }
 
     .btn-outline-secondary {
-        border-radius: 8px;
-        padding: 8px 20px;
-        border-color: var(--text-muted);
+        border: 1px solid var(--border-color);
         color: var(--text-muted);
-        transition: var(--transition);
+        background-color: transparent;
     }
 
         .btn-outline-secondary:hover {
-            background: var(--light-gray);
-            color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
+            background: var(--lighter-gray);
+            color: var(--text-color);
         }
+
+    .cancel-btn {
+        border-color: var(--cancel-btn-border) !important;
+        color: var(--cancel-btn-text) !important;
+    }
+
+        .cancel-btn:hover {
+            background-color: var(--cancel-btn-hover-bg) !important;
+            color: var(--cancel-btn-text) !important;
+        }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+        animation: slideUp 0.5s ease-out forwards;
+        opacity: 0;
+    }
+
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .form-group:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .form-group:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .dark-theme {
+        --bg-color: #1a1a1a;
+        --card-bg: #121212;
+        --text-color: #f8f9fa;
+        --light-gray: #121212;
+        --lighter-gray: #121212;
+        --border-color: #495057;
+        --primary-gradient: linear-gradient(135deg, #8a2be2 0%, #4b6cb7 100%);
+        --primary-light: #4b6cb7;
+        --primary-dark: #8a2be2;
+        --text-muted: #adb5bd;
+        --text-danger: #ff6b6b;
+        --cancel-btn-border: white;
+        --cancel-btn-text: white;
+        --cancel-btn-hover-bg: rgba(255, 255, 255, 0.1);
+    }
+
+        .dark-theme .form-control {
+            background-color: var(--light-gray);
+            color: var(--text-color);
+            border-color: var(--border-color);
+        }
+
+        .dark-theme .btn-outline-secondary {
+            background-color: transparent;
+            border-color: var(--border-color);
+        }
+
+            .dark-theme .btn-outline-secondary:hover {
+                background-color: var(--lighter-gray);
+            }
 </style>
 
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="mb-0">@ViewData["Title"]</h4>
-                </div>
-                <div class="card-body">
-                    <form method="post">
-                        <input type="hidden" asp-for="Course.Id" />
+<div class="container py-5">
+    <div class="form-card">
+        <div class="card-header">
+            <h4 class="mb-0">@ViewData["Title"]</h4>
+        </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Course.Name" class="form-label">Название курса</label>
-                            <input asp-for="Course.Name" class="form-control" required />
-                            <span asp-validation-for="Course.Name" class="text-danger small"></span>
-                        </div>
+        <div class="card-body">
+            <form method="post">
+                <input type="hidden" asp-for="Course.Id" />
 
-                        <div class="d-flex justify-content-end mt-4">
-                            <a href="ListOfCourse" class="btn btn-outline-secondary me-2">Отмена</a>
-                            <button type="submit" class="btn btn-outline-dark">
-                                @(Model.Course.Id == 0 ? "Добавить" : "Сохранить")
-                            </button>
-                        </div>
-                    </form>
+                <div class="mb-4 form-group">
+                    <label asp-for="Course.Name" class="form-label">Название курса</label>
+                    <input asp-for="Course.Name" class="form-control" required />
+                    <span asp-validation-for="Course.Name" class="text-danger"></span>
                 </div>
-            </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a asp-page="ListOfCourse" class="btn btn-outline-secondary cancel-btn me-3">
+                        Отмена
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        @(Model.Course.Id == 0 ? "Добавить" : "Сохранить")
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
