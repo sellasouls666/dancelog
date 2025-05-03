@@ -6,7 +6,7 @@ namespace dancelog.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Пожалуйста, введите название курса.")]
+        [Required(ErrorMessage = "Пожалуйста, введите название группы.")]
         [StringLength(255, ErrorMessage = "Название группы должно быть не длиннее 255 символов.")]
         [Display(Name = "Название группы")]
         public required string Name { get; set; }
