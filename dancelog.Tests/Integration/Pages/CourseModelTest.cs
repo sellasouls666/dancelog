@@ -23,7 +23,7 @@ namespace dancelog.Tests.Integration.Pages
             // Создаем контекст БД
             var context = new ApplicationDbContext(options);
 
-            // Добавляем тестовые книги
+            // Добавляем тестовые курсы
             context.Courses.AddRange(
                 new Course { Id = 1, Name = "1" },
                 new Course { Id = 2, Name = "2" }
@@ -39,17 +39,17 @@ namespace dancelog.Tests.Integration.Pages
         public void OnGet_ShouldLoadCourses()
         {
             // Arrange — подготавливаем тестовые данные и модель
-            var context = GetDbContext();          // получаем фейковый контекст с книгами
+            var context = GetDbContext();          // получаем фейковый контекст с курсами
             var model = new ListOfCourseModel(context);   // создаем экземпляр модели страницы
 
-            // Act — вызываем метод OnGet, который должен заполнить список книг
+            // Act — вызываем метод OnGet, который должен заполнить список курсов
             model.OnGet();
 
             // Assert — проверяем, что результат соответствует ожиданиям
             Assert.NotNull(model.Courses);                 // список должен быть не null
-            Assert.Equal(2, model.Courses.Count);          // в списке должно быть ровно 2 книги
-            Assert.Contains(model.Courses, b => b.Id == 1);  // проверка по названию
-            Assert.Contains(model.Courses, b => b.Name == "2"); // проверка по автору
+            Assert.Equal(2, model.Courses.Count);          // в списке должно быть ровно 2 курса
+            Assert.Contains(model.Courses, b => b.Id == 1);  // проверка по айди
+            Assert.Contains(model.Courses, b => b.Name == "2"); // проверка по названию
         }
     }
 }
