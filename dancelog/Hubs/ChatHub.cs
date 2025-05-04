@@ -30,5 +30,10 @@ namespace dancelog.Hubs
         {
             await Clients.All.SendAsync("Receive", user, message);
         }
+
+        public async Task SendCourseUpdate(Course course)
+        {
+            await Clients.All.SendAsync("CourseUpdated", course);
+        }
     }
 }

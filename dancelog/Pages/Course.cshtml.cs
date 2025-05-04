@@ -3,16 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using dancelog.Models;
 using System;
+using dancelog.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace dancelog.Pages
 {
     public class CourseModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHubContext<ChatHub> _hubContext;
 
-        public CourseModel(ApplicationDbContext context)
+        public CourseModel(ApplicationDbContext context, IHubContext<ChatHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         [BindProperty]
@@ -30,7 +34,7 @@ namespace dancelog.Pages
             }
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPost()
         {
             if (!ModelState.IsValid)
             {
@@ -44,7 +48,10 @@ namespace dancelog.Pages
             {
                 _context.Courses.Update(Course);
             }
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
+            await _hubContext.Clients.All.SendAsync("CourseUpdated", Course);
+
             return RedirectToPage("ListOfCourse");
         }
     }
