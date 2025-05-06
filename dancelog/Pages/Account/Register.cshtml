@@ -111,16 +111,26 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: -45px auto 15px;
+        margin: -25px auto 15px; /* Уменьшил верхний отступ для опускания */
         border: 4px solid var(--card-bg);
-        box-shadow: var(--shadow-md);
+        box-shadow: none;
         font-size: 2.5rem;
         position: relative;
         z-index: 2;
         animation: float 4s ease-in-out infinite, bounce 2s ease-in-out infinite;
-        box-shadow: 0 0 15px rgba(37, 117, 252, 0.8), 0 0 30px rgba(106, 17, 203, 0.6);
-        color: #fff !important;
-        border: 4px solid #fff; /* ← вот это поменялось */
+    }
+
+    
+
+        .register-avatar i {
+            color: #fff !important; /* Белый цвет иконки */
+        }
+
+    .role-icon {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+        color: var(--text-muted);
+        box-shadow: none; /* Убираем свечение у иконки */
     }
     @@keyframes float {
         0%
