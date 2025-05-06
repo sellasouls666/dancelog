@@ -4,63 +4,362 @@
     ViewData["Title"] = Model.IsNew ? "Добавить занятие" : "Редактировать занятие";
 }
 
-<div class="container py-4">
-    <h1>@ViewData["Title"]</h1>
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        --primary-light: #2575fc;
+        --primary-dark: #6a11cb;
+        --text-muted: #6c757d;
+        --light-gray: #f8f9fa;
+        --lighter-gray: #f0f0f0;
+        --border-color: #e0e0e0;
+        --shadow-sm: 0 2px 6px rgba(0,0,0,0.08);
+        --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+        --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+        --card-border-radius: 16px;
+        --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        --bg-color: #ffffff;
+        --card-bg: #ffffff;
+        --text-color: #212529; /* Черный цвет текста по умолчанию */
+    }
 
-    <form method="post">
-        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+    body {
+        background-color: #f5f7fa;
+    }
 
-        <input type="hidden" asp-for="Lesson.Id" value="@(Model.Lesson?.Id ?? 0)" />
-        <input type="hidden" asp-for="SlotFromQuery" value="@Model.SlotFromQuery" />
+    .container {
+        max-width: 800px;
+        animation: fadeIn 0.8s ease-out;
+    }
 
-        <div class="mb-3">
-            <label asp-for="Lesson.Name" class="form-label">Название урока</label>
-            <input asp-for="Lesson.Name" class="form-control" />
-            <span asp-validation-for="Lesson.Name" class="text-danger"></span>
+    @@keyframes fadeIn {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .form-card {
+        border: none;
+        border-radius: var(--card-border-radius);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        background: var(--card-bg);
+        transition: var(--transition);
+        color: var(--text-color);
+    }
+
+    .card-header {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 1.5rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        }
+
+        .card-header h4 {
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+    .card-body {
+        padding: 2rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+        color: var(--text-color);
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+        background-color: var(--bg-color);
+        color: var(--text-color); /* Важное изменение - цвет текста */
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-dark);
+            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
+        }
+
+    .text-danger {
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        color: #dc3545;
+    }
+
+    .btn {
+        border-radius: 12px;
+        padding: 10px 24px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+        z-index: 1;
+    }
+
+    .btn-primary {
+        background: var(--primary-gradient);
+        border: none;
+        box-shadow: var(--shadow-sm);
+        background-size: 200% 200%;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(37, 117, 252, 0.4);
+            animation: gradientFlow 3s ease infinite;
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 10px rgba(37, 117, 252, 0.3);
+        }
+
+    .btn-outline-secondary {
+        border: 1px solid var(--border-color);
+        color: var(--text-muted);
+        background-color: transparent;
+    }
+
+        .btn-outline-secondary:hover {
+            background: var(--lighter-gray);
+            color: var(--text-color);
+        }
+
+    @@keyframes gradientFlow {
+        0%
+
+    {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+
+    }
+
+    .role-selector {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .role-option {
+        flex: 1;
+        position: relative;
+    }
+
+        .role-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .role-option label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 10px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background-color: var(--bg-color);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            height: 100%;
+            color: var(--text-color);
+        }
+
+            .role-option label:hover {
+                border-color: var(--primary-light);
+                transform: translateY(-3px);
+                box-shadow: var(--shadow-sm);
+            }
+
+        .role-option input[type="radio"]:checked + label {
+            border-color: var(--primary-dark);
+            background: linear-gradient(135deg, rgba(106, 17, 203, 0.1) 0%, rgba(37, 117, 252, 0.1) 100%);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+    .role-icon {
+        font-size: 1.5rem;
+        margin-bottom: 8px;
+        color: var(--text-muted);
+    }
+
+    .role-option input[type="radio"]:checked + label .role-icon {
+        color: var(--primary-dark);
+    }
+
+    .group-select-container {
+        display: none;
+        margin-bottom: 20px;
+        animation: fadeIn 0.5s ease-out;
+        background-color: var(--bg-color); /* Добавлено */
+        border-radius: 10px; /* Добавлено */
+        padding: 15px; /* Добавлено */
+        border: 1px solid var(--border-color); /* Добавлено */
+    }
+
+    .group-select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+        box-shadow: var(--shadow-sm);
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+
+        .group-select:focus {
+            border-color: var(--primary-dark);
+            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
+        }
+
+    .form-group {
+        animation: slideUp 0.5s ease-out forwards;
+        opacity: 0;
+    }
+
+    @@keyframes slideUp {
+        from
+
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+
+    .form-group:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .form-group:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .form-group:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .form-group:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .form-group:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+
+    select option {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+    }
+
+</style>
+
+<div class="container py-5">
+    <div class="form-card" id="formCard">
+        <div class="card-header">
+            <h4 class="mb-0">@ViewData["Title"]</h4>
         </div>
 
-        <div class="mb-3">
-            <label asp-for="Lesson.GroupId" class="form-label">Группа</label>
-            <select asp-for="Lesson.GroupId"
-                    class="form-select"
-                    asp-items="@Model.Groups">
-                <option value="">Выберите группу</option>
-            </select>
-            <span asp-validation-for="Lesson.GroupId" class="text-danger"></span>
-        </div>
+        <div class="card-body">
+            <form method="post">
+                <input type="hidden" asp-for="Lesson.Id" />
 
-        <div class="mb-3">
-            <label asp-for="LessonDate" class="form-label">Дата</label>
-            <input asp-for="LessonDate"
-                   type="date"
-                   asp-format="{0:yyyy-MM-dd}"
-                   class="form-control" />
-            <span asp-validation-for="LessonDate" class="text-danger"></span>
-        </div>
+                <div class="mb-4 form-group">
+                    <label asp-for="Lesson.Name" class="form-label">Название урока</label>
+                    <input asp-for="Lesson.Name" class="form-control" required />
+                    <span asp-validation-for="Lesson.Name" class="text-danger"></span>
+                </div>
 
-        <div class="mb-3">
-            <label asp-for="SelectedTimeSlot" class="form-label">Время</label>
-            <select asp-for="SelectedTimeSlot" class="form-select">
-                <option value="">Выберите время</option>
-                <option value="First">Первая пара (8:00–9:35)</option>
-                <option value="Second">Вторая пара (9:45–11:20)</option>
-                <option value="Third">Третья пара (11:50–13:25)</option>
-                <option value="Fourth">Четвёртая пара (13:35–15:10)</option>
-                <option value="Extra">Доп. урок</option>
-            </select>
-            <span asp-validation-for="SelectedTimeSlot" class="text-danger"></span>
-        </div>
+                <div class="mb-4 form-group">
+                    <label asp-for="Lesson.GroupId" class="form-label">Группа</label>
+                    <select asp-for="Lesson.GroupId" asp-items="@Model.Groups" class="group-select" required>
+                        <option value="">Выберите группу</option>
+                    </select>
+                    <span asp-validation-for="Lesson.GroupId" class="text-danger"></span>
+                </div>
 
-        <div class="mb-3" id="extraTimeDiv" style="display:none;">
-            <label asp-for="ExtraTime" class="form-label">Время для доп. урока</label>
-            <input asp-for="ExtraTime" type="time" class="form-control" />
-            <span asp-validation-for="ExtraTime" class="text-danger"></span>
-        </div>
+                <div class="mb-4 form-group">
+                    <label asp-for="LessonDate" class="form-label">Дата</label>
+                    <input asp-for="LessonDate" type="date" class="form-control" required />
+                    <span asp-validation-for="LessonDate" class="text-danger"></span>
+                </div>
 
-        <button type="submit" class="btn btn-primary">Сохранить</button>
-        <a asp-page="./ListOfLessons"
-           class="btn btn-secondary ms-2">Отмена</a>
-    </form>
+                <div class="mb-4 form-group">
+                    <label asp-for="SelectedTimeSlot" class="form-label">Время</label>
+                    <select asp-for="SelectedTimeSlot" class="form-select" required>
+                        <option value="">Выберите время</option>
+                        <option value="First">Первая пара (8:00–9:35)</option>
+                        <option value="Second">Вторая пара (9:45–11:20)</option>
+                        <option value="Third">Третья пара (11:50–13:25)</option>
+                        <option value="Fourth">Четвёртая пара (13:35–15:10)</option>
+                        <option value="Extra">Доп. урок</option>
+                    </select>
+                    <span asp-validation-for="SelectedTimeSlot" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4" id="extraTimeDiv" style="display:none;">
+                    <label asp-for="ExtraTime" class="form-label">Время для доп. урока</label>
+                    <input asp-for="ExtraTime" type="time" class="form-control" />
+                    <span asp-validation-for="ExtraTime" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a asp-page="./ListOfLessons" class="btn btn-outline-secondary me-3">
+                        <i class="fas fa-times me-2"></i>Отмена
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Сохранить
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
@@ -82,5 +381,4 @@
             toggleExtraTime(); // Инициализация при загрузке
         });
     </script>
-
 }
