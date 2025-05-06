@@ -28,18 +28,15 @@
     }
 
     @@keyframes fadeIn {
-        from
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
 
-    {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .page-header {
@@ -242,22 +239,6 @@
         font-size: 1.1rem;
         line-height: 1.6;
     }
-
-    .lesson-completed-check {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-        cursor: pointer;
-        color: #28a745;
-        font-size: 1.2rem;
-    }
-
-    .teacher-name {
-        font-size: 0.8rem;
-        color: #6c757d;
-        margin-top: 0.25rem;
-    }
-
 </style>
 
 
@@ -332,29 +313,14 @@
                                     <strong>@lesson.Name</strong>
                                     @if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
                                     {
-                                        <div class="d-flex align-items-center">
-                                            <form method="post" asp-page-handler="CompleteLesson" class="me-2">
-                                                <input type="hidden" name="lessonId" value="@lesson.Id" />
-                                                <input type="hidden" name="isCompleted" value="@(!lesson.IsCompleted)" />
-                                                <button type="submit" class="btn btn-sm @(lesson.IsCompleted ? "btn-success" : "btn-outline-secondary")">
-                                                    <i class="fas @(lesson.IsCompleted ? "fa-check-circle" : "fa-circle")"></i>
-                                                </button>
-                                            </form>
-                                            <a asp-page="Lesson" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-secondary me-2">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button type="button" class="btn-delete-lesson" onclick="if(confirm('Удалить занятие?')) location='@Url.Page("LessonDelete")?id=@lesson.Id'">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
+                                        <a asp-page="Lesson" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-secondary btn-lesson-action" title="Редактировать">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <button type="button" class="btn-delete-lesson" onclick="if(confirm('Удалить занятие?')) location='@Url.Page("LessonDelete")?id=@lesson.Id'">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     }
                                 </div>
-                                @if (lesson.IsCompleted && lesson.CompletedByTeacher != null)
-                                {
-                                    <div class="mt-2 small text-muted">
-                                        Проведено: @lesson.CompletedByTeacher.LastName @lesson.CompletedByTeacher.FirstName[0]. @(lesson.CompletedByTeacher.MiddleName?[0] + "." ?? "")
-                                    </div>
-                                }
                             </div>
                         }
                         else if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
@@ -374,30 +340,3 @@
         </div>
     }
 </div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Обработка кликов на галочки
-            document.querySelectorAll('.complete-lesson-btn').forEach(btn => {
-                btn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const form = this.closest('form');
-                    fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                        },
-                        body: new URLSearchParams(new FormData(form))
-                    })
-                        .then(response => {
-                            if (response.redirected) {
-                                window.location.href = response.url;
-                            }
-                        });
-                });
-            });
-        });
-    </script>
-}

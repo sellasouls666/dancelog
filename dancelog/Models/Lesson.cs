@@ -1,5 +1,4 @@
-﻿using dancelog.Models.Auth;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dancelog.Models
@@ -24,9 +23,5 @@ namespace dancelog.Models
         [Display(Name = "Дата и время")]
         [DataType(DataType.DateTime)]
         public DateTime DateTime { get; set; } = DateTime.Now;
-
-        public bool IsCompleted { get; set; }
-        public string CompletedByTeacherId { get; set; }
-        public AuthUser CompletedByTeacher { get; set; }
     }
 }
