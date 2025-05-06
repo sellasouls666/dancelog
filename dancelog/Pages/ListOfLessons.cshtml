@@ -20,6 +20,7 @@
 
     body {
         background-color: #f5f7fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .container {
@@ -28,15 +29,18 @@
     }
 
     @@keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
+        from
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
     }
 
     .page-header {
@@ -97,7 +101,6 @@
             outline: none;
         }
 
-    /* Custom select wrapper to add icon */
     .select-wrapper {
         position: relative;
     }
@@ -147,46 +150,90 @@
         padding: 1rem;
         text-align: center;
         border-radius: var(--card-border-radius);
+        font-weight: 500;
     }
 
     .slot-label {
         font-weight: 600;
         padding: 1rem;
+        display: flex;
+        align-items: center;
     }
 
-    .lesson-panel {
-        background: rgba(37, 117, 252, 0.1);
-        border-radius: 8px;
+    .lesson-cell {
+        position: relative;
+        min-height: 100px;
         padding: 0.75rem;
+        font-size: 1rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
         box-shadow: var(--shadow-sm);
-        transition: var(--transition);
+        display: flex;
+        flex-direction: column;
     }
 
-        .lesson-panel:hover {
-            transform: translateY(-2px);
+        .lesson-cell:hover {
+            transform: scale(1.05);
             box-shadow: var(--shadow-md);
         }
 
-    /* Styled delete button */
-    .btn-delete-lesson {
-        width: 32px;
-        height: 32px;
+    .lesson-panel {
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+        padding: 1rem;
+        box-shadow: var(--shadow-sm);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .lesson-name {
+        font-size: 1.1rem;
+        padding-bottom: 12px;
+        flex-grow: 1;
+        text-align: center; /* Центрируем текст */
+    }
+
+    .lesson-actions {
+        display: flex;
+        gap: 6px;
+        margin-top: auto;
+        justify-content: center; /* Центрируем иконки по горизонтали */
+    }
+
+    .btn-lesson-action {
+        width: 24px; /* Уменьшаем размер иконок */
+        height: 24px;
         padding: 0;
         border: none;
-        background: rgba(220,53,69,0.1);
-        border-radius: 50%;
-        color: #dc3545;
+        background: transparent;
+        border-radius: 4px;
+        color: #6c757d;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: var(--transition);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
-        .btn-delete-lesson:hover {
-            background: rgba(220,53,69,0.2);
-            color: #bd2130;
-            transform: scale(1.1);
+        .btn-lesson-action:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: #495057;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
+
+    .btn-edit-lesson i {
+        font-size: 1rem; /* Уменьшаем размер иконки */
+        color: #0d6efd !important;
+    }
+
+    .btn-delete-lesson i {
+        font-size: 1rem; /* Уменьшаем размер иконки */
+        color: #dc3545 !important;
+    }
 
     .btn-add-lesson {
         width: 40px;
@@ -200,10 +247,14 @@
         color: white !important;
         box-shadow: var(--shadow-sm);
         margin: auto;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 
         .btn-add-lesson:hover {
-            transform: scale(1.1);
+            transform: translate(-50%, -50%) scale(1.1);
             box-shadow: var(--shadow-md);
         }
 
@@ -240,7 +291,6 @@
         line-height: 1.6;
     }
 </style>
-
 
 <div class="container py-5">
     <div class="page-header">
@@ -305,22 +355,22 @@
                 {
                     var cellDt = Model.WeekStart.AddDays(d).Date + slot.Time;
                     var lesson = Model.Lessons.FirstOrDefault(l => l.DateTime == cellDt);
-                    <div>
+                    <div class="lesson-cell">
                         @if (lesson != null)
                         {
                             <div class="lesson-panel">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <strong>@lesson.Name</strong>
-                                    @if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
-                                    {
-                                        <a asp-page="Lesson" asp-route-id="@lesson.Id" class="btn btn-sm btn-outline-secondary btn-lesson-action" title="Редактировать">
+                                <div class="lesson-name">@lesson.Name</div>
+                                @if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
+                                {
+                                    <div class="lesson-actions">
+                                        <a asp-page="Lesson" asp-route-id="@lesson.Id" class="btn-lesson-action btn-edit-lesson" title="Редактировать">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" class="btn-delete-lesson" onclick="if(confirm('Удалить занятие?')) location='@Url.Page("LessonDelete")?id=@lesson.Id'">
+                                        <button type="button" class="btn-lesson-action btn-delete-lesson" onclick="if(confirm('Удалить занятие?')) location='@Url.Page("LessonDelete")?id=@lesson.Id'" title="Удалить">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
-                                    }
-                                </div>
+                                    </div>
+                                }
                             </div>
                         }
                         else if (User.IsInRole("Админ") || User.IsInRole("Учитель"))
