@@ -54,8 +54,7 @@ namespace dancelog.Tests.Integration.Data
                 Name = "MDK 01.01",
                 GroupId = group.Id,
                 Group = group,
-                DateTime = DateTime.Now,
-                CompletedByTeacherId = ""
+                DateTime = DateTime.Now
             };
 
             var attendance = new Attendance
