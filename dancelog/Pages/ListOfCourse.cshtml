@@ -208,7 +208,7 @@
             @foreach (var course in Model.Courses)
             {
                 <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="card">
+                    <div class="card" id="course-@course.Id">
                         <div class="card-body">
                             <h5 class="card-title">@course.Name</h5>
                             <div class="action-buttons">
@@ -251,7 +251,7 @@
         connection.on("CourseUpdated", function (course) {
             const existingCard = document.getElementById("course-" + course.id);
             const html = `
-                <div class="card">
+                <div class="card" id="course-${course.id}">
                         <div class="card-body">
                             <h5 class="card-title">${course.name}</h5>
                             <div class="action-buttons">
@@ -275,14 +275,19 @@
             }
         });
 
+        connection.on("CourseDeleted", function (courseId) {
+            const courseElement = document.getElementById("course-" + courseId);
+            if (courseElement) {
+                // Удаляем родительский элемент колонки
+                courseElement.closest('.col-12').remove();
+
+            }
+        });
+
+
         connection.start().catch(err => console.error(err.toString()));
     </script>
     <script>
-        /*function confirmDelete(id) {
-            if (confirm('Вы уверены, что хотите удалить этот курс?')) {
-                window.location.href = '@Url.Page("CourseDelete")' + '?id=' + id;
-            }
-        }*/
 
         function toggleTheme() {
             document.body.classList.toggle('dark-theme');
