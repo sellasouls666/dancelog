@@ -20,8 +20,8 @@
         --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         --card-bg: #ffffff;
         --text-color: #212529;
-        --btn-text-color: #212529; /* Цвет текста кнопок по умолчанию */
-        --btn-icon-color: #212529; /* Цвет иконок по умолчанию */
+        --btn-text-color: #212529;
+        --btn-icon-color: #212529;
     }
 
     body {
@@ -38,27 +38,88 @@
             --border-color: #444;
             --card-bg: #121212;
             --text-color: #f1f1f1;
-            --btn-text-color: #ffffff; /* Белый текст кнопок в темной теме */
-            --btn-icon-color: #ffffff; /* Белые иконки в темной теме */
+            --btn-text-color: #ffffff;
+            --btn-icon-color: #ffffff;
             background: #000000 !important;
         }
 
-    /* Остальные стили остаются без изменений */
     .container {
-        max-width: 1400px;
-        animation: fadeIn 0.8s ease-out;
+        width: 100%;
+        padding-right: calc(var(--bs-gutter-x, 0.75rem) * .5);
+        padding-left: calc(var(--bs-gutter-x, 0.75rem) * .5);
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    @@media (min-width: 576px) {
+        .container
+
+    {
+        max-width: 540px;
+    }
+
+    }
+
+    @@media (min-width: 768px) {
+        .container
+
+    {
+        max-width: 720px;
+    }
+
+    }
+
+    @@media (min-width: 992px) {
+        .container
+
+    {
+        max-width: 960px;
+    }
+
+    }
+
+    @@media (min-width: 1200px) {
+        .container
+
+    {
+        max-width: 1140px;
+    }
+
+    }
+
+    @@media (min-width: 1400px) {
+        .container
+
+    {
+        max-width: 1320px;
+    }
+
+    }
+
+    .row {
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
+    .col-12, .col-sm-6, .col-md-4, .col-lg-3 {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
     }
 
     @@keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
+        from
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
     }
 
     .page-header {
@@ -159,6 +220,53 @@
                 color: #fff !important;
             }
 
+    /* Стили для кнопки удаления */
+    .btn-course-delete {
+        position: relative;
+        background: transparent !important;
+        color: var(--btn-text-color) !important;
+        border: 2px solid transparent !important;
+        border-image-source: var(--primary-gradient) !important;
+        border-image-slice: 1 !important;
+        border-image-repeat: stretch !important;
+        border-radius: var(--card-border-radius) !important;
+        transition: transform 0.2s ease, background 0.2s ease;
+        overflow: hidden;
+    }
+
+        .btn-course-delete::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--primary-gradient);
+            transform: scale(1); /* Изменено с scale(0) на scale(1) */
+            opacity: 0; /* Добавлена непрозрачность */
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .btn-course-delete:hover::before {
+            opacity: 1; /* При наведении становится полностью видимым */
+        }
+
+        .btn-course-delete i {
+            color: var(--btn-icon-color) !important;
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-course-delete:hover {
+            transform: scale(1.1);
+        }
+
+            .btn-course-delete:hover i {
+                color: #fff !important;
+            }
+
     .empty-state .card-body {
         text-align: center;
     }
@@ -194,145 +302,56 @@
     }
 </style>
 
-<div class="container py-4">
-    @if (Model.Courses.Any())
-    {
-        <div class="d-flex justify-content-between align-items-center page-header">
-            <h1>@ViewData["Title"]</h1>
-            <a href="@Url.Page("Course", new { id = 0 })" class="btn btn-create">
-                <i class="fas fa-plus me-1"></i> Добавить курс
-            </a>
-        </div>
+<div class="container-fluid px-0 py-4">
+    <div class="container">
+        @if (Model.Courses.Any())
+        {
+            <div class="d-flex justify-content-between align-items-center page-header">
+                <h1>@ViewData["Title"]</h1>
+                <a href="@Url.Page("Course", new { id = 0 })" class="btn btn-create">
+                    <i class="fas fa-plus me-1"></i> Добавить курс
+                </a>
+            </div>
 
-        <div class="row g-4">
-            @foreach (var course in Model.Courses)
-            {
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="card" id="course-@course.Id">
-                        <div class="card-body">
-                            <h5 class="card-title">@course.Name</h5>
-                            <div class="action-buttons">
-                                <a href="@Url.Page("Course", new { id = course.Id })"
-                                   class="btn btn-sm btn-outline-secondary btn-course-action" title="Редактировать">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="javascript:void(0);" class="btn btn-sm btn-outline-secondary btn-course-action" onclick="if (confirm('Вы уверены, что хотите удалить этот курс?')) { window.location.href = '@Url.Page("CourseDelete", new { id = course.Id })'; }">Удалить</a>
+            <div class="row g-4">
+                @foreach (var course in Model.Courses)
+                {
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card" id="course-@course.Id">
+                            <div class="card-body">
+                                <h5 class="card-title">@course.Name</h5>
+                                <div class="action-buttons">
+                                    <a href="@Url.Page("Course", new { id = course.Id })"
+                                       class="btn btn-sm btn-outline-secondary btn-course-action" title="Редактировать">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="javascript:void(0);"
+                                       class="btn btn-sm btn-course-delete"
+                                       title="Удалить курс"
+                                       onclick="if (confirm('Вы уверены, что хотите удалить этот курс?')) { window.location.href = '@Url.Page("CourseDelete", new { id = course.Id })'; }">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
-    else
-    {
-        <div class="text-center py-5 empty-state">
-            <div class="card mx-auto" style="max-width: 400px;">
-                <div class="card-body py-5">
-                    <h4 class="mt-3">Нет добавленных курсов</h4>
-                    <p class="text-muted">Нажмите кнопку ниже, чтобы создать курс</p>
-                    <a href="@Url.Page("Course", new { id = 0 })"
-                       class="btn btn-create mt-3">
-                        <i class="fas fa-plus me-1"></i> Создать новый курс
-                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5 empty-state">
+                <div class="card mx-auto" style="max-width: 400px;">
+                    <div class="card-body py-5">
+                        <h4 class="mt-3">Нет добавленных курсов</h4>
+                        <p class="text-muted">Нажмите кнопку ниже, чтобы создать курс</p>
+                        <a href="@Url.Page("Course", new { id = 0 })"
+                           class="btn btn-create mt-3">
+                            <i class="fas fa-plus me-1"></i> Создать новый курс
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
-
-@section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.0/signalr.min.js"></script>
-    <script>
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/chathub")
-            .build();
-
-        // Обработка обновления курса
-        connection.on("CourseUpdated", function (course) {
-            const existingCard = document.getElementById("course-" + course.id);
-            const html = `
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <div class="card" id="course-${course.id}">
-                        <div class="card-body">
-                            <h5 class="card-title">${course.name}</h5>
-                            <div class="action-buttons">
-                                <a href="/Course?id=${course.id}"
-                                   class="btn btn-sm btn-outline-secondary btn-course-action" title="Редактировать">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="javascript:void(0);" class="btn btn-sm btn-outline-secondary btn-course-action"
-                                   onclick="if (confirm('Вы уверены, что хотите удалить этот курс?')) {
-                                       window.location.href = '/CourseDelete?id=${course.id}';
-                                   }">Удалить</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-
-            if (existingCard) {
-                existingCard.closest('.col-12').outerHTML = html;
-            } else {
-                const container = document.querySelector(".row");
-                if (container) {
-                    container.insertAdjacentHTML('beforeend', html);
-                }
-            }
-        });
-
-        // Обработка удаления курса
-        connection.on("CourseDeleted", function (courseId) {
-            const courseElement = document.getElementById("course-" + courseId);
-            if (courseElement) {
-                const columnElement = courseElement.closest('.col-12');
-                if (columnElement) {
-                    columnElement.remove();
-
-                    // Проверяем, остались ли еще курсы
-                    const remainingCourses = document.querySelectorAll('.col-12');
-                    if (remainingCourses.length === 0) {
-                        showEmptyState();
-                    }
-                }
-            }
-        });
-
-        function showEmptyState() {
-            const emptyStateHtml = `
-                <div class="text-center py-5 empty-state">
-                    <div class="card mx-auto" style="max-width: 400px;">
-                        <div class="card-body py-5">
-                            <h4 class="mt-3">Нет добавленных курсов</h4>
-                            <p class="text-muted">Нажмите кнопку ниже, чтобы создать курс</p>
-                            <a href="/Course?id=0"
-                               class="btn btn-create mt-3">
-                                <i class="fas fa-plus me-1"></i> Создать новый курс
-                            </a>
-                        </div>
-                    </div>
-                </div>`;
-
-            const container = document.querySelector(".container");
-            if (container) {
-                container.innerHTML = emptyStateHtml;
-            }
-        }
-
-        // Запуск соединения с обработкой ошибок
-        async function startConnection() {
-            try {
-                await connection.start();
-                console.log("SignalR Connected.");
-            } catch (err) {
-                console.log("SignalR Connection Error: ", err);
-                setTimeout(startConnection, 5000);
-            }
-        }
-
-        startConnection();
-
-        function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-        }
-    </script>
-}

@@ -27,6 +27,71 @@
         background-color: #f5f7fa;
     }
 
+        body.dark-theme {
+            --bg-color: #000000 !important;
+            --card-bg: #0d0d0d !important;
+            --text-color: #e0e0e0 !important;
+            --border-color: #1a1a1a !important;
+            background-color: #000000 !important;
+        }
+
+            body.dark-theme .container {
+                background-color: transparent !important;
+            }
+
+            body.dark-theme .form-card {
+                background-color: var(--card-bg) !important;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+                color: var(--text-color);
+            }
+
+            body.dark-theme .form-control,
+            body.dark-theme .group-select {
+                background-color: #121212 !important;
+                border-color: #1a1a1a !important;
+                color: var(--text-color) !important;
+            }
+
+            body.dark-theme .form-label {
+                color: #a0a0a0 !important;
+            }
+
+            body.dark-theme select option {
+                background-color: #121212 !important;
+                color: var(--text-color) !important;
+            }
+
+            body.dark-theme .form-control:focus,
+            body.dark-theme .group-select:focus {
+                border-color: var(--primary-dark) !important;
+                box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25) !important;
+            }
+
+            body.dark-theme .btn-outline-secondary {
+                border-color: #1a1a1a !important;
+                color: #a0a0a0 !important;
+            }
+
+                body.dark-theme .btn-outline-secondary:hover {
+                    background-color: #1a1a1a !important;
+                    color: var(--text-color) !important;
+                }
+
+            body.dark-theme .group-select-container {
+                background-color: #0d0d0d !important;
+                border-color: #1a1a1a !important;
+            }
+
+            body.dark-theme .role-option label {
+                background-color: #121212 !important;
+                border-color: #1a1a1a !important;
+                color: var(--text-color) !important;
+            }
+
+            body.dark-theme .role-option input[type="radio"]:checked + label {
+                background: linear-gradient(135deg, rgba(106, 17, 203, 0.2) 0%, rgba(37, 117, 252, 0.2) 100%) !important;
+            }
+
     .container {
         max-width: 800px;
         animation: fadeIn 0.8s ease-out;

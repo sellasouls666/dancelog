@@ -38,7 +38,7 @@ namespace dancelog.Pages.Account
             // Если редактируем существующего ученика, устанавливаем GroupId
             if (User?.Role == "Ученик" && User.Student != null)
             {
-                User.GroupId = User.Student.GroupId;
+                User.GroupId = User.Student.GroupId; 
             }
         }
 

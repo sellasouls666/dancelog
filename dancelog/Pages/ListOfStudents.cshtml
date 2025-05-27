@@ -56,9 +56,62 @@
             color: var(--text-color);
         }
 
-    .search-bar {
-        margin-bottom: 1.5rem;
+    .search-form {
+        position: relative;
+        max-width: 600px;
+        margin: 0 auto 1.5rem;
     }
+
+    .search-input {
+        border-radius: 12px 0 0 12px;
+        padding: 10px 16px;
+        border: 1px solid var(--border-color);
+        transition: all 0.3s ease;
+    }
+
+        .search-input:focus {
+            border-color: var(--primary-dark);
+            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
+        }
+
+    .input-group {
+        display: flex;
+    }
+
+    .input-group-append {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-gradient {
+        background: var(--primary-gradient);
+        color: white !important;
+        border: none;
+        border-radius: 0 12px 12px 0;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-gradient-secondary {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+        color: white !important;
+        border: none;
+        border-radius: 12px;
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-gradient:hover,
+        .btn-gradient-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
 
     .card {
         background: var(--bg-card);
@@ -133,15 +186,103 @@
     .empty-state .card-body {
         text-align: center;
     }
+
+    /* Темная тема */
+    body.dark-theme {
+        --bg-page: linear-gradient(to bottom, #000000 0%, #000000 100%) !important;
+        --bg-card: #0d0d0d !important;
+        --text-color: #e0e0e0 !important;
+        --text-muted: #a0a0a0 !important;
+        --border-color: #1a1a1a !important;
+        background: var(--bg-page) !important;
+        color: var(--text-color);
+    }
+
+        body.dark-theme .container {
+            background-color: transparent !important;
+        }
+
+        body.dark-theme .page-header {
+            border-bottom-color: rgba(255,255,255,0.1) !important;
+        }
+
+            body.dark-theme .page-header h1 {
+                color: var(--text-color) !important;
+            }
+
+        body.dark-theme .search-input {
+            background-color: #121212 !important;
+            border-color: #1a1a1a !important;
+            color: var(--text-color) !important;
+        }
+
+        body.dark-theme .card {
+            background-color: var(--bg-card) !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+            color: var(--text-color);
+        }
+
+            body.dark-theme .card:hover {
+                box-shadow: 0 10px 20px rgba(0,0,0,0.6) !important;
+            }
+
+        body.dark-theme .card-title {
+            color: var(--text-color) !important;
+        }
+
+        body.dark-theme .list-group-item {
+            background: transparent !important;
+            border-bottom-color: rgba(255,255,255,0.1) !important;
+            color: var(--text-color) !important;
+        }
+
+        body.dark-theme .badge-group {
+            background: var(--primary-gradient) !important;
+        }
+
+        body.dark-theme .btn-student-action {
+            background-color: transparent !important;
+            border-color: #1a1a1a !important;
+            color: var(--primary-light) !important;
+        }
+
+            body.dark-theme .btn-student-action:hover {
+                background: var(--primary-gradient) !important;
+                border-color: var(--primary-gradient) !important;
+                color: #fff !important;
+            }
+
+        body.dark-theme .empty-state .card {
+            background-color: #121212 !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+        }
+
+        body.dark-theme .empty-state h4 {
+            color: var(--text-color) !important;
+        }
+
+        body.dark-theme .empty-state .text-muted {
+            color: var(--text-muted) !important;
+        }
 </style>
 
 <div class="container py-4">
     <!-- Форма поиска -->
     <div class="search-bar">
         <form method="get">
-            <input type="text" name="SearchQuery" class="form-control" placeholder="Поиск по фамилии или email..." value="@searchQuery" />
-            <button type="submit" class="btn btn-primary mt-2">Применить фильтрацию</button>
-            <a href="./ListOfStudents?SearchQuery=" class="btn btn-secondary mt-2 ms-2">Сбросить фильтрацию</a> <!-- Кнопка для сброса фильтрации -->
+            <div class="row align-items-center">
+                <div class="col-12 col-md-8 mb-2 mb-md-0">
+                    <input type="text" name="SearchQuery" class="form-control search-input" placeholder="Поиск по фамилии или email..." value="@searchQuery" />
+                </div>
+                <div class="col-12 col-md-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary btn-gradient flex-grow-1">
+                        <i class="fas fa-search me-2"></i>Применить фильтрацию
+                    </button>
+                    <a href="./ListOfStudents?SearchQuery=" class="btn btn-secondary btn-gradient-secondary flex-grow-1">
+                        <i class="fas fa-times me-2"></i>Сбросить
+                    </a>
+                </div>
+            </div>
         </form>
     </div>
 
