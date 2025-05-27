@@ -23,6 +23,11 @@
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+        body.dark-theme {
+            background-color: #000000;
+            color: #e0e0e0;
+        }
+
     .container {
         max-width: 1400px;
         animation: fadeIn 0.8s ease-out;
@@ -73,6 +78,14 @@
                 width: 100px;
             }
 
+    body.dark-theme .page-header {
+        border-bottom-color: rgba(255,255,255,0.1);
+    }
+
+        body.dark-theme .page-header h1 {
+            color: #ffffff;
+        }
+
     .filter-card {
         background: white;
         border-radius: var(--card-border-radius);
@@ -82,9 +95,31 @@
         transition: var(--transition);
     }
 
-        .filter-card:hover {
-            box-shadow: var(--shadow-md);
-        }
+    body.dark-theme .filter-card {
+        background-color: #0d0d0d !important; /* Еще темнее */
+        border: 1px solid #1a1a1a;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    body.dark-theme .lesson-cell {
+        background-color: #0d0d0d !important; /* Максимально темный фон */
+        border-color: #1a1a1a !important;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    body.dark-theme .lesson-panel {
+        background: rgba(255, 255, 255, 0.03) !important; /* Почти прозрачный фон */
+    }
+
+    /* Дополнительный контраст для текста */
+    body.dark-theme .lesson-name {
+        color: #e0e0e0;
+    }
+
+    body.dark-theme .lesson-cell:hover {
+        background-color: #121212 !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
 
     .form-select, .form-control {
         border-radius: 12px;
@@ -95,11 +130,18 @@
         background-color: white;
     }
 
-        .form-select:focus, .form-control:focus {
-            border-color: #6a11cb;
-            box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
-            outline: none;
-        }
+    body.dark-theme .form-select,
+    body.dark-theme .form-control {
+        background-color: #2a2a2a;
+        border-color: #444;
+        color: #e0e0e0;
+    }
+
+    .form-select:focus, .form-control:focus {
+        border-color: #6a11cb;
+        box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
+        outline: none;
+    }
 
     .select-wrapper {
         position: relative;
@@ -115,6 +157,10 @@
             font-size: 0.9rem;
         }
 
+    body.dark-theme .select-wrapper .select-icon {
+        color: #a0a0a0;
+    }
+
     .btn-week-nav {
         border-radius: 12px;
         padding: 10px 16px;
@@ -124,10 +170,11 @@
         transition: var(--transition);
     }
 
-        .btn-week-nav:hover {
-            background: var(--light-gray);
-            transform: translateY(-1px);
-        }
+    body.dark-theme .btn-week-nav {
+        background: #2a2a2a;
+        border-color: #444;
+        color: #e0e0e0;
+    }
 
     .week-display {
         font-weight: 500;
@@ -160,6 +207,10 @@
         align-items: center;
     }
 
+    body.dark-theme .slot-label {
+        color: #a0a0a0;
+    }
+
     .lesson-cell {
         position: relative;
         min-height: 100px;
@@ -174,10 +225,20 @@
         flex-direction: column;
     }
 
-        .lesson-cell:hover {
-            transform: scale(1.05);
-            box-shadow: var(--shadow-md);
-        }
+    body.dark-theme .lesson-cell {
+        background: linear-gradient(to right, #1e1e1e 0%, #1a1a1a 100%);
+        border-color: #333;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .lesson-cell:hover {
+        transform: scale(1.05);
+        box-shadow: var(--shadow-md);
+    }
+
+    body.dark-theme .lesson-cell:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
 
     .lesson-panel {
         background: rgba(0, 0, 0, 0.05);
@@ -189,22 +250,30 @@
         flex-direction: column;
     }
 
+    body.dark-theme .lesson-panel {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
     .lesson-name {
         font-size: 1.1rem;
         padding-bottom: 12px;
         flex-grow: 1;
-        text-align: center; /* Центрируем текст */
+        text-align: center;
+    }
+
+    body.dark-theme .lesson-name {
+        color: #e0e0e0;
     }
 
     .lesson-actions {
         display: flex;
         gap: 6px;
         margin-top: auto;
-        justify-content: center; /* Центрируем иконки по горизонтали */
+        justify-content: center;
     }
 
     .btn-lesson-action {
-        width: 24px; /* Уменьшаем размер иконок */
+        width: 24px;
         height: 24px;
         padding: 0;
         border: none;
@@ -218,20 +287,30 @@
         box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
 
-        .btn-lesson-action:hover {
-            background: rgba(0, 0, 0, 0.1);
-            color: #495057;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
+    body.dark-theme .btn-lesson-action {
+        color: #a0a0a0;
+        background: rgba(255,255,255,0.1);
+    }
+
+    .btn-lesson-action:hover {
+        background: rgba(0, 0, 0, 0.1);
+        color: #495057;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    body.dark-theme .btn-lesson-action:hover {
+        background: rgba(255,255,255,0.2);
+        color: #ffffff;
+    }
 
     .btn-edit-lesson i {
-        font-size: 1rem; /* Уменьшаем размер иконки */
+        font-size: 1rem;
         color: #0d6efd !important;
     }
 
     .btn-delete-lesson i {
-        font-size: 1rem; /* Уменьшаем размер иконки */
+        font-size: 1rem;
         color: #dc3545 !important;
     }
 
@@ -276,11 +355,19 @@
         font-size: 3rem;
     }
 
+    body.dark-theme .empty-state-icon {
+        background: rgba(106, 17, 203, 0.2);
+    }
+
     .empty-state-title {
         font-weight: 600;
         margin-bottom: 1rem;
         color: #343a40;
         font-size: 1.5rem;
+    }
+
+    body.dark-theme .empty-state-title {
+        color: #ffffff;
     }
 
     .empty-state-text {
@@ -289,6 +376,10 @@
         margin: 0 auto 2rem;
         font-size: 1.1rem;
         line-height: 1.6;
+    }
+
+    body.dark-theme .empty-state-text {
+        color: #a0a0a0;
     }
 </style>
 
