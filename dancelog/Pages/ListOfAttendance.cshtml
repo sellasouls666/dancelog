@@ -1,4 +1,356 @@
 ﻿@page
 @model dancelog.Pages.ListOfAttendanceModel
 @{
+    ViewData["Title"] = "Посещаемость занятий";
 }
+
+<style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+        --text-muted: #6c757d;
+        --light-gray: #f8f9fa;
+        --lighter-gray: #f0f0f0;
+        --border-color: #e0e0e0;
+        --shadow-sm: 0 2px 6px rgba(0,0,0,0.08);
+        --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+        --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+        --card-border-radius: 16px;
+        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    body {
+        background-color: #f5f7fa;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+        body.dark-theme {
+            background-color: #000000;
+            color: #e0e0e0;
+        }
+
+    .container {
+        max-width: 1400px;
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Page Header */
+    .page-header {
+        position: relative;
+        padding-bottom: 1rem;
+        margin-bottom: 2.5rem;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+
+        .page-header h1 {
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 0;
+            position: relative;
+        }
+
+            .page-header h1::after {
+                content: "";
+                position: absolute;
+                bottom: -12px;
+                left: 0;
+                width: 60px;
+                height: 4px;
+                background: var(--primary-gradient);
+                border-radius: 4px;
+                transition: width 0.6s ease;
+            }
+
+            .page-header h1:hover::after {
+                width: 100px;
+            }
+
+    body.dark-theme .page-header {
+        border-bottom-color: rgba(255,255,255,0.1);
+    }
+
+        body.dark-theme .page-header h1 {
+            color: #ffffff;
+        }
+
+    /* Filter Card */
+    .filter-card {
+        background: white;
+        border-radius: var(--card-border-radius);
+        padding: 1.5rem;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 2rem;
+        transition: var(--transition);
+    }
+
+    body.dark-theme .filter-card {
+        background-color: #0d0d0d !important;
+        border: 1px solid #1a1a1a;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+    .select-wrapper {
+        position: relative;
+    }
+
+        .select-wrapper .select-icon {
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+    body.dark-theme .select-wrapper .select-icon {
+        color: #a0a0a0;
+    }
+
+    .form-select {
+        width: 100%;
+        border-radius: 12px;
+        padding: 10px 16px;
+        border: 1px solid var(--border-color);
+        transition: var(--transition);
+        appearance: none;
+        background-color: white;
+        color: #212529;
+    }
+
+    body.dark-theme .form-select {
+        background-color: #2a2a2a;
+        border-color: #444;
+        color: #e0e0e0;
+    }
+
+    .form-select:focus {
+        border-color: #6a11cb;
+        box-shadow: 0 0 0 0.25rem rgba(106, 17, 203, 0.25);
+        outline: none;
+    }
+
+    /* Empty State */
+    .empty-state {
+        padding: 5rem 0;
+        text-align: center;
+    }
+
+    .empty-state-icon {
+        width: 120px;
+        height: 120px;
+        background: rgba(106, 17, 203, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 2rem;
+        color: var(--primary-gradient);
+        font-size: 3rem;
+    }
+
+    body.dark-theme .empty-state-icon {
+        background: rgba(106, 17, 203, 0.2);
+    }
+
+    .empty-state-title {
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: #343a40;
+        font-size: 1.5rem;
+    }
+
+    body.dark-theme .empty-state-title {
+        color: #ffffff;
+    }
+
+    .empty-state-text {
+        color: var(--text-muted);
+        max-width: 500px;
+        margin: 0 auto 2rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+
+    body.dark-theme .empty-state-text {
+        color: #a0a0a0;
+    }
+
+    /* Table Styling */
+    .table {
+        width: 100%;
+        margin-bottom: 1rem;
+        color: #212529;
+        border-collapse: collapse;
+    }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+            background-color: var(--light-gray);
+        }
+
+    body.dark-theme .table thead th {
+        background-color: #1a1a1a;
+        color: #e0e0e0;
+        border-bottom-color: #333;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    body.dark-theme .table tbody tr:hover {
+        background-color: #121212;
+    }
+
+    /* Radio Inputs */
+    .form-check-input {
+        margin-top: 0.4rem;
+    }
+
+    body.dark-theme .form-check-input {
+        accent-color: #6a11cb;
+    }
+
+    /* Unified Dark Theme Overrides */
+    .btn-primary {
+        background: var(--primary-gradient);
+        border: none;
+    }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+</style>
+
+<div class="container py-5">
+    <div class="page-header">
+        <h1>@ViewData["Title"]</h1>
+    </div>
+
+    <div class="filter-card">
+        <form method="get" class="row g-3">
+            <!-- Селект «Группа» -->
+            <div class="col-md-4">
+                <label asp-for="SelectedGroupId" class="form-label">Группа</label>
+                <div class="select-wrapper">
+                    <select asp-for="SelectedGroupId"
+                            asp-items="@Model.Groups"
+                            class="form-select"
+                            onchange="this.form.submit()">
+                        <option value="">-- выберите группу --</option>
+                    </select>
+                    <i class="fas fa-angle-down select-icon"></i>
+                </div>
+            </div>
+
+            <!-- Селект «Дата урока» -->
+            <div class="col-md-4">
+                <label asp-for="SelectedDate" class="form-label">Дата</label>
+                <div class="select-wrapper">
+                    <select asp-for="SelectedDate"
+                            asp-items="@Model.DatesList"
+                            class="form-select"
+                            onchange="this.form.submit()">
+                        <option value="">-- выберите день --</option>
+                    </select>
+                    <i class="fas fa-angle-down select-icon"></i>
+                </div>
+            </div>
+
+            <!-- Селект «Урок» -->
+            <div class="col-md-4">
+                <label asp-for="SelectedLessonId" class="form-label">Занятие</label>
+                <div class="select-wrapper">
+                    <select asp-for="SelectedLessonId"
+                            asp-items="@Model.LessonsList"
+                            class="form-select"
+                            onchange="this.form.submit()">
+                        <option value="">-- выберите занятие --</option>
+                    </select>
+                    <i class="fas fa-angle-down select-icon"></i>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @* Если не выбраны все три параметра, показываем пустое состояние *@
+    @if (!Model.SelectedGroupId.HasValue
+    || string.IsNullOrEmpty(Model.SelectedDate)
+    || !Model.SelectedLessonId.HasValue)
+    {
+        <div class="empty-state">
+            <div class="empty-state-icon">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <h3 class="empty-state-title">Выберите группу, дату и урок</h3>
+            <p class="empty-state-text">
+                Пожалуйста, сначала выберите группу, затем день, а после — конкретный урок, чтобы увидеть список студентов.
+            </p>
+        </div>
+    }
+    else
+    {
+        <form method="post">
+            <table class="table table-striped table-hover shadow rounded overflow-hidden">
+                <thead class="table-light">
+                    <tr>
+                        <th>ФИО студента</th>
+                        <th class="text-center">Присутствовал</th>
+                        <th class="text-center">Отсутствовал</th>
+                        <th class="text-center">Уважительная причина</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var row in Model.AttendanceRows)
+                    {
+                        <tr>
+                            <td>@row.FullName</td>
+                            <td class="text-center">
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="AttendanceStatuses[@row.StudentId]"
+                                       value="Присутствовал"
+                                @(row.Status == "Присутствовал" ? "checked" : "") />
+                            </td>
+                            <td class="text-center">
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="AttendanceStatuses[@row.StudentId]"
+                                       value="Отсутствовал"
+                                @(row.Status == "Отсутствовал" ? "checked" : "") />
+                            </td>
+                            <td class="text-center">
+                                <input class="form-check-input"
+                                       type="radio"
+                                       name="AttendanceStatuses[@row.StudentId]"
+                                       value="Уважительная причина"
+                                @(row.Status == "Уважительная причина" ? "checked" : "") />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary mt-3">Сохранить изменения</button>
+        </form>
+    }
+</div>
