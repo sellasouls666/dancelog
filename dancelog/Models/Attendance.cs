@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace dancelog.Models
 {
@@ -7,13 +8,20 @@ namespace dancelog.Models
         public int Id { get; set; }
 
         [Required]
-        public required Lesson Lesson { get; set; }
+        [Display(Name = "Занятие")]
+        public int LessonId { get; set; }        // явное поле FK
+        [ForeignKey(nameof(LessonId))]
+        public Lesson Lesson { get; set; } = null!;
+
+        [Required]
+        [Display(Name = "Студент")]
+        public int StudentId { get; set; }       // явное поле FK
+        [ForeignKey(nameof(StudentId))]
+        public Student Student { get; set; } = null!;
 
         [Required]
         [StringLength(255)]
-        public required Student Student { get; set; }
-
-        [Required]
-        public required string Status { get; set; }
+        [Display(Name = "Статус")]
+        public string Status { get; set; } = string.Empty;   // строковое поле (nvarchar(255))
     }
 }
