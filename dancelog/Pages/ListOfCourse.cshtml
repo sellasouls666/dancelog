@@ -31,69 +31,22 @@
         color: var(--text-color);
     }
 
-        body.dark-theme {
-            --text-muted: #a0a0a0;
-            --light-gray: #2a2a2a;
-            --lighter-gray: #1e1e1e;
-            --border-color: #444;
-            --card-bg: #121212;
-            --text-color: #f1f1f1;
-            --btn-text-color: #ffffff;
-            --btn-icon-color: #ffffff;
-            background: #000000 !important;
-        }
+    body.dark-theme {
+        --text-muted: #a0a0a0;
+        --light-gray: #2a2a2a;
+        --lighter-gray: #1e1e1e;
+        --border-color: #444;
+        --card-bg: #121212;
+        --text-color: #f1f1f1;
+        --btn-text-color: #ffffff;
+        --btn-icon-color: #ffffff;
+        background: #000000 !important;
+    }
 
     .container {
-        width: 100%;
-        padding-right: calc(var(--bs-gutter-x, 0.75rem) * .5);
-        padding-left: calc(var(--bs-gutter-x, 0.75rem) * .5);
-        margin-right: auto;
-        margin-left: auto;
-    }
-
-    @@media (min-width: 576px) {
-        .container
-
-    {
-        max-width: 540px;
-    }
-
-    }
-
-    @@media (min-width: 768px) {
-        .container
-
-    {
-        max-width: 720px;
-    }
-
-    }
-
-    @@media (min-width: 992px) {
-        .container
-
-    {
-        max-width: 960px;
-    }
-
-    }
-
-    @@media (min-width: 1200px) {
-        .container
-
-    {
-        max-width: 1140px;
-    }
-
-    }
-
-    @@media (min-width: 1400px) {
-        .container
-
-    {
-        max-width: 1320px;
-    }
-
+        max-width: 1400px; /* Увеличена максимальная ширина контейнера */
+        margin: 0 auto; /* Центрирование контейнера */
+        padding: 0 30px; /* Увеличены отступы по бокам */
     }
 
     .row {
@@ -105,21 +58,16 @@
         padding-right: 15px;
         padding-left: 15px;
     }
-    }
 
     @@keyframes fadeIn {
-        from
-
-    {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .page-header {
@@ -129,29 +77,29 @@
         border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
-        .page-header h1 {
-            font-weight: 600;
-            position: relative;
-            display: inline-block;
-            margin-bottom: 0;
-            color: var(--text-color);
-        }
+    .page-header h1 {
+        font-weight: 600;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 0;
+        color: var(--text-color);
+    }
 
-            .page-header h1::after {
-                content: "";
-                position: absolute;
-                bottom: -8px;
-                left: 0;
-                width: 60px;
-                height: 4px;
-                background: var(--primary-gradient);
-                border-radius: 4px;
-                transition: width 0.6s ease;
-            }
+    .page-header h1::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(--primary-gradient);
+        border-radius: 4px;
+        transition: width 0.6s ease;
+    }
 
-            .page-header h1:hover::after {
-                width: 100px;
-            }
+    .page-header h1:hover::after {
+        width: 100px;
+    }
 
     .card {
         border: none;
@@ -166,10 +114,10 @@
         color: var(--text-color);
     }
 
-        .card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: var(--shadow-lg);
-        }
+    .card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: var(--shadow-lg);
+    }
 
     .card-body {
         flex: 1;
@@ -206,19 +154,19 @@
         transition: transform 0.2s ease, background 0.2s ease;
     }
 
-        .btn-course-action i {
-            color: var(--btn-icon-color) !important;
-        }
+    .btn-course-action i {
+        color: var(--btn-icon-color) !important;
+    }
 
-        .btn-course-action:hover {
-            transform: scale(1.1);
-            background: var(--primary-gradient) !important;
-            color: #fff !important;
-        }
+    .btn-course-action:hover {
+        transform: scale(1.1);
+        background: var(--primary-gradient) !important;
+        color: #fff !important;
+    }
 
-            .btn-course-action:hover i {
-                color: #fff !important;
-            }
+    .btn-course-action:hover i {
+        color: #fff !important;
+    }
 
     /* Стили для кнопки удаления */
     .btn-course-delete {
@@ -234,38 +182,38 @@
         overflow: hidden;
     }
 
-        .btn-course-delete::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--primary-gradient);
-            transform: scale(1); /* Изменено с scale(0) на scale(1) */
-            opacity: 0; /* Добавлена непрозрачность */
-            transition: opacity 0.3s ease;
-            z-index: -1;
-        }
+    .btn-course-delete::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--primary-gradient);
+        transform: scale(1);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
 
-        .btn-course-delete:hover::before {
-            opacity: 1; /* При наведении становится полностью видимым */
-        }
+    .btn-course-delete:hover::before {
+        opacity: 1;
+    }
 
-        .btn-course-delete i {
-            color: var(--btn-icon-color) !important;
-            transition: color 0.3s ease;
-            position: relative;
-            z-index: 1;
-        }
+    .btn-course-delete i {
+        color: var(--btn-icon-color) !important;
+        transition: color 0.3s ease;
+        position: relative;
+        z-index: 1;
+    }
 
-        .btn-course-delete:hover {
-            transform: scale(1.1);
-        }
+    .btn-course-delete:hover {
+        transform: scale(1.1);
+    }
 
-            .btn-course-delete:hover i {
-                color: #fff !important;
-            }
+    .btn-course-delete:hover i {
+        color: #fff !important;
+    }
 
     .empty-state .card-body {
         text-align: center;
@@ -283,19 +231,19 @@
         transition: transform 0.2s ease, background 0.2s ease;
     }
 
-        .btn-create i {
-            color: var(--btn-icon-color) !important;
-        }
+    .btn-create i {
+        color: var(--btn-icon-color) !important;
+    }
 
-        .btn-create:hover {
-            transform: scale(1.05);
-            background: var(--primary-gradient) !important;
-            color: #fff !important;
-        }
+    .btn-create:hover {
+        transform: scale(1.05);
+        background: var(--primary-gradient) !important;
+        color: #fff !important;
+    }
 
-            .btn-create:hover i {
-                color: #fff !important;
-            }
+    .btn-create:hover i {
+        color: #fff !important;
+    }
 
     .text-muted {
         color: var(--text-muted) !important;
