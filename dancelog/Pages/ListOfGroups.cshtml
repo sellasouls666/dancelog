@@ -29,19 +29,30 @@
         color: var(--text-color);
     }
 
-        body.dark-theme {
-            --text-muted: #a0a0a0;
-            --light-gray: #2a2a2a;
-            --lighter-gray: #1e1e1e;
-            --border-color: #444;
-            --card-bg: #121212;
-            --text-color: #f1f1f1;
-            background: #000000 !important;
-        }
+    body.dark-theme {
+        --text-muted: #a0a0a0;
+        --light-gray: #2a2a2a;
+        --lighter-gray: #1e1e1e;
+        --border-color: #444;
+        --card-bg: #121212;
+        --text-color: #f1f1f1;
+        background: #000000 !important;
+    }
 
     .container {
-        max-width: 1400px;
-        animation: fadeIn 0.8s ease-out;
+        max-width: 1400px; /* Увеличена максимальная ширина контейнера */
+        margin: 0 auto; /* Центрирование контейнера */
+        padding: 0 30px; /* Увеличены отступы по бокам */
+    }
+
+    .row {
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
+    .col-12, .col-sm-6, .col-md-4, .col-lg-3 {
+        padding-right: 15px;
+        padding-left: 15px;
     }
 
     @@keyframes fadeIn {
@@ -49,7 +60,6 @@
             opacity: 0;
             transform: translateY(20px);
         }
-
         to {
             opacity: 1;
             transform: translateY(0);
@@ -63,29 +73,29 @@
         border-bottom: 1px solid rgba(0,0,0,0.05);
     }
 
-        .page-header h1 {
-            font-weight: 600;
-            position: relative;
-            display: inline-block;
-            margin-bottom: 0;
-            color: var(--text-color);
-        }
+    .page-header h1 {
+        font-weight: 600;
+        position: relative;
+        display: inline-block;
+        margin-bottom: 0;
+        color: var(--text-color);
+    }
 
-            .page-header h1::after {
-                content: "";
-                position: absolute;
-                bottom: -8px;
-                left: 0;
-                width: 60px;
-                height: 4px;
-                background: var(--primary-gradient);
-                border-radius: 4px;
-                transition: width 0.6s ease;
-            }
+    .page-header h1::after {
+        content: "";
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 60px;
+        height: 4px;
+        background: var(--primary-gradient);
+        border-radius: 4px;
+        transition: width 0.6s ease;
+    }
 
-            .page-header h1:hover::after {
-                width: 100px;
-            }
+    .page-header h1:hover::after {
+        width: 100px;
+    }
 
     .card {
         border: none;
@@ -100,10 +110,10 @@
         color: var(--text-color);
     }
 
-        .card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: var(--shadow-lg);
-        }
+    .card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: var(--shadow-lg);
+    }
 
     .card-body {
         flex: 1;
@@ -134,7 +144,7 @@
         display: flex;
         gap: 0.5rem;
         margin-top: auto;
-        margin-top: 1.2rem; /* ← добавлен отступ вниз */
+        margin-top: 1.2rem; /* добавлен отступ вниз */
         justify-content: center;
     }
 
@@ -144,13 +154,12 @@
         border-color: var(--primary-dark);
     }
 
-
-        .btn-group-action:hover {
-            transform: scale(1.1);
-            background: var(--primary-gradient);
-            border-color: var(--primary-gradient);
-            color: #fff;
-        }
+    .btn-group-action:hover {
+        transform: scale(1.1);
+        background: var(--primary-gradient);
+        border-color: var(--primary-gradient);
+        color: #fff;
+    }
 
     .empty-state .card-body {
         text-align: center;
@@ -162,11 +171,11 @@
         border-color: var(--primary-light);
     }
 
-        body.dark-theme .btn-group-action:hover {
-            background: var(--primary-gradient);
-            color: #fff;
-            border-color: var(--primary-gradient);
-        }
+    body.dark-theme .btn-group-action:hover {
+        background: var(--primary-gradient);
+        color: #fff;
+        border-color: var(--primary-gradient);
+    }
 
     /* Темная тема для текста */
     body.dark-theme .page-header h1,
@@ -189,38 +198,16 @@
         transition: transform 0.2s ease, background 0.2s ease;
     }
 
-        /* На hover закрашиваем фон градиентом и делаем иконку белой */
-        .btn-group-action:hover {
-            background: var(--primary-gradient) !important;
-            color: #fff !important;
-        }
-
-        /* Иконки внутри кнопок */
-        .btn-group-action i {
-            color: inherit !important; /* подхватят цвет из .btn-group-action */
-        }
-    /* 1) Сбрасываем все старые бордеры и делаем градиентную обводку */
-    .btn-group-action {
-        background: transparent !important;
-        border: 2px solid transparent !important;
-        /* вот ключевое: */
-        border-image-source: var(--primary-gradient) !important;
-        border-image-slice: 1 !important;
-        border-image-repeat: stretch !important;
-        border-radius: var(--card-border-radius) !important;
-        transition: transform 0.2s ease, background 0.2s ease;
+    /* На hover закрашиваем фон градиентом и делаем иконку белой */
+    .btn-group-action:hover {
+        background: var(--primary-gradient) !important;
+        color: #fff !important;
     }
 
-        /* 2) Иконка наследует цвет кнопки */
-        .btn-group-action i {
-            color: inherit !important;
-        }
-
-        /* 3) Hover — просто заливаем градиентом фон, текст и иконка белые */
-        .btn-group-action:hover {
-            background: var(--primary-gradient) !important;
-            color: #fff !important;
-        }
+    /* Иконки внутри кнопок */
+    .btn-group-action i {
+        color: inherit !important; /* подхватят цвет из .btn-group-action */
+    }
 </style>
 
 <div class="container py-4">

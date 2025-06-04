@@ -1,519 +1,115 @@
-﻿@page
-@model dancelog.Pages.Account.RegisterPageModel
-@{
-    ViewData["Title"] = "Регистрация";
-}
-
-<style>
-    :root {
-        --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-        --primary-light: #2575fc;
-        --primary-dark: #6a11cb;
-        --text-muted: #6c757d;
-        --light-gray: #ffffff;
-        --lighter-gray: #f0f0f0;
-        --darker-gray: #e0e0e0;
-        --border-color: #e0e0e0;
-        --bg-color: #ffffff;
-        --card-bg: #fefefe;
-        --input-bg: #ffffff;
-        --input-color: #000000;
-        --input-border: #ccc;
-        --form-label-color: #333;
-        --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-        --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
-        --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-        --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
-        --table-bg: #ffffff;
-        --table-border: #e0e0e0;
-        --table-text: #000000;
-        --link-color: #2575fc;
-    }
-
-    /* теперь затрагиваем и data-theme, и body.dark-theme */
-    body.dark-theme,
-    [data-theme="dark"] {
-        --bg-color: #121212;
-        --card-bg: #121212; /* фон карточек (в том числе register-card) */
-        --input-bg: #121212; 
-        --input-border: #444;
-        --form-label-color: #e0e0e0;
-        --text-muted: #aaaaaa;
-        --light-gray: #252525;
-        --lighter-gray: #333333;
-        --darker-gray: #444444;
-        --border-color: #444;
-        --table-bg: #2d2d2d;
-        --table-border: #444;
-        --table-text: #ffffff;
-        --link-color: #6a9dfc;
-    }
-
-    body {
-        background: var(--bg-color);
-        color: var(--input-color);
-        min-height: 100vh;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    .register-container {
-        max-width: 500px;
-        margin: 2rem auto;
-        animation: fadeIn 0.5s ease-out;
-    }
-
-    @@keyframes fadeIn {
-        from
-
-    {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    }
-
-    .register-card {
-        border: none;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: var(--shadow-lg);
-        background: var(--card-bg);
-        position: relative;
-        transition: var(--transition);
-    }
-
-        .register-card:hover {
-            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
-            transform: translateY(-3px);
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - dancelog</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* Reset and base box-sizing */
+        *, *::before, *::after {
+            box-sizing: border-box;
         }
 
-        .register-card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--primary-gradient);
-        }
-
-    .register-avatar {
-        width: 90px;
-        height: 90px;
-        border-radius: 50%;
-        background: var(--primary-gradient);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: -25px auto 15px; /* Уменьшил верхний отступ для опускания */
-        border: 4px solid var(--card-bg);
-        box-shadow: none;
-        font-size: 2.5rem;
-        position: relative;
-        z-index: 2;
-        animation: float 4s ease-in-out infinite, bounce 2s ease-in-out infinite;
-    }
-
-    
-
-        .register-avatar i {
-            color: #fff !important; /* Белый цвет иконки */
-        }
-
-    .role-icon {
-        font-size: 1.5rem;
-        margin-bottom: 8px;
-        color: var(--text-muted);
-        box-shadow: none; /* Убираем свечение у иконки */
-    }
-    @@keyframes float {
-        0%
-
-    {
-        transform: translateY(0px) rotate(0deg);
-    }
-
-    50% {
-        transform: translateY(-10px) rotate(5deg);
-    }
-
-    100% {
-        transform: translateY(0px) rotate(0deg);
-    }
-
-    }
-    @@keyframes bounce {
-        0%,100%
-
-    {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-
-    }
-
-    .register-title {
-        position: relative;
-        display: inline-block;
-        margin-bottom: 25px;
-        color: var(--form-label-color);
-        font-weight: 600;
-    }
-
-        .register-title::after {
-            content: "";
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: var(--primary-gradient);
-            border-radius: 3px;
-        }
-
-    .form-control {
-        border: 1px solid var(--input-border);
-        border-radius: 8px;
-        padding: 10px 15px;
-        background-color: var(--input-bg) !important;
-        color: var(--input-color);
-        transition: var(--transition);
-    }
-
-        .form-control:focus {
-            border-color: var(--primary-light);
-            box-shadow: 0 0 0 0.25rem rgba(37,117,252,0.25);
-            outline: none;
-        }
-
-    .btn-register {
-        width: 100%;
-        padding: 12px 25px;
-        border: none;
-        border-radius: 8px;
-        background: var(--primary-gradient);
-        color: #fff;
-        font-size: 1rem;
-        font-weight: 500;
-        overflow: hidden;
-        position: relative;
-        transition: var(--transition);
-    }
-
-        .btn-register:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-register::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+        html, body {
+            margin: 0;
+            padding: 0;
             height: 100%;
-            background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
-            opacity: 0;
-            transition: var(--transition);
-            z-index: -1;
+            min-height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fff;
+            color: #212529;
+            overflow-y: scroll; /* Always show vertical scrollbar to avoid layout shift */
         }
 
-        .btn-register:hover::after {
-            opacity: 1;
-        }
+            body.dark-theme {
+                background-color: #000;
+                color: #e0e0e0;
+            }
 
-    .form-label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-size: 0.875rem;
-        color: var(--form-label-color);
-        font-weight: 500;
-    }
-
-    .text-danger {
-        color: #ff6b6b;
-        font-size: 0.8rem;
-        margin-top: 0.25rem;
-    }
-
-    .role-selector {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .role-option {
-        flex: 1;
-        position: relative;
-    }
-
-        .role-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .role-option label {
+        /* Fixed Layout container to prevent movement */
+        .fixed-layout-container {
+            max-width: 1400px; /* fixed wide max width */
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 30px;
+            padding-right: 30px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            /* Optional: prevent horizontal scroll */
+            overflow-x: hidden;
+        }
+
+        header.navbar {
+            width: 100%;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            background-color: #f8f9fa;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
+        }
+
+        /* Keep navbar brand and nav aligned */
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
             align-items: center;
-            padding: 15px 10px;
-            background: var(--input-bg);
-            border: 2px solid var(--input-border);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            color: var(--input-color);
-            font-weight: 500;
+            justify-content: space-between;
         }
 
-        .role-option input:checked + label {
-            border: 2px solid;
-            border-image: var(--primary-gradient) 1;
-            background: var(--lighter-gray);
-            color: var(--primary-light);
+        /* Content area with flex-grow to fill available height */
+        main.content-area {
+            flex-grow: 1;
+            padding-top: 20px;
+            padding-bottom: 40px;
+            /* Avoid shifting by always reserving space */
+            min-height: calc(100vh - 60px); /* adjust based on header height */
         }
 
-    .role-icon {
-        font-size: 1.5rem;
-        margin-bottom: 8px;
-        color: var(--text-muted);
-    }
-
-    .role-option input:checked + label .role-icon {
-        color: var(--primary-dark);
-    }
-
-    .group-selector {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    .group-option {
-        flex: 1 0 calc(33.333% - 10px);
-        position: relative;
-    }
-
-        .group-option input[type="radio"] {
-            position: absolute;
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .group-option label {
-            display: block;
-            padding: 12px;
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 8px;
+        /* Footer if exists */
+        footer {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px 30px;
             text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            color: var(--input-color);
+            color: #666;
+            font-size: 14px;
         }
-
-        .group-option input:checked + label {
-            background: var(--lighter-gray);
-            border-color: var(--primary-light);
-            color: var(--primary-light);
-            font-weight: 600;
-        }
-
-    /* таблицы (если понадобятся) */
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        background: var(--table-bg);
-        color: var(--table-text);
-        border-radius: 8px;
-        overflow: hidden;
-        margin-bottom: 1rem;
-    }
-
-    th, td {
-        padding: 12px 15px;
-        border-bottom: 1px solid var(--table-border);
-        text-align: left;
-    }
-
-    th {
-        background: var(--lighter-gray);
-        font-weight: 600;
-    }
-
-    tr:hover {
-        background: var(--light-gray);
-    }
-
-    /* автозаполнение */
-    input:-webkit-autofill {
-        -webkit-text-fill-color: var(--input-color);
-        -webkit-box-shadow: 0 0 0px 1000px var(--input-bg) inset;
-    }
-
-    /* адаптив */
-    @@media (max-width: 576px) {
-        .register-container
-
-    {
-        margin: 1rem auto;
-        padding: 0 15px;
-    }
-
-    .role-selector {
-        flex-direction: column;
-    }
-
-    .group-option {
-        flex: 1 0 calc(50% - 10px);
-    }
-
-    }
-    /* В тёмной теме — текст инпутов всегда белый */
-    body.dark-theme .form-control {
-        color: #fff !important;
-    }
-
-        /* Плейсхолдеры — чуть светлее, но тоже белые */
-        body.dark-theme .form-control::placeholder {
-            color: rgba(255,255,255,0.6) !important;
-            opacity: 1 !important;
-        }
-
-    /* Если вы используете другие селекторы для полей, тоже перекройте их */
-    body.dark-theme input[type="email"],
-    body.dark-theme input[type="password"],
-    body.dark-theme .profile-field {
-        color: #fff !important;
-    }
-
-</style>
-
-<div class="container py-5">
-    <div class="register-container">
-        <div class="register-card">
-            <div class="card-body p-4 p-md-5">
-                <div class="register-avatar">
-                    <i class="fas fa-user-plus"></i>
-                </div>
-                <h3 class="register-title text-center mb-4">Регистрация</h3>
-
-                <form method="post">
-                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Фамилия</label>
-                        <input asp-for="Input.LastName" class="form-control" placeholder="Введите вашу фамилию" />
-                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Имя</label>
-                        <input asp-for="Input.FirstName" class="form-control" placeholder="Введите ваше имя" />
-                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Отчество</label>
-                        <input asp-for="Input.MiddleName" class="form-control" placeholder="Введите ваше отчество" />
-                        <span asp-validation-for="Input.MiddleName" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input asp-for="Input.Email" class="form-control" placeholder="Введите ваш email" />
-                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Пароль</label>
-                        <input asp-for="Input.Password" type="password" class="form-control" placeholder="Придумайте пароль" />
-                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label">Подтверждение пароля</label>
-                        <input asp-for="Input.ConfirmPassword" type="password" class="form-control" placeholder="Повторите пароль" />
-                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label">Кто вы?</label>
-                        <div class="role-selector">
-                            <div class="role-option">
-                                <input type="radio" asp-for="Input.SelectedRole" id="roleStudent" value="Ученик" checked />
-                                <label for="roleStudent">
-                                    <i class="fas fa-user-graduate role-icon"></i>
-                                    Ученик
-                                </label>
-                            </div>
-                            <div class="role-option">
-                                <input type="radio" asp-for="Input.SelectedRole" id="roleTeacher" value="Учитель" />
-                                <label for="roleTeacher">
-                                    <i class="fas fa-chalkboard-teacher role-icon"></i>
-                                    Учитель
-                                </label>
-                            </div>
-                        </div>
-                        <span asp-validation-for="Input.SelectedRole" class="text-danger"></span>
-                    </div>
-
-                    @if (Model.Input.SelectedRole == "Ученик")
-                    {
-                        <div class="mb-4">
-                            <label class="form-label">Из какой Вы группы?</label>
-                            <div class="group-selector">
-                                @foreach (var grp in Model.Input.AvailableGroups)
-                                {
-                                    <div class="group-option">
-                                        <input type="radio"
-                                               asp-for="Input.GroupId"
-                                               id="group_@grp.Value"
-                                               value="@grp.Value" />
-                                        <label for="group_@grp.Value">@grp.Text</label>
-                                    </div>
-                                }
-                            </div>
-                            <span asp-validation-for="Input.GroupId" class="text-danger"></span>
-                        </div>
-                    }
-
-                    <button type="submit" class="btn btn-register mb-3">
-                        <i class="fas fa-user-plus me-2"></i> Зарегистрироваться
-                    </button>
-
-                    <div class="login-link text-center">
-                        Уже есть аккаунт? <a asp-page="./Login">Войти</a>
-                    </div>
-                </form>
+    </style>
+</head>
+<body>
+    <div class="fixed-layout-container">
+        <header class="navbar">
+            <div class="navbar-container">
+                <a class="navbar-brand d-flex align-items-center" href="/">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5969/5969724.png" alt="DanceLog" width="30" height="30" class="me-2" />
+                    <span>DANCELOG</span>
+                </a>
+                <nav class="d-flex gap-3">
+                    <a href="/ListOfCourse" class="nav-link">Курсы</a>
+                    <a href="/ListOfGroups" class="nav-link">Группы</a>
+                    <a href="/ListOfLessons" class="nav-link">Занятия</a>
+                    <a href="/Chat" class="nav-link">Чат</a>
+                </nav>
             </div>
-        </div>
-    </div>
-</div>
+        </header>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        $(function () {
-            function toggleGroupField() {
-                const isStudent = $('#roleStudent').is(':checked');
-                const groupBlock = $('.group-selector').closest('.mb-4');
-                groupBlock.toggle(isStudent);
-                $('input[name="Input.GroupId"]').prop('required', isStudent);
-                if (!isStudent) {
-                    $('input[name="Input.GroupId"]').prop('checked', false);
-                }
-            }
-            $('input[name="Input.SelectedRole"]').change(toggleGroupField);
-            toggleGroupField();
-        });
-    </script>
-}
+        <main class="content-area" role="main">
+            @RenderBody()
+        </main>
+
+        <footer>
+            &copy; 2024 DanceLog. Все права защищены.
+        </footer>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

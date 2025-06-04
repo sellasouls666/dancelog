@@ -11,6 +11,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+
+        .container {
+            max-width: 1400px; /* Увеличена максимальная ширина контейнера */
+            margin: 0 auto;
+            padding: 0 30px; /* Увеличены отступы по бокам */
+        }
+
+        .navbar {
+            width: 100%;
+            position: relative;
+            z-index: 1000;
+        }
+
         :root {
             --primary-gradient: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
         }
@@ -81,15 +104,18 @@
         }
 
         @@keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-5px);
-            }
+            from
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         }
 
         .dropdown-item {
@@ -128,7 +154,8 @@
             -webkit-text-fill-color: #000000 !important;
             transition: all 0.3s ease;
         }
-        /* ужимаем отступ между иконкой и именем */
+
+        /* Ужимаем отступ между иконкой и именем */
         .nav-item.dropdown.d-flex .user-icon {
             margin-right: 2px !important;
         }
@@ -297,11 +324,6 @@
         .user-nickname {
             color: var(--nickname-color) !important;
         }
-
-        /* В вашем HTML замените: */
-        /* <span class="nav-link no-underline ms-0">@@firstName </span > */
-        /* на */
-        /* <span class="nav-link no-underline ms-0 user-nickname">@@firstName </span > */
     </style>
 </head>
 <body>
